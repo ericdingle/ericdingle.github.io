@@ -10,12 +10,13 @@
     <link rel="import" href="/bower_components/iron-pages/iron-pages.html">
     <link rel="import" href="/bower_components/paper-drawer-panel/paper-drawer-panel.html">
     <link rel="import" href="/bower_components/paper-item/paper-icon-item.html">
+    <link rel="import" href="/about-page.html">
     <style>
     body {
       font-family: 'Roboto';
     }
     paper-drawer-panel [drawer] {
-      background-color: #EEE;
+      background-color: #E0F7FA;
     }
     #drawer-header {
       padding-top: 10px;
@@ -30,6 +31,10 @@
     #drawer-content a {
       color: #000;
       text-decoration: none;
+    }
+    paper-drawer-panel [main] {
+      max-width: 800px;
+      padding: 10px;
     }
     </style>
   </head>
@@ -64,7 +69,7 @@
         </div>
         <div main>
           <iron-pages attr-for-selected="id" selected="{{data.page}}">
-            <div id="about">About</div>
+            <about-page id="about"></about-page>
             <div id="posts">Posts</div>
             <div id="projects">Projects</div>
           </iron-pages>
