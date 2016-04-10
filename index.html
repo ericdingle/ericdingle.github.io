@@ -1,8 +1,75 @@
 <!DOCTYPE html>
 <html>
+  <heaD>
     <title>Eric Dingle</title>
+    <script src="/bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+    <link rel="import" href="/bower_components/carbon-route/carbon-location.html">
+    <link rel="import" href="/bower_components/carbon-route/carbon-route.html">
+    <link rel="import" href="/bower_components/iron-icon/iron-icon.html">
+    <link rel="import" href="/bower_components/iron-icons/iron-icons.html">
+    <link rel="import" href="/bower_components/iron-pages/iron-pages.html">
+    <link rel="import" href="/bower_components/paper-drawer-panel/paper-drawer-panel.html">
+    <link rel="import" href="/bower_components/paper-item/paper-icon-item.html">
+    <style>
+    body {
+      font-family: 'Roboto';
+    }
+    paper-drawer-panel [drawer] {
+      background-color: #EEE;
+    }
+    #drawer-header {
+      padding-top: 10px;
+      text-align: center;
+    }
+    #drawer-header img {
+      border-radius: 25px;
+    }
+    #drawer-content {
+      padding-top: 10px;
+    }
+    #drawer-content a {
+      color: #000;
+      text-decoration: none;
+    }
+    </style>
   </head>
   <body>
-    Under construction.
+    <template is="dom-bind">
+      <carbon-location route="{{route}}" use-hash-as-path></carbon-location>
+      <carbon-route route="{{route}}" pattern="/:page" data="{{data}}"></carbon-route>
+
+      <paper-drawer-panel>
+        <div drawer>
+          <div id="drawer-header">
+            <img src="/images/ericdingle.jpg" width="150" height="150">
+            <div>With programming my mind I flex.</div>
+          </div>
+          <div id="drawer-content">
+            <a href="#/about" tabindex="-1">
+              <paper-icon-item>
+                <iron-icon icon="info" item-icon></iron-icon>About
+              </paper-icon-item>
+            </a>
+            <a href="#/posts" tabindex="-1">
+              <paper-icon-item>
+                <iron-icon icon="assignment" item-icon></iron-icon>Posts
+              </paper-icon-item>
+            </a>
+            <a href="#/projects" tabindex="-1">
+              <paper-icon-item>
+                <iron-icon icon="build" item-icon></iron-icon>Projects
+              </paper-icon-item>
+            </a>
+          </div>
+        </div>
+        <div main>
+          <iron-pages attr-for-selected="id" selected="{{data.page}}">
+            <div id="about">About</div>
+            <div id="posts">Posts</div>
+            <div id="projects">Projects</div>
+          </iron-pages>
+        </div>
+      </paper-drawer-panel>
+    </template>
   </body>
 </html>
