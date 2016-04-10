@@ -13,18 +13,22 @@
     <link rel="import" href="/about-page.html">
     <style>
     body {
-      font-family: 'Roboto';
+      font-family: 'Oswald', Helvetica, sans-serif;
+      font-color: #333;
     }
-    paper-drawer-panel [drawer] {
-      background-color: #E0F7FA;
+    a {
+      color: #7ccdea;
     }
+
     #drawer-header {
+      font-size: 12px;
       padding-top: 10px;
       text-align: center;
     }
     #drawer-header img {
       border-radius: 25px;
     }
+
     #drawer-content {
       padding-top: 10px;
     }
@@ -32,14 +36,24 @@
       color: #000;
       text-decoration: none;
     }
+    #drawer-content paper-icon-item:focus {
+      background-color: #7ccdea;
+    }
+    #drawer-content paper-icon-item:focus iron-icon {
+      color: #fff;
+    }
+    #drawer-content iron-icon {
+      color: #7ccdea;
+    }
+
     paper-drawer-panel [main] {
+      margin-left: 20px;
       max-width: 800px;
-      padding: 10px;
     }
     </style>
   </head>
   <body>
-    <template is="dom-bind">
+    <template is="dom-bind" id="scope">
       <carbon-location route="{{route}}" use-hash-as-path></carbon-location>
       <carbon-route route="{{route}}" pattern="/:page" data="{{data}}"></carbon-route>
 
@@ -52,17 +66,20 @@
           <div id="drawer-content">
             <a href="#/about" tabindex="-1">
               <paper-icon-item>
-                <iron-icon icon="info" item-icon></iron-icon>About
+                <iron-icon icon="info" item-icon></iron-icon>
+                About
               </paper-icon-item>
             </a>
             <a href="#/posts" tabindex="-1">
               <paper-icon-item>
-                <iron-icon icon="assignment" item-icon></iron-icon>Posts
+                <iron-icon icon="assignment" item-icon></iron-icon>
+                Posts
               </paper-icon-item>
             </a>
             <a href="#/projects" tabindex="-1">
               <paper-icon-item>
-                <iron-icon icon="build" item-icon></iron-icon>Projects
+                <iron-icon icon="build" item-icon></iron-icon>
+                Projects
               </paper-icon-item>
             </a>
           </div>
@@ -76,5 +93,14 @@
         </div>
       </paper-drawer-panel>
     </template>
+
+    <script>
+      addEventListener('WebComponentsReady', function() {
+        var scope = document.getElementById('scope');
+        if (!scope.route.path) {
+          scope.set('route.path', '/about');
+        }
+      });
+    </script>
   </body>
 </html>
