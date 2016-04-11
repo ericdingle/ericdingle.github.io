@@ -12,6 +12,8 @@
     <link rel="import" href="/bower_components/paper-drawer-panel/paper-drawer-panel.html">
     <link rel="import" href="/bower_components/paper-item/paper-icon-item.html">
     <link rel="import" href="/about-page.html">
+    <link rel="import" href="/listing-page.html">
+    <link rel="import" href="/markdown-page.html">
     <style>
     body {
       font-family: 'Oswald', Helvetica, sans-serif;
@@ -56,7 +58,8 @@
   <body>
     <template is="dom-bind" id="scope">
       <carbon-location route="{{route}}" use-hash-as-path></carbon-location>
-      <carbon-route route="{{route}}" pattern="/:page" data="{{data}}"></carbon-route>
+      <carbon-route route="{{route}}" pattern="/:page" data="{{data}}" tail="{{subroute}}"></carbon-route>
+      <carbon-route route="{{subroute}}" pattern="/:path" data="{{subdata}}" active="{{subactive}}"></carbon-route>
 
       <paper-drawer-panel>
         <div drawer>
@@ -77,31 +80,33 @@
                 Posts
               </paper-icon-item>
             </a>
-            <a href="#/projects" tabindex="-1">
-              <paper-icon-item>
-                <iron-icon icon="build" item-icon></iron-icon>
-                Projects
-              </paper-icon-item>
-            </a>
           </div>
         </div>
         <div main>
-          <iron-pages attr-for-selected="id" selected="{{data.page}}">
+          <iron-pages attr-for-selected="id" selected="{{computePage(data.page, subactive)}}">
             <about-page id="about"></about-page>
-            <div id="posts">Posts</div>
-            <div id="projects">Projects</div>
+            <listing-page id="posts" title="Posts" listing-path="/posts.json"></listing-page>
+            <markdown-page id="markdown" markdown-path="{{computePath(data.page, subdata.path)}}"></markdown-page>
           </iron-pages>
         </div>
       </paper-drawer-panel>
     </template>
 
     <script>
+      var scope = document.getElementById('scope');
+
       addEventListener('WebComponentsReady', function() {
-        var scope = document.getElementById('scope');
         if (!scope.route.path) {
-          scope.set('route.path', '/about');
+          scope.set('route.path', '/posts');
         }
       });
+
+      scope.computePage = function(page, subActive) {
+        return subActive ? 'markdown' : page;
+      };
+      scope.computePath = function(page, path) {
+        return '/' + page + '/' + path + '.markdown';
+      };
     </script>
   </body>
 </html>

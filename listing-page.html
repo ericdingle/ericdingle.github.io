@@ -1,0 +1,32 @@
+<link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
+<dom-module id="listing-page">
+  <style>
+    span {
+      float: right;
+    }
+  </style>
+  <template>
+    <iron-ajax
+      auto
+      url="{{listingPath}}"
+      handle-as="json"
+      last-response="{{listing}}">
+    </iron-ajax>
+    <h1>{{title}}</h1>
+    <template is="dom-repeat" items="{{listing}}">
+      <div>
+        <span>{{item.date}}</span>
+        <a href="#/{{item.path}}">{{item.title}}</a>
+      </div>
+    </template>
+  </template>
+  <script>
+    Polymer({
+      is: 'listing-page',
+      properties: {
+        listingPath: String,
+        title: String
+      }
+    });
+  </script>
+</dom-module>
