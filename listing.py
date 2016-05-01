@@ -26,5 +26,5 @@ for file_path in os.listdir(args.directory):
 
   output.append({'path': path, 'title': title, 'date': date_str})
 
-fh = open('%s.json' % args.directory, 'w')
+fh = open('%s/listing.json' % args.directory, 'w')
 json.dump(output, fh, indent=2, sort_keys=True)

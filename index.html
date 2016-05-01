@@ -100,7 +100,7 @@
         return subActive ? 'markdown' : page == 'about' ? 'about' : 'listing';
       };
       scope.listingPath = function(page) {
-        return '/' + page + '.json';
+        return '/' + page + '/listing.json';
       };
       scope.markdownPath = function(page, path) {
         return '/' + page + '/' + path + '.markdown';
