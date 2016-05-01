@@ -13,9 +13,9 @@
     <link rel="import" href="/bower_components/iron-pages/iron-pages.html">
     <link rel="import" href="/bower_components/paper-drawer-panel/paper-drawer-panel.html">
     <link rel="import" href="/bower_components/paper-item/paper-icon-item.html">
+    <link rel="import" href="/bower_components/paper-menu/paper-menu.html">
     <link rel="import" href="/about-page.html">
     <link rel="import" href="/listing-page.html">
-    <link rel="import" href="/markdown-page.html">
     <style>
     body {
       font-family: 'Oswald', Helvetica, sans-serif;
@@ -35,14 +35,14 @@
       border-radius: 25px;
     }
 
-    #drawer-content a, paper-icon-item {
-      color: #000;
+    paper-icon-item {
+      cursor: pointer;
     }
-    #drawer-content paper-icon-item:focus {
+    paper-icon-item.iron-selected {
       background-color: #7ccdea;
     }
-    #drawer-content paper-icon-item:focus iron-icon {
-      color: #fff;
+    paper-icon-item:focus iron-icon {
+      color: #000;
     }
 
     paper-drawer-panel [main] {
@@ -55,7 +55,7 @@
     <template is="dom-bind" id="scope">
       <carbon-location route="{{route}}" use-hash-as-path></carbon-location>
       <carbon-route route="{{route}}" pattern="/:page" data="{{data}}" tail="{{subroute}}"></carbon-route>
-      <carbon-route route="{{subroute}}" pattern="/:path" data="{{subdata}}" active="{{subactive}}"></carbon-route>
+      <carbon-route route="{{subroute}}" pattern="/:path" data="{{subdata}}"></carbon-route>
 
       <paper-drawer-panel>
         <div drawer>
@@ -64,24 +64,24 @@
             <div>With programming my mind I flex.</div>
           </div>
           <div id="drawer-content">
-            <template is="dom-repeat" items='[["Coding Blog", "coding-blog", "assignment"],
-                                              ["Coding Projects", "coding-projects", "hardware:keyboard"],
-                                              ["Building Projects", "building-projects", "build"],
-                                              ["Guitar Tabs", "guitar-tabs", "image:music-note"],
-                                              ["About", "about", "info"]]'>
-              <a href="#/{{item.1}}" tabindex="-1">
-                <paper-icon-item>
+            <paper-menu attr-for-selected="page" selected="{{data.page}}" on-iron-activate="onMenuActivate">
+              <template is="dom-repeat" items='[["Coding Blog", "coding-blog", "assignment"],
+                                                ["Coding Projects", "coding-projects", "hardware:keyboard"],
+                                                ["Building Projects", "building-projects", "build"],
+                                                ["Guitar Tabs", "guitar-tabs", "image:music-note"],
+                                                ["About", "about", "info"]]'>
+                <paper-icon-item page="{{item.1}}">
                   <iron-icon icon="{{item.2}}" item-icon></iron-icon>{{item.0}}
                 </paper-icon-item>
-              </a>
-            </template>
+              </template>
+            </paper-menu>
           </div>
         </div>
         <div main>
-          <iron-pages attr-for-selected="id" selected="{{computePage(data.page, subactive)}}">
-            <listing-page id="listing" title="{{data.page}}" listing-path="{{listingPath(data.page)}}"></listing-page>
-            <markdown-page id="markdown" markdown-path="{{markdownPath(data.page, subdata.path)}}"></markdown-page>
-            <about-page id="about"></about-page>
+          <iron-pages attr-for-selected="page" selected="[[data.page]]" fallback-selection="404">
+            <listing-page page="coding-blog" title="Coding Blog" listing-path="/coding-blog/listing.json"></listing-page>
+            <about-page page="about"></about-page>
+            <div page="404">Not Found</div>
           </iron-pages>
         </div>
       </paper-drawer-panel>
@@ -96,14 +96,8 @@
         }
       });
 
-      scope.computePage = function(page, subActive) {
-        return subActive ? 'markdown' : page == 'about' ? 'about' : 'listing';
-      };
-      scope.listingPath = function(page) {
-        return '/' + page + '/listing.json';
-      };
-      scope.markdownPath = function(page, path) {
-        return '/' + page + '/' + path + '.markdown';
+      scope.onMenuActivate = function() {
+        scope.set('subroute.path', '');
       };
     </script>
   </body>
