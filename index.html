@@ -14,8 +14,8 @@
     <link rel="import" href="/bower_components/paper-drawer-panel/paper-drawer-panel.html">
     <link rel="import" href="/bower_components/paper-item/paper-icon-item.html">
     <link rel="import" href="/bower_components/paper-menu/paper-menu.html">
-    <link rel="import" href="/about-page.html">
     <link rel="import" href="/listing-page.html">
+    <link rel="import" href="/markdown-page.html">
     <style>
     body {
       font-family: 'Oswald', Helvetica, sans-serif;
@@ -80,7 +80,7 @@
         <div main>
           <iron-pages attr-for-selected="page" selected="[[data.page]]" fallback-selection="404">
             <listing-page page="coding-blog" title="Coding Blog" listing-path="/coding-blog/listing.json"></listing-page>
-            <about-page page="about"></about-page>
+            <markdown-page page="about" markdown-path="/about.markdown"></markdown-page>
             <div page="404">Not Found</div>
           </iron-pages>
         </div>
