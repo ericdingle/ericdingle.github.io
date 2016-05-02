@@ -15,7 +15,7 @@
     <h1>{{title}}</h1>
     <template is="dom-repeat" items="{{listing}}" sort="sort">
       <p>
-        <span>{{item.dateStr}}</span>
+        <span>{{item.date}}</span>
         <a href="#/{{item.path}}">{{item.title}}</a>
       </p>
     </template>
@@ -28,7 +28,7 @@
         title: String
       },
       sort: function(a, b) {
-        return b.dateNum - a.dateNum;
+        return b.timestamp - a.timestamp;
       }
     });
   </script>

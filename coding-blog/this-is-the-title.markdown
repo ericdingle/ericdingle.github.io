@@ -1,5 +1,5 @@
 # This is the title!
-2016/04/10
+April 10, 2016
 
 ## Section the first
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis vulputate ultricies. Sed eu libero id ex feugiat lobortis quis nec nisi. Integer ullamcorper faucibus nulla at tristique. Mauris faucibus justo at sapien volutpat vehicula. Fusce suscipit elit quis urna efficitur, sed lobortis libero tincidunt. Integer sit amet efficitur ipsum. Suspendisse vulputate lorem et sagittis consectetur. Integer consequat non ante eget volutpat. Praesent commodo, mauris sit amet vestibulum maximus, leo velit suscipit orci, in euismod augue ante in justo. Nam eleifend laoreet molestie. Nunc in pharetra ipsum. Nulla felis leo, molestie et malesuada ut, pretium luctus purus. Vivamus at gravida lectus. Duis accumsan nulla id mi ornare egestas. Etiam accumsan tellus felis, et ultricies purus ultrices vitae. Nulla facilisi.

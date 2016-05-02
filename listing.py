@@ -23,12 +23,12 @@ for file_path in os.listdir(args.directory):
   assert line[:2] == '# '
   title = line[2:]
 
-  line = fh.readline().rstrip('\n')
-  date = datetime.datetime.strptime(line, '%Y/%m/%d')
+  date_str = fh.readline().rstrip('\n')
+  date = datetime.datetime.strptime(date_str, '%B %d, %Y')
   date_num = int(date.strftime('%Y%m%d'))
-  date_str = date.strftime('%B %-d, %Y')
 
-  output.append({'path': path, 'title': title, 'dateNum': date_num, 'dateStr': date_str})
+  output.append({'path': path, 'title': title, 'date': date_str,
+                 'timestamp': date_num})
 
 fh = open('%s/listing.json' % args.directory, 'w')
 json.dump(output, fh, indent=2, sort_keys=True)
