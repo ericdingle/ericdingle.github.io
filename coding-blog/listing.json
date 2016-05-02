@@ -1,7 +1,14 @@
 [
   {
-    "date": "April 10, 2016", 
-    "path": "coding-blog/test", 
+    "dateNum": 20160402, 
+    "dateStr": "April 2, 2016", 
+    "path": "coding-blog/how-about-another-title", 
+    "title": "How about another title?"
+  }, 
+  {
+    "dateNum": 20160410, 
+    "dateStr": "April 10, 2016", 
+    "path": "coding-blog/this-is-the-title", 
     "title": "This is the title!"
   }
 ]

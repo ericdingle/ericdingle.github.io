@@ -13,11 +13,11 @@
       last-response="{{listing}}">
     </iron-ajax>
     <h1>{{title}}</h1>
-    <template is="dom-repeat" items="{{listing}}">
-      <div>
-        <span>{{item.date}}</span>
+    <template is="dom-repeat" items="{{listing}}" sort="sort">
+      <p>
+        <span>{{item.dateStr}}</span>
         <a href="#/{{item.path}}">{{item.title}}</a>
-      </div>
+      </p>
     </template>
   </template>
   <script>
@@ -26,6 +26,9 @@
       properties: {
         listingPath: String,
         title: String
+      },
+      sort: function(a, b) {
+        return b.dateNum - a.dateNum;
       }
     });
   </script>
