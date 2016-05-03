@@ -12,6 +12,7 @@
     <link rel="import" href="/bower_components/iron-icons/iron-icons.html">
     <link rel="import" href="/bower_components/iron-pages/iron-pages.html">
     <link rel="import" href="/bower_components/paper-drawer-panel/paper-drawer-panel.html">
+    <link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html">
     <link rel="import" href="/bower_components/paper-item/paper-icon-item.html">
     <link rel="import" href="/bower_components/paper-menu/paper-menu.html">
     <link rel="import" href="/listing-page.html">
@@ -47,7 +48,10 @@
 
     paper-drawer-panel [main] {
       margin: 0 20px;
-      max-width: 800px;
+      max-width: 1000px;
+    }
+    paper-icon-button {
+      float: right;
     }
     </style>
   </head>
@@ -57,7 +61,7 @@
       <carbon-route route="{{route}}" pattern="/:page" data="{{data}}" tail="{{subroute}}"></carbon-route>
       <carbon-route route="{{subroute}}" pattern="/:path" data="{{subdata}}"></carbon-route>
 
-      <paper-drawer-panel>
+      <paper-drawer-panel id="panel">
         <div drawer>
           <div id="drawer-header">
             <img src="/images/ericdingle.jpg" width="150" height="150">
@@ -78,6 +82,7 @@
           </div>
         </div>
         <div main>
+          <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
           <iron-pages attr-for-selected="page" selected="[[data.page]]" fallback-selection="404">
             <listing-page page="coding-blog" title="Coding Blog" listing-path="/coding-blog/listing.json"></listing-page>
             <markdown-page page="about" markdown-path="/about.markdown"></markdown-page>
@@ -97,6 +102,7 @@
       });
 
       scope.onMenuActivate = function() {
+        scope.$.panel.togglePanel();
         scope.set('subroute.path', '');
       };
     </script>
