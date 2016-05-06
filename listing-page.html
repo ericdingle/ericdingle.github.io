@@ -1,4 +1,6 @@
 <link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="/bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="/markdown-page.html">
 <dom-module id="listing-page">
   <style>
     span {
@@ -8,24 +10,36 @@
   <template>
     <iron-ajax
       auto
-      url="{{listingPath}}"
+      url="/{{page}}/listing.json"
       handle-as="json"
       last-response="{{listing}}">
     </iron-ajax>
-    <h1>{{title}}</h1>
-    <template is="dom-repeat" items="{{listing}}" sort="sort">
-      <p>
-        <span>{{item.date}}</span>
-        <a href="#/{{item.path}}">{{item.title}}</a>
-      </p>
-    </template>
+    <iron-pages attr-for-selected="page" selected="listing/{{path}}" fallback-selection="markdown">
+      <div page="listing/">
+        <h1>{{page}}</h1>
+        <template is="dom-repeat" items="{{listing}}" sort="sort">
+          <p>
+            <span>{{item.date}}</span>
+            <a href="#/{{item.path}}">{{item.title}}</a>
+          </p>
+        </template>
+      </div>
+      <markdown-page page="markdown" markdown-path="{{markdownPath}}"></markdown-page>
+    </iron-pages>
   </template>
   <script>
     Polymer({
       is: 'listing-page',
       properties: {
-        listingPath: String,
-        title: String
+        page: String,
+        path: String,
+        markdownPath: {
+          type: String,
+          computed: 'computeMarkdownPath(page, path)'
+        }
+      },
+      computeMarkdownPath: function(page, path) {
+        return path ? '/' + page + '/' + path + '.markdown' : '';
       },
       sort: function(a, b) {
         return b.timestamp - a.timestamp;

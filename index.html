@@ -84,7 +84,7 @@
         <div main>
           <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
           <iron-pages attr-for-selected="page" selected="[[data.page]]" fallback-selection="404">
-            <listing-page page="coding-blog" title="Coding Blog" listing-path="/coding-blog/listing.json"></listing-page>
+            <listing-page page="coding-blog" path="{{subdata.path}}"></listing-page>
             <markdown-page page="about" markdown-path="/about.markdown"></markdown-page>
             <div page="404">Not Found</div>
           </iron-pages>
@@ -104,6 +104,8 @@
       scope.onMenuActivate = function() {
         scope.$.panel.togglePanel();
         scope.set('subroute.path', '');
+        // carbon-route doesn't reset data when path is route path unset.
+        scope.set('subdata.path', '');
       };
     </script>
   </body>
