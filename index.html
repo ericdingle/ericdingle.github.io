@@ -84,7 +84,8 @@
         <div main>
           <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
           <iron-pages attr-for-selected="page" selected="[[data.page]]" fallback-selection="404">
-            <listing-page page="coding-blog" path="{{subdata.path}}"></listing-page>
+            <listing-page page="coding-blog" path="{{subdata.path}}" sort-by="timestamp" sort-desc></listing-page>
+            <listing-page page="building-projects" path="{{subdata.path}}" sort-by="title"></listing-page>
             <markdown-page page="about" markdown-path="/about.markdown"></markdown-page>
             <div page="404">Not Found</div>
           </iron-pages>
