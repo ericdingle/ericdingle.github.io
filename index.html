@@ -4,8 +4,8 @@
     <title>Eric Dingle</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="/bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
-    <link rel="import" href="/bower_components/carbon-route/carbon-location.html">
-    <link rel="import" href="/bower_components/carbon-route/carbon-route.html">
+    <link rel="import" href="/bower_components/app-route/app-location.html">
+    <link rel="import" href="/bower_components/app-route/app-route.html">
     <link rel="import" href="/bower_components/iron-icon/iron-icon.html">
     <link rel="import" href="/bower_components/iron-icons/hardware-icons.html">
     <link rel="import" href="/bower_components/iron-icons/image-icons.html">
@@ -57,9 +57,9 @@
   </head>
   <body>
     <template is="dom-bind" id="scope">
-      <carbon-location route="{{route}}" use-hash-as-path></carbon-location>
-      <carbon-route route="{{route}}" pattern="/:page" data="{{data}}" tail="{{subroute}}"></carbon-route>
-      <carbon-route route="{{subroute}}" pattern="/:path" data="{{subdata}}"></carbon-route>
+      <app-location route="{{route}}" use-hash-as-path></app-location>
+      <app-route route="{{route}}" pattern="/:page" data="{{data}}" tail="{{subroute}}"></app-route>
+      <app-route route="{{subroute}}" pattern="/:path" data="{{subdata}}"></app-route>
 
       <paper-drawer-panel id="panel">
         <div drawer>
@@ -105,7 +105,7 @@
       scope.onMenuActivate = function() {
         scope.$.panel.togglePanel();
         scope.set('subroute.path', '');
-        // carbon-route doesn't reset data when path is route path unset.
+        // app-route doesn't reset data when path is route path unset.
         scope.set('subdata.path', '');
       };
     </script>
