@@ -4,6 +4,8 @@
     <title>Eric Dingle</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="/bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+    <link rel="import" href="/bower_components/app-layout/app-drawer/app-drawer.html">
+    <link rel="import" href="/bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
     <link rel="import" href="/bower_components/app-route/app-location.html">
     <link rel="import" href="/bower_components/app-route/app-route.html">
     <link rel="import" href="/bower_components/iron-icon/iron-icon.html">
@@ -11,7 +13,6 @@
     <link rel="import" href="/bower_components/iron-icons/image-icons.html">
     <link rel="import" href="/bower_components/iron-icons/iron-icons.html">
     <link rel="import" href="/bower_components/iron-pages/iron-pages.html">
-    <link rel="import" href="/bower_components/paper-drawer-panel/paper-drawer-panel.html">
     <link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html">
     <link rel="import" href="/bower_components/paper-item/paper-icon-item.html">
     <link rel="import" href="/bower_components/paper-menu/paper-menu.html">
@@ -46,7 +47,7 @@
       color: #000;
     }
 
-    paper-drawer-panel [main] {
+    #main {
       margin: 0 20px;
       max-width: 1000px;
     }
@@ -61,8 +62,8 @@
       <app-route route="{{route}}" pattern="/:page" data="{{data}}" tail="{{subroute}}"></app-route>
       <app-route route="{{subroute}}" pattern="/:path" data="{{subdata}}"></app-route>
 
-      <paper-drawer-panel id="panel">
-        <div drawer>
+      <app-drawer-layout>
+        <app-drawer id="drawer" opened="{{opened}}" swipe-open>
           <div id="drawer-header">
             <img src="/images/ericdingle.jpg" width="150" height="150">
             <div>With programming my mind I flex.</div>
@@ -80,9 +81,11 @@
               </template>
             </paper-menu>
           </div>
-        </div>
-        <div main>
-          <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
+        </app-drawer>
+        <div id="main">
+          <template is="dom-if" if="[[!opened]]">
+            <paper-icon-button icon="menu" on-tap="openDrawer"></paper-icon-button>
+          </template>
           <iron-pages attr-for-selected="page" selected="[[data.page]]" fallback-selection="404">
             <listing-page page="coding-blog" path="{{subdata.path}}" sort-by="timestamp" sort-desc></listing-page>
             <listing-page page="building-projects" path="{{subdata.path}}" sort-by="title"></listing-page>
@@ -90,7 +93,7 @@
             <div page="404">Not Found</div>
           </iron-pages>
         </div>
-      </paper-drawer-panel>
+      </app-drawer-layout>
     </template>
 
     <script>
@@ -103,10 +106,16 @@
       });
 
       scope.onMenuActivate = function() {
-        scope.$.panel.togglePanel();
+        if (!scope.$.drawer.persistent)
+          scope.$.drawer.close();
+
         scope.set('subroute.path', '');
         // app-route doesn't reset data when path is route path unset.
         scope.set('subdata.path', '');
+      };
+
+      scope.openDrawer = function() {
+        scope.$.drawer.open();
       };
     </script>
   </body>
