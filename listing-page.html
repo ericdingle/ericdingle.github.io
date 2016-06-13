@@ -1,3 +1,4 @@
+<link rel="import" href="/bower_components/app-route/app-route.html">
 <link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="/bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="/markdown-page.html">
@@ -8,23 +9,19 @@
     }
   </style>
   <template>
-    <iron-ajax
-      auto
-      url="/{{page}}/listing.json"
-      handle-as="json"
-      last-response="{{listing}}">
-    </iron-ajax>
-    <iron-pages attr-for-selected="page" selected="listing/{{path}}" fallback-selection="markdown">
-      <div page="listing/">
-        <h1>{{page}}</h1>
-        <template is="dom-repeat" items="{{listing}}" sort="sort">
+    <app-route route="[[route]]" pattern="/:path" active="{{active}}" data="{{data}}"></app-route>
+    <iron-ajax auto url="/[[page]]/listing.json" handle-as="json" last-response="{{listing}}"></iron-ajax>
+    <iron-pages selected="[[active]]">
+      <div id="false">
+        <h1>[[page]]</h1>
+        <template is="dom-repeat" items="[[listing]]" sort="sort">
           <p>
-            <span>{{item.date}}</span>
-            <a href="#/{{item.path}}">{{item.title}}</a>
+            <span>[[item.date]]</span>
+            <a href="#/[[item.path]]">[[item.title]]</a>
           </p>
         </template>
       </div>
-      <markdown-page page="markdown" markdown-path="{{markdownPath}}"></markdown-page>
+      <markdown-page id="true" path="[[computeMarkdownPath(selected, active, data.path)]]"></markdown-page>
     </iron-pages>
   </template>
   <script>
@@ -32,16 +29,17 @@
       is: 'listing-page',
       properties: {
         page: String,
-        path: String,
+        route: String,
+        selected: Boolean,
         sortBy: String,
         sortDesc: Boolean,
-        markdownPath: {
-          type: String,
-          computed: 'computeMarkdownPath(page, path)'
-        }
       },
-      computeMarkdownPath: function(page, path) {
-        return path ? '/' + page + '/' + path + '.markdown' : '';
+      attributeChanged: function(attr, oldVal, newVal) {
+        if (attr == 'class')
+          this.selected = newVal.indexOf('iron-selected') != -1;
+      },
+      computeMarkdownPath: function(selected, active, path) {
+        return selected && active && path ? '/' + this.page + '/' + path + '.markdown' : null;
       },
       sort: function(a, b) {
         var result = 0;
