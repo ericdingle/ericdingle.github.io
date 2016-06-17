@@ -9,11 +9,11 @@
     }
   </style>
   <template>
-    <app-route route="[[route]]" pattern="/:path" active="{{active}}" data="{{data}}"></app-route>
+    <app-route route="[[route]]" pattern="/:value" active="{{active}}" data="{{path}}"></app-route>
     <iron-ajax auto url="/[[page]]/listing.json" handle-as="json" last-response="{{listing}}"></iron-ajax>
     <iron-pages selected="[[active]]">
       <div id="false">
-        <h1>[[page]]</h1>
+        <h1>[[title]]</h1>
         <template is="dom-repeat" items="[[listing]]" sort="sort">
           <p>
             <span>[[item.date]]</span>
@@ -21,13 +21,14 @@
           </p>
         </template>
       </div>
-      <markdown-page id="true" path="[[computeMarkdownPath(selected, active, data.path)]]"></markdown-page>
+      <markdown-page id="true" path="[[computeMarkdownPath(selected, active, path.value)]]"></markdown-page>
     </iron-pages>
   </template>
   <script>
     Polymer({
       is: 'listing-page',
       properties: {
+        title: String,
         page: String,
         route: String,
         selected: Boolean,

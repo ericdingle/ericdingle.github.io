@@ -59,7 +59,7 @@
   <body>
     <template is="dom-bind" id="scope">
       <app-location route="{{route}}" use-hash-as-path></app-location>
-      <app-route route="{{route}}" pattern="/:page" data="{{data}}" tail="{{tail}}"></app-route>
+      <app-route route="{{route}}" pattern="/:value" data="{{page}}" tail="{{tail}}"></app-route>
 
       <app-drawer-layout>
         <app-drawer id="drawer" opened="{{opened}}" swipe-open>
@@ -68,7 +68,7 @@
             <div>With programming my mind I flex.</div>
           </div>
           <div id="drawer-content">
-            <paper-menu attr-for-selected="page" selected="{{data.page}}" on-iron-activate="onMenuActivate">
+            <paper-menu attr-for-selected="page" selected="{{page.value}}" on-iron-activate="onMenuActivate">
               <template is="dom-repeat" items='[["Coding Blog", "coding-blog", "assignment"],
                                                 ["Coding Projects", "coding-projects", "hardware:keyboard"],
                                                 ["Building Projects", "building-projects", "build"],
@@ -85,9 +85,9 @@
           <template is="dom-if" if="[[!opened]]">
             <paper-icon-button icon="menu" on-tap="openDrawer"></paper-icon-button>
           </template>
-          <iron-pages attr-for-selected="page" selected="[[data.page]]" fallback-selection="404">
-            <listing-page page="coding-blog" route="[[tail]]" sort-by="timestamp" sort-desc></listing-page>
-            <listing-page page="building-projects" route="[[tail]]" sort-by="title"></listing-page>
+          <iron-pages attr-for-selected="page" selected="[[page.value]]" fallback-selection="404">
+            <listing-page title="Coding Blog" page="coding-blog" route="[[tail]]" sort-by="timestamp" sort-desc></listing-page>
+            <listing-page title="Building Projects" page="building-projects" route="[[tail]]" sort-by="title"></listing-page>
             <markdown-page page="about" path="/about.markdown"></markdown-page>
             <div page="404">Not Found</div>
           </iron-pages>
