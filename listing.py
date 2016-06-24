@@ -14,8 +14,8 @@ for file_path in os.listdir(args.directory):
   if file_path == 'listing.json':
     continue
 
-  assert file_path[-9:] == '.markdown'
-  path = '%s/%s' % (args.directory, file_path[:-9])
+  assert file_path[-3:] == '.md'
+  path = '%s/%s' % (args.directory, file_path[:-3])
 
   fh = open('%s/%s' % (args.directory, file_path))
 
