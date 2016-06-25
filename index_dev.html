@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+  <heaD>
+    <title>Eric Dingle</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+    <link rel="import" href="bower_components/app-layout/app-drawer/app-drawer.html">
+    <link rel="import" href="bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+    <link rel="import" href="bower_components/app-route/app-location.html">
+    <link rel="import" href="bower_components/app-route/app-route.html">
+    <link rel="import" href="bower_components/iron-icon/iron-icon.html">
+    <link rel="import" href="bower_components/iron-icons/hardware-icons.html">
+    <link rel="import" href="bower_components/iron-icons/image-icons.html">
+    <link rel="import" href="bower_components/iron-icons/iron-icons.html">
+    <link rel="import" href="bower_components/iron-pages/iron-pages.html">
+    <link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
+    <link rel="import" href="bower_components/paper-item/paper-icon-item.html">
+    <link rel="import" href="bower_components/paper-menu/paper-menu.html">
+    <link rel="import" href="listing-page.html">
+    <link rel="import" href="markdown-page.html">
+    <style>
+    body {
+      font-family: 'Oswald', Helvetica, sans-serif;
+      font-color: #333;
+    }
+    a {
+      color: #7ccdea;
+      text-decoration: none;
+    }
+
+    #drawer-header {
+      font-size: 12px;
+      padding: 10px 0;
+      text-align: center;
+    }
+    #drawer-header img {
+      border-radius: 25px;
+    }
+
+    paper-icon-item {
+      cursor: pointer;
+    }
+    paper-icon-item.iron-selected {
+      background-color: #7ccdea;
+    }
+    paper-icon-item:focus iron-icon {
+      color: #000;
+    }
+
+    #main {
+      margin: 0 20px;
+      max-width: 1000px;
+    }
+    paper-icon-button {
+      float: right;
+    }
+    </style>
+  </head>
+  <body>
+    <template is="dom-bind" id="scope">
+      <app-location route="{{route}}" use-hash-as-path></app-location>
+      <app-route route="{{route}}" pattern="/:value" data="{{page}}" tail="{{tail}}"></app-route>
+
+      <app-drawer-layout>
+        <app-drawer id="drawer" opened="{{opened}}" swipe-open>
+          <div id="drawer-header">
+            <img src="/images/ericdingle.jpg" width="150" height="150">
+            <div>With programming my mind I flex.</div>
+          </div>
+          <div id="drawer-content">
+            <paper-menu attr-for-selected="page" selected="{{page.value}}" on-iron-activate="onMenuActivate">
+              <template is="dom-repeat" items='[["Coding Blog", "coding-blog", "assignment"],
+                                                ["Coding Projects", "coding-projects", "hardware:keyboard"],
+                                                ["Building Projects", "building-projects", "build"],
+                                                ["Guitar Tabs", "guitar-tabs", "image:music-note"],
+                                                ["About", "about", "info"]]'>
+                <paper-icon-item page="{{item.1}}">
+                  <iron-icon icon="{{item.2}}" item-icon></iron-icon>{{item.0}}
+                </paper-icon-item>
+              </template>
+            </paper-menu>
+          </div>
+        </app-drawer>
+        <div id="main">
+          <template is="dom-if" if="[[!opened]]">
+            <paper-icon-button icon="menu" on-tap="openDrawer"></paper-icon-button>
+          </template>
+          <iron-pages attr-for-selected="page" selected="[[page.value]]" fallback-selection="404">
+            <listing-page title="Coding Blog" page="coding-blog" route="[[tail]]" sort-by="timestamp" sort-desc></listing-page>
+            <listing-page title="Building Projects" page="building-projects" route="[[tail]]" sort-by="title"></listing-page>
+            <listing-page title="Guitar Tabs" page="guitar-tabs" route="[[tail]]" sort-by="title"></listing-page>
+            <markdown-page page="about" path="/about.md"></markdown-page>
+            <div page="404">Not Found</div>
+          </iron-pages>
+        </div>
+      </app-drawer-layout>
+    </template>
+
+    <script>
+      var scope = document.getElementById('scope');
+
+      addEventListener('WebComponentsReady', function() {
+        if (!scope.route.path) {
+          scope.set('route.path', '/coding-blog');
+        }
+      });
+
+      scope.onMenuActivate = function() {
+        if (!scope.$.drawer.persistent)
+          scope.$.drawer.close();
+
+        scope.set('tail.path', '');
+      };
+
+      scope.openDrawer = function() {
+        scope.$.drawer.open();
+      };
+    </script>
+  </body>
+</html>
