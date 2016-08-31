@@ -1,12 +1,13 @@
 <link rel="import" href="bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="bower_components/marked-element/marked-element.html">
+<link rel="import" href="imgur-import.html">
 <dom-module id="markdown-page">
   <template>
     <iron-ajax auto handle-as="text" url="{{path}}" loading="{{loading}}" last-response="{{response}}">
     </iron-ajax>
     <iron-pages selected="[[loading]]">
-      <marked-element id="false" markdown="{{response}}"></marked-element>
+      <marked-element id="false" markdown="{{response}}" on-marked-render-complete="createEmbed"></marked-element>
       <div id="true">Loading...</div>
     </iron-pages>
   </template>
@@ -15,6 +16,11 @@
       is: 'markdown-page',
       properties: {
         path: String
+      },
+      createEmbed: function() {
+        if (imgurEmbed && imgurEmbed.createIframe) {
+          imgurEmbed.createIframe();
+        }
       }
     });
   </script>

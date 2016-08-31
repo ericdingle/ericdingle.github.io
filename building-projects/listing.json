@@ -1,14 +1,20 @@
 [
   {
+    "date": "May, 2016", 
     "path": "building-projects/folding-picnic-table", 
+    "timestamp": 20160501, 
     "title": "Folding Picnic Table"
   }, 
   {
-    "path": "building-projects/pallet-wood-flower-boxes", 
-    "title": "Pallet Wood Flower Boxes"
+    "date": "March, 2016", 
+    "path": "building-projects/pipe-frame-shelves", 
+    "timestamp": 20160301, 
+    "title": "Pipe Shelves"
   }, 
   {
-    "path": "building-projects/pipe-frame-shelves", 
-    "title": "Pipe Frame Shelves"
+    "date": "May, 2015", 
+    "path": "building-projects/pallet-wood-planters", 
+    "timestamp": 20150501, 
+    "title": "Pallet Wood Planters"
   }
 ]

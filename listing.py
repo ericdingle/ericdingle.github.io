@@ -27,7 +27,10 @@ for file_path in os.listdir(args.directory):
 
   date_str = fh.readline().rstrip('\n')
   if date_str:
-    date = datetime.datetime.strptime(date_str, '%B %d, %Y')
+    try:
+      date = datetime.datetime.strptime(date_str, '%B %d, %Y')
+    except ValueError:
+      date = datetime.datetime.strptime(date_str, '%B, %Y')
     date_num = int(date.strftime('%Y%m%d'))
     data.update({'date': date_str, 'timestamp': date_num})
 
