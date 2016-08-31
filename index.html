@@ -16938,12 +16938,13 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
   });
 
 </script>
+<script src="//s.imgur.com/min/embed.js"></script>
 <dom-module id="markdown-page" assetpath="/">
   <template>
     <iron-ajax auto="" handle-as="text" url="{{path}}" loading="{{loading}}" last-response="{{response}}">
     </iron-ajax>
     <iron-pages selected="[[loading]]">
-      <marked-element id="false" markdown="{{response}}"></marked-element>
+      <marked-element id="false" markdown="{{response}}" on-marked-render-complete="createEmbed"></marked-element>
       <div id="true">Loading...</div>
     </iron-pages>
   </template>
@@ -16952,6 +16953,11 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
       is: 'markdown-page',
       properties: {
         path: String
+      },
+      createEmbed: function() {
+        if (imgurEmbed && imgurEmbed.createIframe) {
+          imgurEmbed.createIframe();
+        }
       }
     });
   </script>
@@ -17038,7 +17044,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
           </template>
           <iron-pages attr-for-selected="page" selected="[[page.value]]" fallback-selection="404">
             <listing-page title="Coding Blog" page="coding-blog" route="[[tail]]" sort-by="timestamp" sort-desc=""></listing-page>
-            <listing-page title="Building Projects" page="building-projects" route="[[tail]]" sort-by="title"></listing-page>
+            <listing-page title="Building Projects" page="building-projects" route="[[tail]]" sort-by="timestamp" sort-desc=""></listing-page>
             <listing-page title="Guitar Tabs" page="guitar-tabs" route="[[tail]]" sort-by="title"></listing-page>
             <markdown-page page="about" path="/about.md"></markdown-page>
             <div page="404">Not Found</div>
