@@ -1,4 +1,4 @@
-# Metric - Gimme Sympathy
+## Metric - Gimme Sympathy
 
 Open acoustic version
 

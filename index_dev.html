@@ -6,6 +6,8 @@
     <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
     <link rel="import" href="bower_components/app-layout/app-drawer/app-drawer.html">
     <link rel="import" href="bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+    <link rel="import" href="bower_components/app-layout/app-header/app-header.html">
+    <link rel="import" href="bower_components/app-layout/app-header-layout/app-header-layout.html">
     <link rel="import" href="bower_components/app-route/app-location.html">
     <link rel="import" href="bower_components/app-route/app-route.html">
     <link rel="import" href="bower_components/iron-icon/iron-icon.html">
@@ -20,21 +22,27 @@
     <link rel="import" href="markdown-page.html">
     <style>
     body {
-      font-family: 'Oswald', Helvetica, sans-serif;
-      font-color: #333;
+      color: #444;
+      font-family: Arial, Helvetica, sans-serif;
     }
     a {
       color: #7ccdea;
       text-decoration: none;
     }
+    a:hover {
+      text-decoration: underline;
+    }
+    p {
+      font-family: medium-content-serif-font, Georgia, Cambria, "Times New Roman", Times, serif;
+      line-height: 1.5;
+    }
 
-    #drawer-header {
-      font-size: 12px;
-      padding: 10px 0;
+    app-drawer {
       text-align: center;
     }
-    #drawer-header img {
-      border-radius: 25px;
+    app-drawer img {
+      border-radius: 75px;
+      margin: 10px;
     }
 
     paper-icon-item {
@@ -48,8 +56,11 @@
     }
 
     #main {
-      margin: 0 20px;
       max-width: 1000px;
+    }
+
+    app-header {
+      background-color: #FFF;
     }
     paper-icon-button {
       float: right;
@@ -63,10 +74,7 @@
 
       <app-drawer-layout>
         <app-drawer id="drawer" opened="{{opened}}" swipe-open>
-          <div id="drawer-header">
-            <img src="/images/ericdingle.jpg" width="150" height="150">
-            <div>With programming my mind I flex.</div>
-          </div>
+          <img src="/images/ericdingle.jpg" width="150" height="150">
           <div id="drawer-content">
             <paper-menu attr-for-selected="page" selected="{{page.value}}" on-iron-activate="onMenuActivate">
               <template is="dom-repeat" items='[["Coding Blog", "coding-blog", "assignment"],
@@ -82,16 +90,21 @@
           </div>
         </app-drawer>
         <div id="main">
-          <template is="dom-if" if="[[!opened]]">
-            <paper-icon-button icon="menu" on-tap="openDrawer"></paper-icon-button>
-          </template>
-          <iron-pages attr-for-selected="page" selected="[[page.value]]" fallback-selection="404">
-            <listing-page title="Coding Blog" page="coding-blog" route="[[tail]]" sort-by="timestamp" sort-desc></listing-page>
-            <listing-page title="Building Projects" page="building-projects" route="[[tail]]" sort-by="timestamp" sort-desc></listing-page>
-            <listing-page title="Guitar Tabs" page="guitar-tabs" route="[[tail]]" sort-by="title"></listing-page>
-            <markdown-page page="about" path="/about.md"></markdown-page>
-            <div page="404">Not Found</div>
-          </iron-pages>
+          <app-header-layout>
+            <app-header fixed>
+              <template is="dom-if" if="[[!opened]]">
+                <paper-icon-button icon="menu" on-tap="openDrawer"></paper-icon-button>
+              </template>
+              <h1>Eric Dingle</h1>
+              <p>With programming my mind I flex.</p>
+            </app-header>
+            <iron-pages attr-for-selected="page" selected="[[page.value]]">
+              <listing-page title="Coding Blog" page="coding-blog" route="[[tail]]" sort-by="timestamp" sort-desc></listing-page>
+              <listing-page title="Building Projects" page="building-projects" route="[[tail]]" sort-by="timestamp" sort-desc></listing-page>
+              <listing-page title="Guitar Tabs" page="guitar-tabs" route="[[tail]]" sort-by="title"></listing-page>
+              <markdown-page page="about" path="/about.md"></markdown-page>
+            </iron-pages>
+          </app-header>
         </div>
       </app-drawer-layout>
     </template>

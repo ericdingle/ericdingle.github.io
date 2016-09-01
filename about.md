@@ -1,4 +1,4 @@
-# Hey, I'm Eric
+## About
 
 I used to have a blog where I'd write about news or concerts or movies that I went to, but it turns
 out the real reason I made the blog was because it was fun to code it. I actually really hated

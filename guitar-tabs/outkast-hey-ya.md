@@ -1,4 +1,4 @@
-# OutKast - Hey Ya!
+## OutKast - Hey Ya!
 
 Open acoustic version
 
