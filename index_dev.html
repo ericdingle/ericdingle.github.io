@@ -3,6 +3,7 @@
   <heaD>
     <title>Eric Dingle</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="import" href="bower_components/polymer/polymer.html">
     <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
     <link rel="import" href="bower_components/app-layout/app-drawer/app-drawer.html">
     <link rel="import" href="bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
@@ -21,12 +22,19 @@
     <link rel="import" href="listing-page.html">
     <link rel="import" href="markdown-page.html">
     <style>
+    :root {
+      --bg-color: #484848;
+      --font-color: #FFF;
+      --link-color: #73B136;
+    }
+
     body {
-      color: #444;
+      background-color: var(--bg-color);
+      color: var(--font-color);
       font-family: Arial, Helvetica, sans-serif;
     }
     a {
-      color: #7ccdea;
+      color: var(--link-color);
       text-decoration: none;
     }
     a:hover {
@@ -36,8 +44,18 @@
       font-family: medium-content-serif-font, Georgia, Cambria, "Times New Roman", Times, serif;
       line-height: 1.5;
     }
+    </style>
+    <style is="custom-style">
+    :root {
+      --bg-color: #484848;
+      --font-color: #FFF;
+      --link-color: #73B136;
+    }
 
     app-drawer {
+      --app-drawer-content-container: {
+        background-color: var(--bg-color);
+      };
       text-align: center;
     }
     app-drawer img {
@@ -45,14 +63,15 @@
       margin: 10px;
     }
 
+    paper-menu {
+      --paper-menu-background-color: var(--bg-color);
+      --paper-menu-color: var(--font-color);
+      --paper-menu-selected-item: {
+        background-color: var(--link-color);
+      };
+    }
     paper-icon-item {
       cursor: pointer;
-    }
-    paper-icon-item.iron-selected {
-      background-color: #7ccdea;
-    }
-    paper-icon-item:focus iron-icon {
-      color: #000;
     }
 
     #main {
@@ -60,7 +79,7 @@
     }
 
     app-header {
-      background-color: #FFF;
+      background-color: var(--bg-color);
     }
     paper-icon-button {
       float: right;
