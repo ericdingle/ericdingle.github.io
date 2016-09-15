@@ -1,4 +1,4 @@
-# Pallet Wood Planters
+## Pallet Wood Planters
 May, 2015
 
 <blockquote class="imgur-embed-pub" lang="en" data-id="a/I243j">
