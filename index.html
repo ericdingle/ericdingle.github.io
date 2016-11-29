@@ -19077,8 +19077,13 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
         <h2>[[title]]</h2>
         <template is="dom-repeat" items="[[listing]]" sort="sort">
           <p>
-            <span>[[item.date]]</span>
+            <template is="dom-if" if="[[item.date]]">
+              <span>[[item.date]]</span>
+            </template>
             <a href="#/[[item.path]]">[[item.title]]</a>
+            <template is="dom-if" if="[[item.snippet]]">
+              - [[item.snippet]]
+            </template>
           </p>
         </template>
       </div>
@@ -19147,6 +19152,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
             </app-header>
             <iron-pages attr-for-selected="page" selected="[[page.value]]">
               <listing-page title="Coding Blog" page="coding-blog" route="[[tail]]" sort-by="timestamp" sort-desc=""></listing-page>
+              <listing-page title="Coding Projects" page="coding-projects" route="[[tail]]" sort-by="title"></listing-page>
               <listing-page title="Building Projects" page="building-projects" route="[[tail]]" sort-by="timestamp" sort-desc=""></listing-page>
               <listing-page title="Guitar Tabs" page="guitar-tabs" route="[[tail]]" sort-by="title"></listing-page>
               <markdown-page page="about" path="/about.md"></markdown-page>
