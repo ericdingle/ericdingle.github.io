@@ -16,8 +16,13 @@
         <h2>[[title]]</h2>
         <template is="dom-repeat" items="[[listing]]" sort="sort">
           <p>
-            <span>[[item.date]]</span>
+            <template is="dom-if" if="[[item.date]]">
+              <span>[[item.date]]</span>
+            </template>
             <a href="#/[[item.path]]">[[item.title]]</a>
+            <template is="dom-if" if="[[item.snippet]]">
+              - [[item.snippet]]
+            </template>
           </p>
         </template>
       </div>

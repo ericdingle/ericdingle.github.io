@@ -1,0 +1,12 @@
+[
+  {
+    "path": "coding-projects/altadore", 
+    "snippet": "A ray tracer written in C++.", 
+    "title": "Altadore"
+  }, 
+  {
+    "path": "coding-projects/bonavista", 
+    "snippet": "A collection of cross platform utility libraries written in C++.", 
+    "title": "Bonavista"
+  }
+]
