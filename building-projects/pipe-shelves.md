@@ -2,7 +2,7 @@
 March, 2016
 
 <blockquote class="imgur-embed-pub" lang="en" data-id="a/hWdXY">
-  <a href="//imgur.com/hWdXY">Pipe Shelves</a>
+  <a href="//imgur.com/hWdXY">Photo Gallery</a>
 </blockquote>
 
 I've been keeping most of my beer brewing equipment in the closet of one of my bedrooms because most
@@ -13,7 +13,7 @@ this style is too cliche, ha. Screw the haters; I do what I want!
 Whitney had mentioned using Sketchup for some of the designs she does, so one of the most time
 consuming parts of this project ended up being getting Sketchup to run on Wine on Linux (and Wine
 seems to have extra troubleshooting steps for every single piece of software #itdoesnotjustwork
-#sonofagun). The sketch turned out pretty good, giving enough room for the equipment and making me
+\#sonofagun). The sketch turned out pretty good, giving enough room for the equipment and making me
 sure that I'd be able to get around the thermostat on the wall.
 
 Getting the materials was the next most time consuming part. After another trip to Home Depot spent
@@ -33,9 +33,9 @@ shelves slant. I'm not talking just a little bit unlevel. Like between a 1/2 and
 borrowed a flat and round file from Chris and got to filing out two ruts in each board. After barely
 getting through one of the four shelves, manually filing away while watching old episodes of the
 X-Files, it became apparent that my hands were not happy with this labour. This began an internet
-search for "drill bit" plus "file" plus "round" because what the hell do you call that damn bit (
-Google search FTW -> ["rotary rasp"](https://www.google.com/search?q=rotary+rasp)). This sped up the
-filing considerably, and I had me 4 (nearly) level shelves.
+search for "drill bit" plus "file" plus "round" because what the hell do you call that damn bit
+(Google search FTW -> ["rotary rasp"](https://www.google.com/search?q=rotary+rasp)). This sped up
+the filing considerably, and I had me 4 (nearly) level shelves.
 
 The finishing touches were some sanding and two coats of a dark brown, transparent stain which
 worked pretty well aesthetically with the piping and my existing kitchen drawers. I thought about

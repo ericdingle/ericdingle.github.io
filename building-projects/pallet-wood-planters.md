@@ -2,7 +2,7 @@
 May, 2015
 
 <blockquote class="imgur-embed-pub" lang="en" data-id="a/I243j">
-  <a href="//imgur.com/a/I243j">Pallet Wood Planters</a>
+  <a href="//imgur.com/a/I243j">Photo Gallery</a>
 </blockquote>
 
 I've slowly but surely expanded my balcony garden every summer since moving on to Clark. I started
