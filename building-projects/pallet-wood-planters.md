@@ -1,9 +1,9 @@
 ## Pallet Wood Planters
 May, 2015
 
-<blockquote class="imgur-embed-pub" lang="en" data-id="a/I243j">
-  <a href="//imgur.com/a/I243j">Photo Gallery</a>
-</blockquote>
+<link rel="import" href="building-projects/header.html">
+<building-projects-header imgur-image-id="R23pv4o" imgur-album-id="I243j" reddit-comment-id="39uydl">
+</building-projects-header>
 
 I've slowly but surely expanded my balcony garden every summer since moving on to Clark. I started
 first with flower boxes on the balcony railings, and then tried some vegetables in smart pots.

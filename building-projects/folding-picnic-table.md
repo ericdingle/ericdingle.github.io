@@ -1,9 +1,9 @@
 ## Folding Picnic Table
 May, 2016
 
-<blockquote class="imgur-embed-pub" lang="en" data-id="a/JnGtI">
-  <a href="//imgur.com/JnGtI">Photo Gallery</a>
-</blockquote>
+<link rel="import" href="building-projects/header.html">
+<building-projects-header imgur-image-id="ztMyMnT" imgur-album-id="JnGtI" reddit-comment-id="4mwkuz">
+</building-projects-header>
 
 I originally saw this project on [r/DIY](http://www.reddit.com/r/diy), and it quickly became clear
 that I needed to build this for my own. It proved to be my most involved project yet. Luckily,

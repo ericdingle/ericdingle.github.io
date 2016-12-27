@@ -1,7 +1,7 @@
 ## Passive Stereo Mixer
 October, 2015
 
-[![Photo](http://i.imgur.com/545FAvJm.jpg)](http://imgur.com/545FAvJ)
+![Photo](http://i.imgur.com/545FAvJm.jpg)
 [//]: # (TODO: dd photos of wall and of circuit diagram)
 
 When the Chromecast came out, I had this grand plan to spiffy up my living room with a wall-mounted

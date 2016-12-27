@@ -1,9 +1,9 @@
 ## Pipe Frame Shelves
 March, 2016
 
-<blockquote class="imgur-embed-pub" lang="en" data-id="a/hWdXY">
-  <a href="//imgur.com/hWdXY">Photo Gallery</a>
-</blockquote>
+<link rel="import" href="building-projects/header.html">
+<building-projects-header imgur-image-id="w6hLijq" imgur-album-id="hWdXY" reddit-comment-id="4ln4xd">
+</building-projects-header>
 
 I've been keeping most of my beer brewing equipment in the closet of one of my bedrooms because most
 of it is too big to fit in the kitchen. I saw some posts on [r/DIY](http://www.reddit.com/r/diy)
