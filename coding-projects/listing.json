@@ -5,6 +5,11 @@
     "title": "Dalhousie"
   }, 
   {
+    "path": "coding-projects/marthashiell-github-io", 
+    "snippet": "Implementation of marthashiell.com.", 
+    "title": "marthashiell.github.io"
+  }, 
+  {
     "path": "coding-projects/chaparral", 
     "snippet": "An interpreter library written in C++.", 
     "title": "Chaparral"
