@@ -1,14 +1,8 @@
 [
   {
-    "date": "April 2, 2016", 
-    "path": "coding-blog/how-about-another-title", 
-    "timestamp": 20160402, 
-    "title": "How about another title?"
-  }, 
-  {
-    "date": "April 10, 2016", 
-    "path": "coding-blog/this-is-the-title", 
-    "timestamp": 20160410, 
-    "title": "This is the title!"
+    "date": "February 11, 2017", 
+    "path": "coding-blog/pod-initialization-in-c++", 
+    "timestamp": 20170211, 
+    "title": "POD Initialization in C++"
   }
 ]
