@@ -1,0 +1,119 @@
+<link rel="import" href="/bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="/bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+<link rel="import" href="/bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="/bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="/bower_components/app-route/app-location.html">
+<link rel="import" href="/bower_components/app-route/app-route.html">
+<link rel="import" href="/bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="/bower_components/iron-icons/hardware-icons.html">
+<link rel="import" href="/bower_components/iron-icons/image-icons.html">
+<link rel="import" href="/bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="/bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="/bower_components/paper-item/paper-icon-item.html">
+<link rel="import" href="/bower_components/paper-menu/paper-menu.html">
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/src/listing-page.html">
+<link rel="import" href="/src/markdown-page.html">
+<dom-module is="index-app">
+  <template>
+    <style>
+    app-drawer {
+      --app-drawer-content-container: {
+        background-color: var(--bg-color);
+      };
+      text-align: center;
+    }
+    app-drawer img {
+      border-radius: 75px;
+      margin: 10px;
+    }
+
+    paper-menu {
+      --paper-menu-background-color: var(--bg-color);
+      --paper-menu-color: var(--font-color);
+      --paper-menu-selected-item: {
+        background-color: var(--link-color);
+      };
+    }
+    paper-icon-item {
+      cursor: pointer;
+    }
+
+    #main {
+      max-width: 1000px;
+    }
+
+    app-header {
+      background-color: var(--bg-color);
+    }
+    paper-icon-button {
+      float: right;
+    }
+    </style>
+    <app-location route="{{route}}" use-hash-as-path></app-location>
+    <app-route route="{{route}}" pattern="/:value" data="{{page}}" tail="{{tail}}"></app-route>
+
+    <app-drawer-layout>
+      <app-drawer id="drawer" opened="{{opened}}" swipe-open>
+        <img src="/images/ericdingle.jpg" width="150" height="150">
+        <div id="drawer-content">
+          <paper-menu attr-for-selected="page" selected="{{page.value}}" on-iron-activate="onMenuActivate">
+            <template is="dom-repeat" items='[["Coding Blog", "coding-blog", "assignment"],
+                                              ["Coding Projects", "coding-projects", "hardware:keyboard"],
+                                              ["Building Projects", "building-projects", "build"],
+                                              ["Guitar Tabs", "guitar-tabs", "image:music-note"],
+                                              ["About", "about", "info"]]'>
+              <paper-icon-item page="{{item.1}}">
+                <iron-icon icon="{{item.2}}" item-icon></iron-icon>{{item.0}}
+              </paper-icon-item>
+            </template>
+          </paper-menu>
+        </div>
+      </app-drawer>
+      <div id="main">
+        <app-header-layout>
+          <app-header fixed>
+            <template is="dom-if" if="[[!opened]]">
+              <paper-icon-button icon="menu" on-tap="openDrawer"></paper-icon-button>
+            </template>
+            <h1>Eric Dingle</h1>
+            <p>With programming my mind I flex.</p>
+          </app-header>
+          <iron-pages attr-for-selected="page" selected="[[page.value]]">
+            <listing-page title="Coding Blog" page="coding-blog" route="[[tail]]" sort-by="timestamp" sort-desc></listing-page>
+            <listing-page title="Coding Projects" page="coding-projects" route="[[tail]]" sort-by="title"></listing-page>
+            <listing-page title="Building Projects" page="building-projects" route="[[tail]]" sort-by="timestamp" sort-desc></listing-page>
+            <listing-page title="Guitar Tabs" page="guitar-tabs" route="[[tail]]" sort-by="title"></listing-page>
+            <markdown-page page="about" path="/about.md"></markdown-page>
+          </iron-pages>
+        </app-header>
+      </div>
+    </app-drawer-layout>
+  </template>
+  <script>
+  Polymer({
+    is: 'index-app',
+    properties: {
+      route: {
+        type: Object,
+        notify: true
+      }
+    },
+    attached: function() {
+      if (!this.route.path)
+        this.set('route.path', '/coding-blog');
+    },
+    onMenuActivate: function() {
+      if (!this.$.drawer.persistent)
+        this.$.drawer.close();
+
+      // Reset tail path because app-route doesn't.
+      this.set('tail.path', '');
+    },
+    openDrawer: function() {
+      this.$.drawer.open();
+    }
+  });
+  </script>
+</dom-module>
