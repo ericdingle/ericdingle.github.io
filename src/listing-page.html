@@ -1,8 +1,5 @@
-<link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../src/markdown-page.html">
 <dom-module id="listing-page">
   <style>
     span {
@@ -10,43 +7,31 @@
     }
   </style>
   <template>
-    <app-route route="[[route]]" pattern="/:value" active="{{active}}" data="{{path}}"></app-route>
-    <iron-ajax auto url="/data/[[page]]/listing.json" handle-as="json" last-response="{{listing}}"></iron-ajax>
-    <iron-pages selected="[[active]]">
-      <div id="false">
-        <h2>[[title]]</h2>
-        <template is="dom-repeat" items="[[listing]]" sort="sort">
-          <p>
-            <template is="dom-if" if="[[item.date]]">
-              <span>[[item.date]]</span>
-            </template>
-            <a href="#/[[item.path]]">[[item.title]]</a>
-            <template is="dom-if" if="[[item.snippet]]">
-              - [[item.snippet]]
-            </template>
-          </p>
-        </template>
-      </div>
-      <markdown-page id="true" path="[[computeMarkdownPath(selected, active, path.value)]]"></markdown-page>
-    </iron-pages>
+    <iron-ajax auto url="/data[[path]]/listing.json" handle-as="json" last-response="{{listing}}"></iron-ajax>
+    <div id="false">
+      <h2>[[title]]</h2>
+      <template is="dom-repeat" items="[[listing]]" sort="sort">
+        <p>
+          <template is="dom-if" if="[[item.date]]">
+            <span>[[item.date]]</span>
+          </template>
+          <a href="#/[[item.path]]">[[item.title]]</a>
+          <template is="dom-if" if="[[item.snippet]]">
+            - [[item.snippet]]
+          </template>
+        </p>
+      </template>
+    </div>
   </template>
   <script>
     Polymer({
       is: 'listing-page',
       properties: {
         title: String,
-        page: String,
+        path: String,
         route: String,
-        selected: Boolean,
         sortBy: String,
         sortDesc: Boolean,
-      },
-      attributeChanged: function(attr, oldVal, newVal) {
-        if (attr == 'class')
-          this.selected = newVal.indexOf('iron-selected') != -1;
-      },
-      computeMarkdownPath: function(selected, active, path) {
-        return selected && active && path ? '/data/' + this.page + '/' + path + '.md' : null;
       },
       sort: function(a, b) {
         var result = 0;
