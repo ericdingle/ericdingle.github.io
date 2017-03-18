@@ -1,7 +1,6 @@
 ## Pipe Frame Shelves
 March, 2016
 
-<link rel="import" href="/src/building-projects-header.html">
 <building-projects-header imgur-image-id="w6hLijq" imgur-album-id="hWdXY" reddit-comment-id="4ln4xd">
 </building-projects-header>
 

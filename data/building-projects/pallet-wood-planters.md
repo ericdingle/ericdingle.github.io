@@ -1,7 +1,6 @@
 ## Pallet Wood Planters
 May, 2015
 
-<link rel="import" href="/src/building-projects-header.html">
 <building-projects-header imgur-image-id="R23pv4o" imgur-album-id="I243j" reddit-comment-id="39uydl">
 </building-projects-header>
 

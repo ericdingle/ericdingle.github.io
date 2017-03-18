@@ -1,7 +1,6 @@
 ## NYC Subway Sign
 December, 2016
 
-<link rel="import" href="/src/building-projects-header.html">
 <building-projects-header imgur-image-id="pehxxUh" imgur-album-id="i1OgC" reddit-comment-id="5key3j">
 </building-project-header>
 
