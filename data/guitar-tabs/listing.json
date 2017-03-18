@@ -1,0 +1,30 @@
+[
+  {
+    "path": "data/guitar-tabs/foo-fighters-everlong", 
+    "title": "Foo Fighters - Everlong"
+  }, 
+  {
+    "path": "data/guitar-tabs/punch-brothers-flippen-the-flip", 
+    "title": "Punch Brothers - Flippen (The Flip)"
+  }, 
+  {
+    "path": "data/guitar-tabs/black-sabbath-iron-man", 
+    "title": "Black Sabbath - Iron Man"
+  }, 
+  {
+    "path": "data/guitar-tabs/incubus-drive", 
+    "title": "Incubus - Drive"
+  }, 
+  {
+    "path": "data/guitar-tabs/big-wreck-that-song", 
+    "title": "Big Wreck - That Song"
+  }, 
+  {
+    "path": "data/guitar-tabs/metric-gimme-sympathy", 
+    "title": "Metric - Gimme Sympathy"
+  }, 
+  {
+    "path": "data/guitar-tabs/outkast-hey-ya", 
+    "title": "OutKast - Hey Ya!"
+  }
+]
