@@ -1,41 +1,41 @@
 [
   {
-    "path": "data/coding-projects/dalhousie", 
+    "path": "coding-projects/dalhousie", 
     "snippet": "Legacy implementation of ericdingle.com.", 
     "title": "Dalhousie"
   }, 
   {
-    "path": "data/coding-projects/marthashiell-github-io", 
+    "path": "coding-projects/marthashiell-github-io", 
     "snippet": "Implementation of marthashiell.com.", 
     "title": "marthashiell.github.io"
   }, 
   {
-    "path": "data/coding-projects/chaparral", 
+    "path": "coding-projects/chaparral", 
     "snippet": "An interpreter library written in C++.", 
     "title": "Chaparral"
   }, 
   {
-    "path": "data/coding-projects/altadore", 
+    "path": "coding-projects/altadore", 
     "snippet": "A ray tracer written in C++.", 
     "title": "Altadore"
   }, 
   {
-    "path": "data/coding-projects/ericdingle-github-io", 
+    "path": "coding-projects/ericdingle-github-io", 
     "snippet": "Implementation of ericdingle.com.", 
     "title": "ericdingle.github.io"
   }, 
   {
-    "path": "data/coding-projects/elboya", 
+    "path": "coding-projects/elboya", 
     "snippet": "A web-based torrent client.", 
     "title": "Elboya"
   }, 
   {
-    "path": "data/coding-projects/foothills", 
+    "path": "coding-projects/foothills", 
     "snippet": "A Chrome extension that helps type accented characters.", 
     "title": "Foothills"
   }, 
   {
-    "path": "data/coding-projects/bonavista", 
+    "path": "coding-projects/bonavista", 
     "snippet": "A collection of cross platform utility libraries written in C++.", 
     "title": "Bonavista"
   }
