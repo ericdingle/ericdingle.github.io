@@ -17545,6 +17545,50 @@ if (!window.Promise) {
 </script>
 
 
+<dom-module id="listing-page" assetpath="src/">
+  <style>
+    span {
+      float: right;
+    }
+  </style>
+  <template>
+    <iron-ajax auto="" url="/data[[path]]/listing.json" handle-as="json" last-response="{{listing}}"></iron-ajax>
+    <div id="false">
+      <h2>[[title]]</h2>
+      <template is="dom-repeat" items="[[listing]]" sort="sort">
+        <p>
+          <template is="dom-if" if="[[item.date]]">
+            <span>[[item.date]]</span>
+          </template>
+          <a href="#/[[item.path]]">[[item.title]]</a>
+          <template is="dom-if" if="[[item.snippet]]">
+            - [[item.snippet]]
+          </template>
+        </p>
+      </template>
+    </div>
+  </template>
+  <script>
+    Polymer({
+      is: 'listing-page',
+      properties: {
+        title: String,
+        path: String,
+        route: String,
+        sortBy: String,
+        sortDesc: Boolean,
+      },
+      sort: function(a, b) {
+        var result = 0;
+        if (a[this.sortBy] < b[this.sortBy])
+          result = -1;
+        else if (a[this.sortBy] > b[this.sortBy])
+          result = 1;
+        return this.sortDesc ? -result : result;
+      }
+    });
+  </script>
+</dom-module>
 <script>/**
  * marked - a markdown parser
  * Copyright (c) 2011-2014, Christopher Jeffrey. (MIT Licensed)
@@ -19027,74 +19071,28 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 </dom-module>
 <dom-module id="markdown-page" assetpath="src/">
   <template>
-    <iron-ajax auto="" handle-as="text" url="{{path}}" loading="{{loading}}" last-response="{{response}}">
-    </iron-ajax>
-    <iron-pages selected="[[loading]]">
+    <iron-ajax auto="" handle-as="text" url="[[markdownPath]]" loading="{{loading}}" last-response="{{response}}"></iron-ajax>
+    <template is="dom-if" if="[[!loading]]">
       <marked-element id="false" markdown="{{response}}"></marked-element>
-      <div id="true">Loading...</div>
-    </iron-pages>
+    </template>
   </template>
   <script>
     Polymer({
       is: 'markdown-page',
       properties: {
-        path: String
-      }
-    });
-  </script>
-</dom-module>
-<dom-module id="listing-page" assetpath="src/">
-  <style>
-    span {
-      float: right;
-    }
-  </style>
-  <template>
-    <app-route route="[[route]]" pattern="/:value" active="{{active}}" data="{{path}}"></app-route>
-    <iron-ajax auto="" url="/data/[[page]]/listing.json" handle-as="json" last-response="{{listing}}"></iron-ajax>
-    <iron-pages selected="[[active]]">
-      <div id="false">
-        <h2>[[title]]</h2>
-        <template is="dom-repeat" items="[[listing]]" sort="sort">
-          <p>
-            <template is="dom-if" if="[[item.date]]">
-              <span>[[item.date]]</span>
-            </template>
-            <a href="#/[[item.path]]">[[item.title]]</a>
-            <template is="dom-if" if="[[item.snippet]]">
-              - [[item.snippet]]
-            </template>
-          </p>
-        </template>
-      </div>
-      <markdown-page id="true" path="[[computeMarkdownPath(selected, active, path.value)]]"></markdown-page>
-    </iron-pages>
-  </template>
-  <script>
-    Polymer({
-      is: 'listing-page',
-      properties: {
-        title: String,
-        page: String,
-        route: String,
+        path: String,
         selected: Boolean,
-        sortBy: String,
-        sortDesc: Boolean,
+        markdownPath: {
+          type: String,
+          computed: 'computeMarkdownPath(selected, path)'
+        }
       },
       attributeChanged: function(attr, oldVal, newVal) {
         if (attr == 'class')
           this.selected = newVal.indexOf('iron-selected') != -1;
       },
-      computeMarkdownPath: function(selected, active, path) {
-        return selected && active && path ? '/data/' + this.page + '/' + path + '.md' : null;
-      },
-      sort: function(a, b) {
-        var result = 0;
-        if (a[this.sortBy] < b[this.sortBy])
-          result = -1;
-        else if (a[this.sortBy] > b[this.sortBy])
-          result = 1;
-        return this.sortDesc ? -result : result;
+      computeMarkdownPath: function(selected, path) {
+        return selected && path ? '/data' + path + '.md' : null;
       }
     });
   </script>
@@ -19164,12 +19162,12 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
             <h1>Eric Dingle</h1>
             <p>With programming my mind I flex.</p>
           </app-header>
-          <iron-pages attr-for-selected="page" selected="[[page.value]]">
-            <listing-page title="Coding Blog" page="coding-blog" route="[[tail]]" sort-by="timestamp" sort-desc=""></listing-page>
-            <listing-page title="Coding Projects" page="coding-projects" route="[[tail]]" sort-by="title"></listing-page>
-            <listing-page title="Building Projects" page="building-projects" route="[[tail]]" sort-by="timestamp" sort-desc=""></listing-page>
-            <listing-page title="Guitar Tabs" page="guitar-tabs" route="[[tail]]" sort-by="title"></listing-page>
-            <markdown-page page="about" path="/data/about.md"></markdown-page>
+          <iron-pages attr-for-selected="path" selected="[[route.path]]" fallback-selection="[[route.path]]">
+            <listing-page title="Coding Blog" path="/coding-blog" sort-by="timestamp" sort-desc=""></listing-page>
+            <listing-page title="Coding Projects" path="/coding-projects" sort-by="title"></listing-page>
+            <listing-page title="Building Projects" path="/building-projects" sort-by="timestamp" sort-desc=""></listing-page>
+            <listing-page title="Guitar Tabs" path="/guitar-tabs" sort-by="title"></listing-page>
+            <markdown-page path="[[route.path]]"></markdown-page>
           </iron-pages>
         
       </app-header-layout></div>
