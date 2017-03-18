@@ -1,7 +1,7 @@
 ## Folding Picnic Table
 May, 2016
 
-<link rel="import" href="building-projects/header.html">
+<link rel="import" href="/src/building-projects-header.html">
 <building-projects-header imgur-image-id="ztMyMnT" imgur-album-id="JnGtI" reddit-comment-id="4mwkuz">
 </building-projects-header>
 
