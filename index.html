@@ -17970,13 +17970,13 @@ if (!window.Promise) {
 
 
 <dom-module id="listing-page" assetpath="src/">
-  <style>
+  <template>
+    <style>
     span {
       float: right;
     }
-  </style>
-  <template>
-    <iron-ajax auto="" url="/data[[path]]/listing.json" handle-as="json" last-response="{{listing}}"></iron-ajax>
+    </style>
+    <iron-ajax auto="" url="/content[[path]]/listing.json" handle-as="json" last-response="{{listing}}"></iron-ajax>
     <div id="false">
       <h2>[[title]]</h2>
       <template is="dom-repeat" items="[[listing]]" sort="sort">
@@ -17993,24 +17993,24 @@ if (!window.Promise) {
     </div>
   </template>
   <script>
-    Polymer({
-      is: 'listing-page',
-      properties: {
-        title: String,
-        path: String,
-        route: String,
-        sortBy: String,
-        sortDesc: Boolean,
-      },
-      sort: function(a, b) {
-        var result = 0;
-        if (a[this.sortBy] < b[this.sortBy])
-          result = -1;
-        else if (a[this.sortBy] > b[this.sortBy])
-          result = 1;
-        return this.sortDesc ? -result : result;
-      }
-    });
+  Polymer({
+    is: 'listing-page',
+    properties: {
+      title: String,
+      path: String,
+      route: String,
+      sortBy: String,
+      sortDesc: Boolean,
+    },
+    sort: function(a, b) {
+      var result = 0;
+      if (a[this.sortBy] < b[this.sortBy])
+        result = -1;
+      else if (a[this.sortBy] > b[this.sortBy])
+        result = 1;
+      return this.sortDesc ? -result : result;
+    }
+  });
   </script>
 </dom-module>
 <script>/**
@@ -19520,24 +19520,24 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
     </template>
   </template>
   <script>
-    Polymer({
-      is: 'markdown-page',
-      properties: {
-        path: String,
-        selected: Boolean,
-        markdownPath: {
-          type: String,
-          computed: 'computeMarkdownPath(selected, path)'
-        }
-      },
-      attributeChanged: function(attr, oldVal, newVal) {
-        if (attr == 'class')
-          this.selected = newVal.indexOf('iron-selected') != -1;
-      },
-      computeMarkdownPath: function(selected, path) {
-        return selected && path ? '/data' + path + '.md' : null;
+  Polymer({
+    is: 'markdown-page',
+    properties: {
+      path: String,
+      selected: Boolean,
+      markdownPath: {
+        type: String,
+        computed: 'computeMarkdownPath(selected, path)'
       }
-    });
+    },
+    attributeChanged: function(attr, oldVal, newVal) {
+      if (attr == 'class')
+        this.selected = newVal.indexOf('iron-selected') != -1;
+    },
+    computeMarkdownPath: function(selected, path) {
+      return selected && path ? '/content' + path + '.md' : null;
+    }
+  });
   </script>
 </dom-module>
 <dom-module is="index-app">
