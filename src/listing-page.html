@@ -1,13 +1,13 @@
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <dom-module id="listing-page">
-  <style>
+  <template>
+    <style>
     span {
       float: right;
     }
-  </style>
-  <template>
-    <iron-ajax auto url="/data[[path]]/listing.json" handle-as="json" last-response="{{listing}}"></iron-ajax>
+    </style>
+    <iron-ajax auto url="/content[[path]]/listing.json" handle-as="json" last-response="{{listing}}"></iron-ajax>
     <div id="false">
       <h2>[[title]]</h2>
       <template is="dom-repeat" items="[[listing]]" sort="sort">
@@ -24,23 +24,23 @@
     </div>
   </template>
   <script>
-    Polymer({
-      is: 'listing-page',
-      properties: {
-        title: String,
-        path: String,
-        route: String,
-        sortBy: String,
-        sortDesc: Boolean,
-      },
-      sort: function(a, b) {
-        var result = 0;
-        if (a[this.sortBy] < b[this.sortBy])
-          result = -1;
-        else if (a[this.sortBy] > b[this.sortBy])
-          result = 1;
-        return this.sortDesc ? -result : result;
-      }
-    });
+  Polymer({
+    is: 'listing-page',
+    properties: {
+      title: String,
+      path: String,
+      route: String,
+      sortBy: String,
+      sortDesc: Boolean,
+    },
+    sort: function(a, b) {
+      var result = 0;
+      if (a[this.sortBy] < b[this.sortBy])
+        result = -1;
+      else if (a[this.sortBy] > b[this.sortBy])
+        result = 1;
+      return this.sortDesc ? -result : result;
+    }
+  });
   </script>
 </dom-module>
