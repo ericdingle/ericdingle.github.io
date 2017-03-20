@@ -13,7 +13,10 @@ gulp.task('default', function() {
           stripComments: true
       }))
       .pipe(htmlmin({
-          collapseWhitespace: true
+          collapseWhitespace: true,
+          removeComments: true,
+          sortAttributes: true,
+          sortClasses: true
       }))
       .pipe(minifyInline())
       .pipe(gulp.dest('.'));
