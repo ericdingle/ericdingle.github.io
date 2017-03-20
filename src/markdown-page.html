@@ -4,7 +4,7 @@
 <link rel="import" href="building-projects-header.html">
 <dom-module id="markdown-page">
   <template>
-    <iron-ajax auto handle-as="text" url="[[markdownPath]]" loading="{{loading}}" last-response="{{response}}"></iron-ajax>
+    <iron-ajax id="xhr" handle-as="text" url="/content[[path]].md" loading="{{loading}}" last-response="{{response}}"></iron-ajax>
     <template is="dom-if" if="[[!loading]]">
       <marked-element id="false" markdown="{{response}}"></marked-element>
     </template>
@@ -13,19 +13,11 @@
   Polymer({
     is: 'markdown-page',
     properties: {
-      path: String,
-      selected: Boolean,
-      markdownPath: {
-        type: String,
-        computed: 'computeMarkdownPath(selected, path)'
-      }
+      path: String
     },
     attributeChanged: function(attr, oldVal, newVal) {
-      if (attr == 'class')
-        this.selected = newVal.indexOf('iron-selected') != -1;
-    },
-    computeMarkdownPath: function(selected, path) {
-      return selected && path ? '/content' + path + '.md' : null;
+      if (attr == 'class' && newVal.indexOf('iron-selected') != -1)
+        this.$.xhr.generateRequest();
     }
   });
   </script>

@@ -7,7 +7,7 @@
       float: right;
     }
     </style>
-    <iron-ajax auto url="/content[[path]]/listing.json" handle-as="json" last-response="{{listing}}"></iron-ajax>
+    <iron-ajax id="xhr" url="/content[[path]]/listing.json" handle-as="json" last-response="{{listing}}"></iron-ajax>
     <div id="false">
       <h2>[[title]]</h2>
       <template is="dom-repeat" items="[[listing]]" sort="sort">
@@ -29,9 +29,13 @@
     properties: {
       title: String,
       path: String,
-      route: String,
       sortBy: String,
       sortDesc: Boolean,
+    },
+    attributeChanged: function(attr, oldVal, newVal) {
+      if (attr == 'class' && newVal.indexOf('iron-selected') != -1 &&
+          !this.listing)
+        this.$.xhr.generateRequest();
     },
     sort: function(a, b) {
       var result = 0;
