@@ -6,10 +6,9 @@ var vulcanize = require('gulp-vulcanize');
 
 gulp.task('default', function() {
   gulp.src('index_dev.html')
-      .pipe(rename('index.html'))
       .pipe(vulcanize({
           inlineCss: true,
-          inlineJs: true,
+          inlineScripts: true,
           stripComments: true
       }))
       .pipe(htmlmin({
@@ -19,5 +18,6 @@ gulp.task('default', function() {
           sortClasses: true
       }))
       .pipe(minifyInline())
+      .pipe(rename('index.html'))
       .pipe(gulp.dest('.'));
 });
