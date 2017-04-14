@@ -1,5 +1,10 @@
 [
   {
+    "path": "coding-projects/glencoe", 
+    "snippet": "A web app that helps Squash players with ghosting.", 
+    "title": "Glencoe"
+  }, 
+  {
     "path": "coding-projects/dalhousie", 
     "snippet": "Legacy implementation of ericdingle.com.", 
     "title": "Dalhousie"
@@ -26,7 +31,7 @@
   }, 
   {
     "path": "coding-projects/elboya", 
-    "snippet": "A web-based torrent client.", 
+    "snippet": "A web app torrent client.", 
     "title": "Elboya"
   }, 
   {
