@@ -1,9 +1,9 @@
 [
   {
-    "date": "May, 2016", 
-    "path": "building-projects/folding-picnic-table", 
-    "timestamp": 20160501, 
-    "title": "Folding Picnic Table"
+    "date": "October, 2015", 
+    "path": "building-projects/passive-stereo-mixer", 
+    "timestamp": 20151001, 
+    "title": "Passive Stereo Mixer"
   }, 
   {
     "date": "March, 2016", 
@@ -12,21 +12,27 @@
     "title": "Pipe Frame Shelves"
   }, 
   {
-    "date": "December, 2016", 
-    "path": "building-projects/nyc-subway-sign", 
-    "timestamp": 20161201, 
-    "title": "NYC Subway Sign"
-  }, 
-  {
     "date": "May, 2015", 
     "path": "building-projects/pallet-wood-planters", 
     "timestamp": 20150501, 
     "title": "Pallet Wood Planters"
   }, 
   {
-    "date": "October, 2015", 
-    "path": "building-projects/passive-stereo-mixer", 
-    "timestamp": 20151001, 
-    "title": "Passive Stereo Mixer"
+    "date": "June, 2017", 
+    "path": "building-projects/sub-irrigated-planters", 
+    "timestamp": 20170601, 
+    "title": "Sub-irrigated Planters"
+  }, 
+  {
+    "date": "May, 2016", 
+    "path": "building-projects/folding-picnic-table", 
+    "timestamp": 20160501, 
+    "title": "Folding Picnic Table"
+  }, 
+  {
+    "date": "December, 2016", 
+    "path": "building-projects/nyc-subway-sign", 
+    "timestamp": 20161201, 
+    "title": "NYC Subway Sign"
   }
 ]
