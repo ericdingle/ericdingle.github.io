@@ -3,19 +3,12 @@ An interpreter library written in C++.
 
 Links: [Source Code](https://github.com/ericdingle/chaparral)
 
-I never got to take a compilers course at Waterloo since CompEng didn't offer one. I could have
-taken the CS one, but I decided to do graphics instead. All of my knowledge in this area comes
-from a 2nd year CompEng course (though I can't seem to remember what it was about exactly), and
-reading stuff on the internet. I found some article about writing a top-down parser in Python, and
-it seemed easy enough. I was really trying to avoid the Lex and Yacc route that I had done in that
-course, so this seemed like a good option.
+This project expands on [Bonavista](#/coding-projects/bonavista) (a tokenizer and parser library)
+by adding an execution layer. It also contains some helper classes for a variant type and an
+invokable type (similar to IDispatch). I implemented a simple command line calculator using it as an
+example.
 
-The idea behind this project is that it's a library that allows you to write interpreters for any
-given language. The tokenizing can't be customized all that much, but the parsing and executing is
-pretty robust, allowing you to create statements and expressions and then execute them while
-maintaining state afterwards. I managed to write a JSON parser as an example, and I also used this
-library to write an interpreter for Altadore, the ray tracer that I wrote.
-
-I've wondered if I could write a JavaScript engine using it, but I haven't tried that just yet.
-The scoping rules have scared me away so far, but it'd be neat to see if this library is as robust
-as I claim it is :)
+The main motivation for creating this was to be used with [Altadore](#/coding-projects/altadore),
+the ray tracer that I wrote, so that the compiled binary could create scenes based on an input
+file. I could have used something like a CSV file, but I wanted it to be more robust. And this was
+a lot more fun to code.

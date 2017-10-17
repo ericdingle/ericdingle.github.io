@@ -12,7 +12,7 @@ and several projects, and I still feel like I'm a beginner :|
 
 While taking that course, one of the projects was to create a ray tracer. I really, really liked
 this project, but for some reason, I couldn't seem to find the source code that I'd written for it.
-That was all good and well since I rewriting it turned into this project. It implements a basic
+That was all good and well since rewriting it turned into this project. It implements a basic
 ray tracing algorith with support for different objects, lights, materials and colors. I also added
 anti-aliasing to create some nice, smooth edges.
 

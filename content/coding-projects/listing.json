@@ -41,7 +41,7 @@
   }, 
   {
     "path": "coding-projects/bonavista", 
-    "snippet": "A collection of cross platform utility libraries written in C++.", 
+    "snippet": "A tokenizer and parser library written in C++.", 
     "title": "Bonavista"
   }
 ]
