@@ -1,4 +1,4 @@
-## POD Initialization in C++
+## C++ POD Initialization
 February 11, 2017
 
 C++ is full of interesting behaviors, and understanding all of these behaviors is a big stretch for
@@ -43,4 +43,4 @@ above again) which equates to being zero-initialized for PODs. That means you ca
 
 which adds the key to the map, zero-initializes the value, increments the value in the map and
 finally returns the value so that it can be printed. That's a lot going on for only typing a few
-characters. Basic rule of thumb: always initalize variables in their declaration.
+characters. Basic rule of thumb: always initalize PODs in their declaration.
