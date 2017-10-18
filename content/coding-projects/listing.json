@@ -1,12 +1,12 @@
 [
   {
     "path": "coding-projects/glencoe", 
-    "snippet": "A web app that helps Squash players with ghosting.", 
+    "snippet": "A web app that helps squash players with ghosting.", 
     "title": "Glencoe"
   }, 
   {
     "path": "coding-projects/dalhousie", 
-    "snippet": "Legacy implementation of ericdingle.com.", 
+    "snippet": "A compiler written in C++.", 
     "title": "Dalhousie"
   }, 
   {
@@ -33,11 +33,6 @@
     "path": "coding-projects/elboya", 
     "snippet": "A web app torrent client.", 
     "title": "Elboya"
-  }, 
-  {
-    "path": "coding-projects/foothills", 
-    "snippet": "A Chrome extension that helps type accented characters.", 
-    "title": "Foothills"
   }, 
   {
     "path": "coding-projects/bonavista", 
