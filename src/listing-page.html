@@ -1,14 +1,15 @@
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="style-module.html">
 <dom-module id="listing-page">
   <template>
-    <style>
+    <style include="style-module">
     span {
       float: right;
     }
     </style>
     <iron-ajax id="xhr" url="/content[[path]]/listing.json" handle-as="json" last-response="{{listing}}"></iron-ajax>
-    <div id="false">
+    <div>
       <h2>[[title]]</h2>
       <template is="dom-repeat" items="[[listing]]" sort="sort">
         <p>
@@ -24,20 +25,24 @@
     </div>
   </template>
   <script>
-  Polymer({
-    is: 'listing-page',
-    properties: {
+  class ListingPage extends Polymer.Element {
+    static get is() { return 'listing-page'; }
+    static get properties() { return {
       title: String,
       path: String,
       sortBy: String,
       sortDesc: Boolean,
-    },
-    attributeChanged: function(attr, oldVal, newVal) {
-      if (attr == 'class' && newVal.indexOf('iron-selected') != -1 &&
-          !this.listing)
+      visible: {
+        type: Boolean,
+        observer: 'visibleChanged'
+      }
+    }}
+    visibleChanged(visible) {
+      if (visible && !this.listing) {
         this.$.xhr.generateRequest();
-    },
-    sort: function(a, b) {
+      }
+    }
+    sort(a, b) {
       var result = 0;
       if (a[this.sortBy] < b[this.sortBy])
         result = -1;
@@ -45,6 +50,7 @@
         result = 1;
       return this.sortDesc ? -result : result;
     }
-  });
+  }
+  customElements.define(ListingPage.is, ListingPage);
   </script>
 </dom-module>

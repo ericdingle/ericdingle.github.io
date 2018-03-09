@@ -1,4 +1,4 @@
-<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
 <dom-module id="building-projects-header">
   <template>
     <p><img src="//i.imgur.com/[[imgurImageId]]m.jpg"/></p>
@@ -9,13 +9,14 @@
     </p>
   </template>
   <script>
-    Polymer({
-      is: 'building-projects-header',
-      properties: {
-        'imgurImageId': String,
-        'imgurAlbumId': String,
-        'redditCommentId': String
-      }      
-    });
+  class BuildingProjectsHeader {
+    static get is() { return 'building-projects-header'; }
+    static get properties() { return {
+      'imgurImageId': String,
+      'imgurAlbumId': String,
+      'redditCommentId': String
+    }}
+  }
+  customElements.define(BuildingProjectsHeader.is, BuildingProjectsHeader);
   </script>
 </dom-module>

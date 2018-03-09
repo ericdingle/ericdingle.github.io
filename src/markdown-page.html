@@ -1,24 +1,31 @@
-<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/marked-element/marked-element.html">
-<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="building-projects-header.html">
+<link rel="import" href="style-module.html">
 <dom-module id="markdown-page">
   <template>
-    <iron-ajax id="xhr" handle-as="text" url="/content[[path]].md" loading="{{loading}}" last-response="{{response}}"></iron-ajax>
-    <template is="dom-if" if="[[!loading]]">
-      <marked-element id="false" markdown="{{response}}"></marked-element>
-    </template>
+    <style include="style-module"></style>
+    <marked-element disable-remote-sanitization>
+      <div slot="markdown-html"></div>
+      <script type="text/markdown" src$="[[source]]"></script>
+    </marked-element>
   </template>
   <script>
-  Polymer({
-    is: 'markdown-page',
-    properties: {
-      path: String
-    },
-    attributeChanged: function(attr, oldVal, newVal) {
-      if (attr == 'class' && newVal.indexOf('iron-selected') != -1)
-        this.$.xhr.generateRequest();
+  class MarkdownPage extends Polymer.Element {
+    static get is() { return 'markdown-page'; }
+    static get properties() { return {
+      path: String,
+      visible: {
+        type: Boolean,
+        observer: 'visibleChanged'
+      }
+    }}
+    visibleChanged(visible) {
+      if (visible) {
+        this.source = '/content' + this.path + '.md';
+      }
     }
-  });
+  }
+  customElements.define(MarkdownPage.is, MarkdownPage);
   </script>
 </dom-module>
