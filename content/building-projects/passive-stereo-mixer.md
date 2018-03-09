@@ -2,7 +2,6 @@
 October, 2015
 
 ![Photo](http://i.imgur.com/545FAvJm.jpg)
-[//]: # (TODO: dd photos of wall and of circuit diagram)
 
 When the Chromecast came out, I had this grand plan to spiffy up my living room with a wall-mounted
 TV and a decent audio system so that I could blast tunes to my heart's content. All that was well

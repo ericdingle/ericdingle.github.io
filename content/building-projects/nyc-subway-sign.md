@@ -2,7 +2,7 @@
 December, 2016
 
 <building-projects-header imgur-image-id="pehxxUh" imgur-album-id="i1OgC" reddit-comment-id="5key3j">
-</building-project-header>
+</building-projects-header>
 
 I was asking my sister for Christmas gift ideas for my brother-in-law a while ago, and she mentioned
 in passing that he really liked

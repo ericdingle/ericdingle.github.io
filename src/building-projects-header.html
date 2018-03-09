@@ -1,6 +1,8 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="style-module">
 <dom-module id="building-projects-header">
   <template>
+    <style include="style-module"></style>
     <p><img src="//i.imgur.com/[[imgurImageId]]m.jpg"/></p>
     <p>
       Links:
@@ -9,7 +11,7 @@
     </p>
   </template>
   <script>
-  class BuildingProjectsHeader {
+  class BuildingProjectsHeader extends Polymer.Element {
     static get is() { return 'building-projects-header'; }
     static get properties() { return {
       'imgurImageId': String,
