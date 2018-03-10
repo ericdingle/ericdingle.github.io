@@ -2,6 +2,7 @@
 <link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
 <link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
 <link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-scroll-effects/effects/waterfall.html">
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
@@ -41,18 +42,17 @@
       };
     }
 
+    app-header-layout {
+      max-width: 1000px;
+    }
     app-header {
       background-color: var(--bg-color);
     }
-    app-drawer-layout:not([narrow]) [drawer-toggle] {
+    app-drawer-layout:not([narrow]) paper-icon-button[drawer-toggle] {
       display: none;
     }
     paper-icon-button {
       float: right;
-    }
-
-    iron-pages {
-      max-width: 1000px;
     }
     </style>
     <app-location route="{{route}}" use-hash-as-path></app-location>
@@ -62,20 +62,20 @@
     <app-drawer-layout>
       <app-drawer id="drawer" slot="drawer" opened="{{opened}}">
         <img src="/images/ericdingle.jpg" width="150" height="150">
-        <paper-listbox attr-for-selected="page" selected="{{page.value}}" on-iron-activate="onListboxActivate">
+        <paper-listbox attr-for-selected="page" selected="{{page.value}}">
           <template is="dom-repeat" items='[["Coding Blog", "coding-blog", "assignment"],
                                             ["Coding Projects", "coding-projects", "hardware:keyboard"],
                                             ["Building Projects", "building-projects", "build"],
                                             ["Guitar Tabs", "guitar-tabs", "image:music-note"],
                                             ["About", "about", "info"]]'>
-            <paper-icon-item page="{{item.1}}">
+            <paper-icon-item page="{{item.1}}" drawer-toggle>
               <iron-icon icon="{{item.2}}" slot="item-icon"></iron-icon>{{item.0}}
             </paper-icon-item>
           </template>
         </paper-listbox>
       </app-drawer>
       <app-header-layout>
-        <app-header slot="header" fixed>
+        <app-header slot="header" effects="waterfall" fixed>
           <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
           <h1>Eric Dingle</h1>
           <p>With programming my mind I flex.</p>
@@ -98,14 +98,6 @@
       if (!this.route.path) {
         this.set('route.path', '/coding-blog');
       }
-    }
-    onListboxActivate() {
-      if (!this.$.drawer.persistent) {
-        this.$.drawer.close();
-      }
-
-      // Reset tail path because app-route doesn't.
-      this.set('tail.path', '');
     }
   }
   customElements.define(IndexApp.is, IndexApp);
