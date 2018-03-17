@@ -1,0 +1,23 @@
+[{
+  "title": "Coding Blog",
+  "page": "coding-blog",
+  "icon": "assignment",
+  "sortBy": "timestamp",
+  "sortDesc": true
+}, {
+  "title": "Coding Projects",
+  "page": "coding-projects",
+  "icon": "hardware:keyboard",
+  "sortBy": "title"
+}, {
+  "title": "Building Projects",
+  "page": "building-projects",
+  "icon": "build",
+  "sortBy": "timestamp",
+  "sortDesc": true
+}, {
+  "title": "Guitar Tabs",
+  "page": "guitar-tabs",
+  "icon": "image:music-note",
+  "sortBy": "title"
+}]

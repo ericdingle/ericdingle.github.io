@@ -8,7 +8,7 @@
       float: right;
     }
     </style>
-    <iron-ajax id="xhr" url="/content[[path]]/listing.json" handle-as="json" last-response="{{listing}}"></iron-ajax>
+    <iron-ajax auto url="/content[[path]]/listing.json" handle-as="json" last-response="{{listing}}"></iron-ajax>
     <div>
       <h2>[[title]]</h2>
       <template is="dom-repeat" items="[[listing]]" sort="sort">
@@ -32,16 +32,7 @@
       path: String,
       sortBy: String,
       sortDesc: Boolean,
-      visible: {
-        type: Boolean,
-        observer: 'visibleChanged'
-      }
     }}
-    visibleChanged(visible) {
-      if (visible && !this.listing) {
-        this.$.xhr.generateRequest();
-      }
-    }
     sort(a, b) {
       var result = 0;
       if (a[this.sortBy] < b[this.sortBy])

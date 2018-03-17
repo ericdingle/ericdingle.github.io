@@ -59,17 +59,15 @@
     <app-route route="{{route}}" pattern="/:value" data="{{page}}" tail="{{tail}}"></app-route>
     <google-analytics path="[[route.path]]"></google-analytics>
 
+    <iron-ajax auto url="/content/pages.json" handle-as="json" last-response="{{pages}}" on-response="setDefaultRoute"></iron-ajax>
+
     <app-drawer-layout>
       <app-drawer id="drawer" slot="drawer" opened="{{opened}}">
         <img src="/images/ericdingle.jpg" width="150" height="150">
-        <paper-listbox attr-for-selected="page" selected="{{page.value}}">
-          <template is="dom-repeat" items='[["Coding Blog", "coding-blog", "assignment"],
-                                            ["Coding Projects", "coding-projects", "hardware:keyboard"],
-                                            ["Building Projects", "building-projects", "build"],
-                                            ["Guitar Tabs", "guitar-tabs", "image:music-note"],
-                                            ["About", "about", "info"]]'>
-            <paper-icon-item page="{{item.1}}" drawer-toggle>
-              <iron-icon icon="{{item.2}}" slot="item-icon"></iron-icon>{{item.0}}
+        <paper-listbox attr-for-selected="page" selected="{{page.value}}" on-iron-activate="onActivate">
+          <template is="dom-repeat" id="pages" items="{{pages}}">
+            <paper-icon-item page="{{item.page}}" drawer-toggle>
+              <iron-icon icon="{{item.icon}}" slot="item-icon"></iron-icon>{{item.title}}
             </paper-icon-item>
           </template>
         </paper-listbox>
@@ -81,10 +79,7 @@
           <p>With programming my mind I flex.</p>
         </app-header>
         <iron-pages attr-for-selected="path" selected="[[route.path]]" selected-attribute="visible" fallback-selection="[[route.path]]">
-          <listing-page title="Coding Blog" path="/coding-blog" sort-by="timestamp" sort-desc></listing-page>
-          <listing-page title="Coding Projects" path="/coding-projects" sort-by="title"></listing-page>
-          <listing-page title="Building Projects" path="/building-projects" sort-by="timestamp" sort-desc></listing-page>
-          <listing-page title="Guitar Tabs" path="/guitar-tabs" sort-by="title"></listing-page>
+          <listing-page title="[[selected.title]]" path="/[[page.value]]" sort-by="[[selected.sortBy]]" sort-desc="[[selected.sortDesc]]"></listing-page>
           <markdown-page path="[[route.path]]"></markdown-page>
         </iron-pages>
       </app-header>
@@ -93,11 +88,14 @@
   <script>
   class IndexApp extends Polymer.Element {
     static get is() { return 'index-app'; }
-    connectedCallback() {
-      super.connectedCallback();
+    setDefaultRoute() {
       if (!this.route.path) {
-        this.set('route.path', '/coding-blog');
+        this.set('route.path', '/' + this.pages[0].page);
       }
+    }
+    onActivate(e) {
+      this.selected = this.$.pages.itemForElement(e.detail.item);
+      this.tail = '';  // For when the same item is clicked again.
     }
   }
   customElements.define(IndexApp.is, IndexApp);
