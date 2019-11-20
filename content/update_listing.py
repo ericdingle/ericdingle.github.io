@@ -15,37 +15,33 @@ args = parser.parse_args()
 
 output = []
 
-for file_path in os.listdir(args.directory):
+for file_path in sorted(os.listdir(args.directory)):
   if file_path == 'listing.json':
     continue
 
-  assert file_path[-3:] == '.md'
-  path = '%s/%s' % (args.directory, file_path[:-3])
-  data = {'path': path}
+  assert file_path.endswith('.md')
+  data = {'path': '%s/%s' % (args.directory, file_path[:-3])}
 
   fh = open('%s/%s' % (args.directory, file_path))
 
-  line1 = fh.readline().rstrip('\n')
-  assert line1[:3] == '## '
-  title = line1[3:]
-  data['title'] = title
+  line = fh.readline().strip()
+  assert line.startswith('## ')
+  data['title'] = line[3:]
 
-  line2 = fh.readline().rstrip('\n')
-  if line2:
-    date = ''
-    timestamp = 0
-
+  line = fh.readline().strip()
+  if line:
+    date = None
     for format in ['%B %d, %Y', '%B, %Y']:
       try:
-        date = datetime.datetime.strptime(line2, format)
+        date = datetime.datetime.strptime(line, format)
         break
       except ValueError:
         pass
 
     if date:
-      data.update({'date': line2, 'timestamp': int(date.strftime('%Y%m%d'))})
+      data.update({'date': line, 'timestamp': int(date.strftime('%Y%m%d'))})
     else:
-      data.update({'snippet': line2})
+      data.update({'snippet': line})
 
   output.append(data)
 

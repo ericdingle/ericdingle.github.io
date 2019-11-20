@@ -1,23 +1,19 @@
 [
   {
-    "path": "guitar-tabs/foo-fighters-everlong", 
-    "title": "Foo Fighters - Everlong"
-  }, 
-  {
-    "path": "guitar-tabs/punch-brothers-flippen-the-flip", 
-    "title": "Punch Brothers - Flippen (The Flip)"
+    "path": "guitar-tabs/big-wreck-that-song", 
+    "title": "Big Wreck - That Song"
   }, 
   {
     "path": "guitar-tabs/black-sabbath-iron-man", 
     "title": "Black Sabbath - Iron Man"
   }, 
   {
-    "path": "guitar-tabs/incubus-drive", 
-    "title": "Incubus - Drive"
+    "path": "guitar-tabs/foo-fighters-everlong", 
+    "title": "Foo Fighters - Everlong"
   }, 
   {
-    "path": "guitar-tabs/big-wreck-that-song", 
-    "title": "Big Wreck - That Song"
+    "path": "guitar-tabs/incubus-drive", 
+    "title": "Incubus - Drive"
   }, 
   {
     "path": "guitar-tabs/metric-gimme-sympathy", 
@@ -26,5 +22,13 @@
   {
     "path": "guitar-tabs/outkast-hey-ya", 
     "title": "OutKast - Hey Ya!"
+  }, 
+  {
+    "path": "guitar-tabs/punch-brothers-flippen-the-flip", 
+    "title": "Punch Brothers - Flippen (The Flip)"
+  }, 
+  {
+    "path": "guitar-tabs/the-barr-brothers-song-that-i-heard", 
+    "title": "The Barr Brothers - Song That I Heard"
   }
 ]
