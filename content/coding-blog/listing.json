@@ -1,14 +1,14 @@
 [
   {
-    "date": "February 11, 2017", 
-    "path": "coding-blog/c++-pod-initialization", 
-    "timestamp": 20170211, 
-    "title": "C++ POD Initialization"
-  }, 
-  {
     "date": "October 17, 2017", 
     "path": "coding-blog/python-method-resolution-order", 
     "timestamp": 20171017, 
     "title": "Python Method Resolution Order"
+  }, 
+  {
+    "date": "February 11, 2017", 
+    "path": "coding-blog/c++-pod-initialization", 
+    "timestamp": 20170211, 
+    "title": "C++ POD Initialization"
   }
 ]

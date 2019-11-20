@@ -25,14 +25,14 @@
     "title": "Elboya"
   }, 
   {
-    "path": "coding-projects/ericdingle-github-io", 
-    "snippet": "Implementation of ericdingle.com.", 
-    "title": "ericdingle.github.io"
-  }, 
-  {
     "path": "coding-projects/glencoe", 
     "snippet": "A web app that helps squash players with ghosting.", 
     "title": "Glencoe"
+  }, 
+  {
+    "path": "coding-projects/ericdingle-github-io", 
+    "snippet": "Implementation of ericdingle.com.", 
+    "title": "ericdingle.github.io"
   }, 
   {
     "path": "coding-projects/marthashiell-github-io", 

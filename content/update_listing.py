@@ -15,7 +15,7 @@ args = parser.parse_args()
 
 output = []
 
-for file_path in sorted(os.listdir(args.directory)):
+for file_path in os.listdir(args.directory):
   if file_path == 'listing.json':
     continue
 
@@ -44,6 +44,10 @@ for file_path in sorted(os.listdir(args.directory)):
       data.update({'snippet': line})
 
   output.append(data)
+
+output.sort(
+    key=lambda x: x['timestamp'] if x.get('timestamp') else x['title'],
+    reverse=True if output[0].get('timestamp') else False)
 
 fh = open('%s/listing.json' % args.directory, 'w')
 json.dump(output, fh, indent=2, sort_keys=True)
