@@ -2,6 +2,7 @@
 
     Capo on 6
 
+    Intro
        D                               D
     E|-----------------------------------------------------------------------------
     B|-----3-----3---3-------3---3---3-------3---3---3---3---3---3---3-------------
@@ -10,6 +11,7 @@
     A|-----------------------------------------------------------------------------
     D|-----------------------------------------------------------------------------
 
+    Riff
        D                               D
     E|-----------------------------------------------------------------------------
     B|-----------3-------3-------3-------3-------3-------3-----3p2-----------------
@@ -26,7 +28,7 @@
     A|---------------------------------0-------0---------2-------0-----------------
     D|-5-------5-------0-------0---------------------------------------------------
 
-      G                D               A
+       G               D               A
     E|-----------------------------------------------------------------------------
     B|-0---------0---------------3-------2-------2-----2h3-------2-----------------
     G|-------0---------2-----2-------2-------2-------2-------2-------0-------------
@@ -43,8 +45,8 @@
     D|-----------------------------------------------------------------------------
 
        G               D               A               B       A
-    E|-----------3-----2-------0---------0-----------------------------------------
-    B|-3-------------------------3-------------3p2-----3---------2-----------------
+    E|-----------3-----2-----------------0-----------------------------------------
+    B|-3-----------------------5p3-------------3p2-----3---------2-----------------
     G|-------0-------0-------2-------2-------2-------2-------4-------0-------------
     D|-----0-------0-------0-------0-------2-------2-------4-------0---------------
     A|---------------------------------0-------0-------2-------0-------------------
@@ -57,3 +59,89 @@
     D|-----0-------0-------0-------0-------2-------2--------0-------0--------------
     A|---------------------------------0-------0-----------------------------------
     D|-5-------5-------0-------0------------------------0-------0------------------
+
+    Verse Chords
+       G         D         A         B
+    E|-----------------------------------------------------------------------------
+    B|---0---------3---------2---------4-------------------------------------------
+    G|-------0---------2---------2---------3---------------------------------------
+    D|-----0---------0---------2---------3-----------------------------------------
+    A|---------------------0---------2---------------------------------------------
+    D|-5---------0-----------------------------------------------------------------
+
+    [Intro]
+
+    [Riff]
+
+    [Verse 1]
+           G             D
+    In the same reckless city
+                  A      B
+    Where great Antonio died
+           G             D
+    On the island in the river
+           A
+    With a mountain at its side
+      G               D
+    I came to scatter ashes
+           A            B
+    Of the bridges I've burned
+          G        D           A         B
+    And I know the name of the song that I heard
+            G        D           A      D
+    Yeah, I know the name of the song I heard
+
+    [Verse 2]
+    Like a moonlight mathematician
+    I subtracted my concerns
+    And I multiplied my options and divided my returns
+    Sacrificed the angel who was tugging at my shirt
+    I was already claimed by the song that I heard
+    Yeah, already chained to the song that I heard
+
+    [Verse 3]
+    From the corner of my eye I caught the shadow of a girl
+    But my shoes were tied together and my face was in the dirt
+    Her gentle eyes said everything before she said a word
+    And I knew I was changed by the song that I heard
+    Yeah, I knew right away by the song I heard
+
+    [Verse 4]
+    In the cult of desperation he stayed just behind the curve
+    And no one here admits we're getting more than we deserve
+    I was born a first child, she was born a third
+    We were already named by the songs that we heard
+    Yeah, already claimed by the songs we heard
+
+    [Riff]
+
+    [Verse 5]
+    Did I make you out at Phoenix from the ashes of a bird?
+    Did we build our palace and watch it as it burned?
+    It's kind of like a lesson that had to be unlearned
+           G
+    Like a fool maker
+    D
+    Fall-taker
+    A
+    Forsaker
+    B
+    Heartbreaker
+    G
+    Earthquaker
+    D
+    Soul-shaker
+    A
+    Soothsayer
+    B
+    Moon prayer
+    G
+    Sun slayer
+    D
+    Yeasayer
+    A
+    Mistaker
+    B
+    Rattlesnaker
+           G       D              A        D
+    We are already changed by the songs we heard
