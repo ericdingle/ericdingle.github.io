@@ -7,7 +7,7 @@ June, 2017
 I can't remember exactly where I found this solution, but the main problem I was trying to solve
 here was that I would often go away for a week or so at a time during the summer, and my plants
 would suffer from my neighbors' lack of caring :| This meant that I needed an automated solution
-for keeping my plantes hydrated!
+for keeping my plants hydrated!
 
 The basic principle here is that a reservoir is added to the planter underneath the soil, and that
 the soil will wick water up from the reservoir as the soil above it becomes dry. It's sort of hard
