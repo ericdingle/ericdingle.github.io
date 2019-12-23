@@ -55,6 +55,7 @@ class IndexApp extends PolymerElement {
           cursor: pointer;
           --paper-item-selected: {
             background-color: var(--link-color);
+            color: var(--bg-color);
           };
         }
 
