@@ -1,5 +1,11 @@
 [
   {
+    "date": "December 23, 2019", 
+    "path": "coding-blog/regular-expressions-and-hyphens", 
+    "timestamp": 20191223, 
+    "title": "Regular Expressions and Hyphens"
+  }, 
+  {
     "date": "October 17, 2017", 
     "path": "coding-blog/python-method-resolution-order", 
     "timestamp": 20171017, 
