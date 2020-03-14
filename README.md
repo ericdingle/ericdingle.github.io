@@ -1,4 +1,4 @@
-# Glencoe
+# ericdingle.github.io
 
 Implementation of ericdingle.com.
 
