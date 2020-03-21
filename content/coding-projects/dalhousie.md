@@ -1,5 +1,5 @@
 ## Dalhousie
-A compiler written in C++.
+TicTacToe AI exploration in Python.
 
 Links: [Source Code](https://github.com/ericdingle/dalhousie)
 
