@@ -1,5 +1,11 @@
 [
   {
+    "date": "April 20, 2020", 
+    "path": "coding-blog/c++-template-specialization", 
+    "timestamp": 20200420, 
+    "title": "C++ Template Specialization"
+  }, 
+  {
     "date": "December 23, 2019", 
     "path": "coding-blog/regular-expressions-and-hyphens", 
     "timestamp": 20191223, 
