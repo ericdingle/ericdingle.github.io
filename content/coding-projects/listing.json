@@ -1,37 +1,42 @@
 [
   {
-    "path": "coding-projects/altadore", 
-    "snippet": "A ray tracer written in C++.", 
+    "path": "coding-projects/altadore",
+    "snippet": "A ray tracer written in C++.",
     "title": "Altadore"
-  }, 
+  },
   {
-    "path": "coding-projects/bonavista", 
-    "snippet": "A tokenizer and parser library written in C++.", 
+    "path": "coding-projects/bonavista",
+    "snippet": "A tokenizer and parser library written in C++.",
     "title": "Bonavista"
-  }, 
+  },
   {
-    "path": "coding-projects/chaparral", 
-    "snippet": "An interpreter library written in C++.", 
+    "path": "coding-projects/chaparral",
+    "snippet": "An interpreter library written in C++.",
     "title": "Chaparral"
-  }, 
+  },
   {
-    "path": "coding-projects/dalhousie", 
-    "snippet": "TicTacToe AI exploration in Python.", 
+    "path": "coding-projects/dalhousie",
+    "snippet": "TicTacToe AI exploration in Python.",
     "title": "Dalhousie"
-  }, 
+  },
   {
-    "path": "coding-projects/elboya", 
-    "snippet": "A web app torrent client.", 
+    "path": "coding-projects/elboya",
+    "snippet": "A web app torrent client.",
     "title": "Elboya"
-  }, 
+  },
   {
-    "path": "coding-projects/glencoe", 
-    "snippet": "A web app that helps squash players with ghosting.", 
+    "path": "coding-projects/foothills",
+    "snippet": "A web app that provides a UI for a guitar tuner.",
+    "title": "Foothills"
+  },
+  {
+    "path": "coding-projects/glencoe",
+    "snippet": "A web app that helps squash players with ghosting.",
     "title": "Glencoe"
-  }, 
+  },
   {
-    "path": "coding-projects/ericdingle-github-io", 
-    "snippet": "Implementation of ericdingle.com.", 
+    "path": "coding-projects/ericdingle-github-io",
+    "snippet": "Implementation of ericdingle.com.",
     "title": "ericdingle.github.io"
   }
 ]
