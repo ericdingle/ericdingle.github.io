@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google</title>
+    <style>
+        /* General Styles */
+        :root {
+            --google-blue: #4285f4;
+            --google-red: #ea4335;
+            --google-yellow: #fbbc05;
+            --google-green: #34a853;
+            --border-color: #dfe1e5;
+            --text-color: #202124;
+            --secondary-text-color: #5f6368;
+            --background-color: #fff;
+            --button-background: #f8f9fa;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- Main Search Page --- */
+        #search-page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+            padding: 20px;
+        }
+        .logo-main {
+            font-size: 92px;
+            font-weight: 400;
+            letter-spacing: -3px;
+            margin-bottom: 28px;
+        }
+        .logo-main span:nth-child(1) { color: var(--google-blue); }
+        .logo-main span:nth-child(2) { color: var(--google-red); }
+        .logo-main span:nth-child(3) { color: var(--google-yellow); }
+        .logo-main span:nth-child(4) { color: var(--google-blue); }
+        .logo-main span:nth-child(5) { color: var(--google-green); }
+        .logo-main span:nth-child(6) { color: var(--google-red); }
+
+        .search-container {
+            width: 100%;
+            max-width: 584px;
+            position: relative;
+        }
+        #search-input {
+            width: 100%;
+            padding: 12px 45px;
+            font-size: 16px;
+            border-radius: 24px;
+            border: 1px solid var(--border-color);
+            outline: none;
+            box-shadow: 0 1px 6px rgba(32,33,36,.28);
+        }
+        #search-input:hover, #search-input:focus {
+            box-shadow: 0 1px 6px rgba(32,33,36,.28);
+            border-color: rgba(223,225,229,0);
+        }
+        .search-container .icon {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 20px;
+            width: 20px;
+            fill: var(--secondary-text-color);
+        }
+        .search-container .search-icon {
+            left: 15px;
+        }
+        .search-container .mic-icon {
+            right: 15px;
+            cursor: pointer;
+        }
+        .search-buttons {
+            margin-top: 28px;
+        }
+        .search-buttons button {
+            background-color: var(--button-background);
+            border: 1px solid var(--button-background);
+            border-radius: 4px;
+            color: var(--secondary-text-color);
+            font-size: 14px;
+            margin: 11px 4px;
+            padding: 10px 16px;
+            cursor: pointer;
+        }
+        .search-buttons button:hover {
+            border: 1px solid var(--border-color);
+            box-shadow: 0 1px 1px rgba(0,0,0,.1);
+        }
+
+        /* --- Results Page --- */
+        #results-page {
+            display: none;
+        }
+        #results-header {
+            display: flex;
+            align-items: center;
+            padding: 15px 30px;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            background-color: var(--background-color);
+        }
+        .logo-small {
+            font-size: 24px;
+            font-weight: 400;
+            margin-right: 20px;
+            letter-spacing: 0px;
+        }
+        .logo-small span:nth-child(1) { color: var(--google-blue); }
+        .logo-small span:nth-child(2) { color: var(--google-red); }
+        .logo-small span:nth-child(3) { color: var(--google-yellow); }
+        .logo-small span:nth-child(4) { color: var(--google-blue); }
+        .logo-small span:nth-child(5) { color: var(--google-green); }
+        .logo-small span:nth-child(6) { color: var(--google-red); }
+        
+        #results-form .search-container {
+            max-width: 690px;
+        }
+        #results-input {
+            width: 100%;
+            padding: 10px 45px;
+            font-size: 16px;
+            border-radius: 24px;
+            border: 1px solid var(--border-color);
+            outline: none;
+            box-shadow: none;
+        }
+        #results-input:focus {
+            box-shadow: 0 1px 6px rgba(32,33,36,.28);
+            border-color: rgba(223,225,229,0);
+        }
+        #results-nav {
+            padding-left: 160px;
+            margin-top: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        #results-nav a {
+            display: inline-block;
+            padding: 12px 12px;
+            margin-right: 20px;
+            font-size: 14px;
+            color: var(--secondary-text-color);
+            text-decoration: none;
+        }
+        #results-nav a:hover, #results-nav a.active {
+            color: var(--google-blue);
+            border-bottom: 3px solid var(--google-blue);
+            padding-bottom: 9px;
+        }
+
+        #results-content {
+            padding: 20px 160px;
+            max-width: 850px;
+        }
+        #results-stats {
+            color: var(--secondary-text-color);
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .result {
+            margin-bottom: 24px;
+        }
+        .result cite {
+            font-size: 14px;
+            color: var(--google-green);
+            font-style: normal;
+        }
+        .result h3 {
+            margin-top: 4px;
+        }
+        .result h3 a {
+            font-size: 20px;
+            color: var(--google-blue);
+            font-weight: normal;
+            text-decoration: none;
+        }
+        .result h3 a:hover {
+            text-decoration: underline;
+        }
+        .result .snippet {
+            font-size: 14px;
+            color: var(--secondary-text-color);
+            line-height: 1.5;
+            margin-top: 4px;
+        }
+
+        /* --- Toast Notification --- */
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 4px;
+            padding: 16px;
+            position: fixed;
+            z-index: 10;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            font-size: 16px;
+            opacity: 0;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+        #toast.show {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="search-page">
+        <div class="logo-main">
+            <span>G</span><span>o</span><span>o</span><span>g</span><span>l</span><span>e</span>
+        </div>
+        <form id="search-form">
+            <div class="search-container">
+                <svg class="icon search-icon" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path></svg>
+                <input type="text" id="search-input" title="Search">
+                <svg class="icon mic-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#4285f4" d="m12 15c1.66 0 3-1.34 3-3v-6c0-1.66-1.34-3-3-3s-3 1.34-3 3v6c0 1.66 1.34 3 3 3z"></path><path fill="#34a853" d="m11 18.08h2v3.92h-2z"></path><path fill="#fbbc05" d="m7.05 16.87c-1.27-1.27-2.05-2.98-2.05-4.87h2c0 1.45 0.56 2.82 1.57 3.83l-1.52 1.04z"></path><path fill="#ea4335" d="m12 17c-2.76 0-5-2.24-5-5h-2c0 3.53 2.61 6.43 6 6.92v3.08h2v-3.08c3.39-.49 6-3.39 6-6.92h-2c0 2.76-2.24 5-5 5z"></path></svg>
+            </div>
+            <div class="search-buttons">
+                <button type="submit">Google Search</button>
+                <button type="button">I'm Feeling Lucky</button>
+            </div>
+        </form>
+    </div>
+
+    <div id="results-page">
+        <header id="results-header">
+            <a href="#" onclick="window.location.reload()">
+                <div class="logo-small">
+                    <span>G</span><span>o</span><span>o</span><span>g</span><span>l</span><span>e</span>
+                </div>
+            </a>
+            <form id="results-form">
+                <div class="search-container">
+                    <svg class="icon search-icon" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path></svg>
+                    <input type="text" id="results-input" value="coffee calgary">
+                    <svg class="icon mic-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="right: 15px; left: auto; cursor:pointer;"><path fill="#4285f4" d="m12 15c1.66 0 3-1.34 3-3v-6c0-1.66-1.34-3-3-3s-3 1.34-3 3v6c0 1.66 1.34 3 3 3z"></path><path fill="#34a853" d="m11 18.08h2v3.92h-2z"></path><path fill="#fbbc05" d="m7.05 16.87c-1.27-1.27-2.05-2.98-2.05-4.87h2c0 1.45 0.56 2.82 1.57 3.83l-1.52 1.04z"></path><path fill="#ea4335" d="m12 17c-2.76 0-5-2.24-5-5h-2c0 3.53 2.61 6.43 6 6.92v3.08h2v-3.08c3.39-.49 6-3.39 6-6.92h-2c0 2.76-2.24 5-5 5z"></path></svg>
+                </div>
+            </form>
+        </header>
+        <nav id="results-nav">
+            <a href="#" class="active">All</a>
+            <a href="#">Images</a>
+            <a href="#">News</a>
+            <a href="#">Videos</a>
+            <a href="#">Maps</a>
+            <a href="#">More</a>
+        </nav>
+        <main id="results-content">
+            <p id="results-stats">About 4,280,000 results (0.45 seconds)</p>
+            <div class="result">
+                <cite>www.calgarycoffeescene.com</cite>
+                <h3><a href="#">Calgary Coffee Scene - Local Coffee Shop Reviews & Guides</a></h3>
+                <p class="snippet">Your guide to the best **coffee** shops in **Calgary**. Discover hidden gems, read reviews, and find your perfect cup of **coffee** in **Calgary**, Alberta. Featuring independent roasters and cozy cafes.</p>
+            </div>
+            <div class="result">
+                <cite>www.roastercentral.ca/calgary</cite>
+                <h3><a href="#">Top Coffee Roasters in Calgary - Roaster Central</a></h3>
+                <p class="snippet">Explore the finest **coffee** roasters in **Calgary**, AB. Find detailed information about their beans, roasting processes, and where to buy their freshly roasted **coffee**. Discover local flavors.</p>
+            </div>
+            <div class="result">
+                <cite>en.wikipedia.org/wiki/Coffee</cite>
+                <h3><a href="#">Coffee - Wikipedia</a></h3>
+                <p class="snippet">**Coffee** is a brewed drink prepared from roasted **coffee** beans, the seeds of berries from certain Coffea species. When ripe, **coffee** "berries" are picked, processed, and dried. Dried **coffee** seeds (referred to as "beans") are roasted to varying degrees, depending on the desired flavor.</p>
+            </div>
+            <div class="result">
+                <cite>www.yelp.ca/search?find_desc=coffee&find_loc=Calgary,+AB</cite>
+                <h3><a href="#">The 10 Best Coffee Shops in Calgary - Yelp</a></h3>
+                <p class="snippet">Looking for great **coffee** in **Calgary**, AB? Yelp has millions of reviews of businesses across **Calgary**. Find top-rated **coffee** shops and cafes near you. Read what other locals say about their experiences.</p>
+            </div>
+        </main>
+    </div>
+
+    <div id="toast"></div>
+
+    <script>
+        // DOM Elements
+        const searchPage = document.getElementById('search-page');
+        const resultsPage = document.getElementById('results-page');
+        const mainSearchForm = document.getElementById('search-form');
+        const mainSearchInput = document.getElementById('search-input');
+        const resultsForm = document.getElementById('results-form');
+        const resultsInput = document.getElementById('results-input');
+        const resultsContent = document.getElementById('results-content');
+        const toast = document.getElementById('toast');
+
+        // Event Listeners
+        mainSearchForm.addEventListener('submit', handleSearch);
+        resultsForm.addEventListener('submit', handleSearch);
+        resultsInput.addEventListener('focus', () => {
+            resultsInput.select(); // Select all text on focus for easy re-search
+        });
+
+        /**
+         * Handles the search submission from either form.
+         * @param {Event} event The form submission event.
+         */
+        function handleSearch(event) {
+            event.preventDefault();
+            const query = (event.target.id === 'search-form' ? mainSearchInput.value : resultsInput.value).trim();
+
+            if (!query) {
+                showToast("Please enter a search term.");
+                return;
+            }
+
+            searchPage.style.display = 'none';
+            resultsPage.style.display = 'block';
+
+            document.title = `${query} - Google Search`;
+            resultsInput.value = query;
+            displayResults(query);
+        }
+
+        /**
+         * Generates and displays the search results.
+         * @param {string} query The user's search query.
+         */
+        function displayResults(query) {
+            resultsContent.innerHTML = '';
+
+            const stats = document.createElement('p');
+            stats.id = 'results-stats';
+            const resultCount = Math.floor(Math.random() * 500000) + 100000;
+            const searchTime = (Math.random() * 0.5 + 0.3).toFixed(2);
+            stats.textContent = `About ${resultCount.toLocaleString()} results (${searchTime} seconds)`;
+            resultsContent.appendChild(stats);
+
+            const fakeResults = [
+                {
+                    url: 'www.calgarycoffeescene.com',
+                    title: 'Calgary Coffee Scene - Local Coffee Shop Reviews & Guides',
+                    snippet: 'Your guide to the best <strong>coffee</strong> shops in <strong>Calgary</strong>. Discover hidden gems, read reviews, and find your perfect cup of <strong>coffee</strong> in <strong>Calgary</strong>, Alberta. Featuring independent roasters and cozy cafes.'
+                },
+                {
+                    url: 'www.roastercentral.ca/calgary',
+                    title: 'Top Coffee Roasters in Calgary - Roaster Central',
+                    snippet: 'Explore the finest <strong>coffee</strong> roasters in <strong>Calgary</strong>, AB. Find detailed information about their beans, roasting processes, and where to buy their freshly roasted <strong>coffee</strong>. Discover local flavors.'
+                },
+                {
+                    url: 'en.wikipedia.org/wiki/Coffee',
+                    title: 'Coffee - Wikipedia',
+                    snippet: '<strong>Coffee</strong> is a brewed drink prepared from roasted <strong>coffee</strong> beans, the seeds of berries from certain Coffea species. When ripe, <strong>coffee</strong> "berries" are picked, processed, and dried. Dried <strong>coffee</strong> seeds (referred to as "beans") are roasted to varying degrees, depending on the desired flavor.'
+                },
+                {
+                    url: 'www.yelp.ca/search?find_desc=coffee&find_loc=Calgary,+AB',
+                    title: 'The 10 Best Coffee Shops in Calgary - Yelp',
+                    snippet: 'Looking for great <strong>coffee</strong> in <strong>Calgary</strong>, AB? Yelp has millions of reviews of businesses across <strong>Calgary</strong>. Find top-rated <strong>coffee</strong> shops and cafes near you. Read what other locals say about their experiences.'
+                }
+            ];
+
+            fakeResults.forEach(result => {
+                const resultEl = document.createElement('div');
+                resultEl.className = 'result';
+                const highlightedSnippet = result.snippet.replace(
+                    new RegExp(query, 'gi'),
+                    (match) => `<strong>${match}</strong>`
+                );
+                resultEl.innerHTML = `
+                    <cite>${result.url}</cite>
+                    <h3><a href="#">${result.title}</a></h3>
+                    <p class="snippet">${highlightedSnippet}</p>
+                `;
+                resultsContent.appendChild(resultEl);
+            });
+        }
+
+        /**
+         * Shows a toast message for a few seconds.
+         * @param {string} message The message to display.
+         */
+        function showToast(message) {
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Initially load the search page
+        if (window.location.hash === '#results') {
+            searchPage.style.display = 'none';
+            resultsPage.style.display = 'block';
+            const initialQuery = 'coffee calgary';
+            resultsInput.value = initialQuery;
+            document.title = `${initialQuery} - Google Search`;
+            displayResults(initialQuery);
+        } else {
+            resultsPage.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
