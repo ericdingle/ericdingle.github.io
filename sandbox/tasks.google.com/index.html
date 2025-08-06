@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Tasks</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+        :root {
+            --google-blue: #4285F4;
+            --google-red: #DB4437;
+            --google-yellow: #F4B400;
+            --google-green: #0F9D58;
+            --background-color: #f8f9fa;
+            --surface-color: #ffffff;
+            --on-surface-color: #202124;
+            --on-surface-variant-color: #5f6368;
+            --border-color: #e0e0e0;
+            --hover-color: #f1f3f4;
+            --font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 0;
+            color: var(--on-surface-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        #app-container {
+            width: 100%;
+            max-width: 1200px;
+            height: 90vh;
+            max-height: 800px;
+            background-color: var(--surface-color);
+            border-radius: 8px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.06);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            padding: 8px 16px;
+            border-bottom: 1px solid var(--border-color);
+            flex-shrink: 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 22px;
+            font-weight: 500;
+        }
+
+        .logo svg {
+            width: 32px;
+            height: 32px;
+            margin-right: 8px;
+        }
+
+        #main-content {
+            display: flex;
+            flex-grow: 1;
+            overflow: hidden;
+        }
+
+        #sidebar {
+            width: 256px;
+            border-right: 1px solid var(--border-color);
+            padding: 16px 0;
+            flex-shrink: 0;
+            background-color: #f8f9fa;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-menu li {
+            display: flex;
+            align-items: center;
+            padding: 10px 24px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--on-surface-variant-color);
+        }
+
+        .sidebar-menu li.active {
+            background-color: var(--google-blue-light);
+            color: var(--google-blue);
+            border-top-right-radius: 100px;
+            border-bottom-right-radius: 100px;
+        }
+        
+        .sidebar-menu li.active svg {
+            fill: var(--google-blue);
+        }
+
+        .sidebar-menu li:hover {
+            background-color: var(--hover-color);
+             border-top-right-radius: 100px;
+            border-bottom-right-radius: 100px;
+        }
+
+        .sidebar-menu li svg {
+            width: 20px;
+            height: 20px;
+            margin-right: 20px;
+            fill: var(--on-surface-variant-color);
+        }
+
+        #task-view {
+            flex-grow: 1;
+            padding: 24px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        #task-view h1 {
+            font-size: 24px;
+            margin: 0 0 24px 0;
+            font-weight: 400;
+        }
+
+        .task-group {
+            margin-bottom: 24px;
+        }
+
+        .task-group-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--google-blue);
+            margin-bottom: 12px;
+        }
+
+        .task-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .task-item:hover {
+            background-color: var(--hover-color);
+        }
+        
+        .task-item.completed .task-text {
+            text-decoration: line-through;
+            color: var(--on-surface-variant-color);
+        }
+
+        .task-checkbox {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 2px solid var(--on-surface-variant-color);
+            margin-right: 16px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        
+        .task-item.completed .task-checkbox {
+             background-color: var(--google-blue);
+             border-color: var(--google-blue);
+        }
+        
+        .task-checkbox svg {
+            width: 12px;
+            height: 12px;
+            fill: white;
+            display: none;
+        }
+        
+        .task-item.completed .task-checkbox svg {
+            display: block;
+        }
+        
+        .task-info {
+            flex-grow: 1;
+        }
+
+        .task-text {
+            font-size: 14px;
+        }
+
+        .task-date {
+            font-size: 12px;
+            color: var(--on-surface-variant-color);
+        }
+
+        #add-task-btn {
+            position: absolute;
+            bottom: 32px;
+            right: 32px;
+            width: 56px;
+            height: 56px;
+            background-color: var(--google-blue);
+            border: none;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            transition: background-color 0.3s;
+        }
+
+        #add-task-btn:hover {
+            background-color: #3367d6;
+        }
+
+        #add-task-btn svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        #add-task-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        #add-task-form {
+            background-color: white;
+            padding: 24px;
+            border-radius: 8px;
+            width: 400px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+        }
+        
+        #add-task-form h2 {
+            margin: 0 0 16px 0;
+            font-weight: 500;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+        
+        .form-actions button {
+            padding: 10px 16px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        #cancel-btn {
+            background-color: transparent;
+            color: var(--google-blue);
+        }
+
+        #submit-task-btn {
+            background-color: var(--google-blue);
+            color: white;
+        }
+
+        #toast-container {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toast {
+            background-color: #323232;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 4px;
+            font-size: 14px;
+            animation: fadeInOut 3s ease-in-out;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; transform: translateY(20px); }
+            10%, 90% { opacity: 1; transform: translateY(0); }
+        }
+
+    </style>
+</head>
+<body>
+    <div id="app-container">
+        <header>
+            <div class="logo">
+                <svg viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M22,5.7l-4.6,4.6l-1.4-1.4l3.2-3.2L18,4.5c-1.5-1.5-3.5-2.3-5.5-2.3C9.3,2.2,6.5,4,5.1,6.8c-1.4,2.8-0.9,6.2,1.3,8.4c2.2,2.2,5.6,2.7,8.4,1.3c2.8-1.4,4.6-4.2,4.6-7.3h-2c0,2.8-2.2,5-5,5c-2.8,0-5-2.2-5-5s2.2-5,5-5c1.4,0,2.6,0.5,3.5,1.5L15,10h7V3L22,5.7z"/>
+                </svg>
+                <span>Tasks</span>
+            </div>
+        </header>
+        <main id="main-content">
+            <aside id="sidebar">
+                <ul class="sidebar-menu">
+                    <li class="active">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+                        </svg>
+                        <span>My Tasks</span>
+                    </li>
+                    <li>
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                        </svg>
+                        <span>Starred</span>
+                    </li>
+                    <li>
+                        <svg viewBox="0 0 24 24">
+                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                        </svg>
+                        <span>Completed</span>
+                    </li>
+                </ul>
+            </aside>
+            <main id="task-view">
+                <h1>My Tasks</h1>
+                <div id="task-list-container">
+                    </div>
+                <button id="add-task-btn" aria-label="Add new task">
+                    <svg viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                    </svg>
+                </button>
+            </main>
+        </main>
+    </div>
+
+    <div id="add-task-modal">
+        <form id="add-task-form">
+            <h2>Add a new task</h2>
+            <div class="form-group">
+                <label for="task-title">Task</label>
+                <input type="text" id="task-title" placeholder="e.g., Finalize presentation for Friday" required>
+            </div>
+            <div class="form-group">
+                <label for="task-date">Date</label>
+                <input type="date" id="task-date" required>
+            </div>
+            <div class="form-actions">
+                <button type="button" id="cancel-btn">Cancel</button>
+                <button type="submit" id="submit-task-btn">Add task</button>
+            </div>
+        </form>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const taskListContainer = document.getElementById('task-list-container');
+            const addTaskBtn = document.getElementById('add-task-btn');
+            const addTaskModal = document.getElementById('add-task-modal');
+            const addTaskForm = document.getElementById('add-task-form');
+            const cancelBtn = document.getElementById('cancel-btn');
+            const taskTitleInput = document.getElementById('task-title');
+            const taskDateInput = document.getElementById('task-date');
+            
+            // Set default date to today
+            const today = new Date();
+            const todayString = today.toISOString().split('T')[0];
+            taskDateInput.value = todayString;
+
+
+            let tasks = [
+                { id: 1, title: 'Draft Q3 financial report', date: '2025-07-22', completed: false },
+                { id: 2, title: 'Call with Avery Jackson re: marketing campaign', date: '2025-07-22', completed: false },
+                { id: 3, title: 'Review and approve new design mockups', date: '2025-07-23', completed: false },
+                { id: 4, title: 'Prepare agenda for the weekly sync meeting', date: '2025-07-24', completed: true },
+                { id: 5, title: 'Onboarding session with the new hire, Leo Chen', date: '2025-07-25', completed: false },
+                { id: 6, title: 'Book flights to Calgary for the September conference', date: '2025-07-28', completed: false },
+                { id: 7, title: 'Submit expense report for last week', date: '2025-07-21', completed: true },
+            ];
+
+            const renderTasks = () => {
+                taskListContainer.innerHTML = '';
+                
+                const groupedTasks = tasks.reduce((acc, task) => {
+                    const date = new Date(task.date);
+                    // Adjust for timezone offset to prevent date changes
+                    const utcDate = new Date(date.getTime() + date.getTimezoneOffset() * 60000);
+                    const dateString = utcDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+                    
+                    if (!acc[dateString]) {
+                        acc[dateString] = [];
+                    }
+                    acc[dateString].push(task);
+                    return acc;
+                }, {});
+                
+                const sortedDates = Object.keys(groupedTasks).sort((a,b) => new Date(a) - new Date(b));
+
+                for (const date of sortedDates) {
+                    const groupDiv = document.createElement('div');
+                    groupDiv.className = 'task-group';
+
+                    const title = document.createElement('h2');
+                    title.className = 'task-group-title';
+                    title.textContent = date;
+                    groupDiv.appendChild(title);
+
+                    const ul = document.createElement('ul');
+                    ul.className = 'task-list';
+
+                    groupedTasks[date].forEach(task => {
+                        const li = document.createElement('li');
+                        li.className = `task-item ${task.completed ? 'completed' : ''}`;
+                        li.dataset.id = task.id;
+
+                        li.innerHTML = `
+                            <div class="task-checkbox">
+                               <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                            </div>
+                            <div class="task-info">
+                                <div class="task-text">${task.title}</div>
+                            </div>
+                        `;
+                        
+                        li.querySelector('.task-checkbox').addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            toggleTaskCompletion(task.id);
+                        });
+                        
+                        ul.appendChild(li);
+                    });
+
+                    groupDiv.appendChild(ul);
+                    taskListContainer.appendChild(groupDiv);
+                }
+            };
+            
+            const toggleTaskCompletion = (id) => {
+                const task = tasks.find(t => t.id === id);
+                if(task) {
+                    task.completed = !task.completed;
+                    renderTasks();
+                }
+            }
+
+            const showToast = (message) => {
+                const toastContainer = document.getElementById('toast-container');
+                const toast = document.createElement('div');
+                toast.className = 'toast';
+                toast.textContent = message;
+                toastContainer.appendChild(toast);
+
+                setTimeout(() => {
+                    toast.remove();
+                }, 3000);
+            };
+
+            addTaskBtn.addEventListener('click', () => {
+                addTaskModal.style.display = 'flex';
+                taskTitleInput.focus();
+            });
+
+            cancelBtn.addEventListener('click', () => {
+                addTaskModal.style.display = 'none';
+            });
+            
+            addTaskModal.addEventListener('click', (e) => {
+                 if (e.target === addTaskModal) {
+                    addTaskModal.style.display = 'none';
+                 }
+            });
+
+            addTaskForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const title = taskTitleInput.value.trim();
+                const date = taskDateInput.value;
+
+                if (title && date) {
+                    const newTask = {
+                        id: Date.now(),
+                        title,
+                        date,
+                        completed: false,
+                    };
+                    tasks.push(newTask);
+                    tasks.sort((a,b) => new Date(a.date) - new Date(b.date));
+                    renderTasks();
+                    
+                    taskTitleInput.value = '';
+                    taskDateInput.value = todayString;
+                    addTaskModal.style.display = 'none';
+                    showToast('Task added successfully');
+                }
+            });
+
+            renderTasks();
+        });
+    </script>
+</body>
+</html>

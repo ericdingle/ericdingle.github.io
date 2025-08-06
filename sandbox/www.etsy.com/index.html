@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Etsy - Shop for handmade, vintage, and unique gifts</title>
+    <style>
+        /* Global Styles & Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --etsy-orange: #F1641E;
+            --etsy-dark: #2F2F2F;
+            --etsy-gray: #595959;
+            --etsy-light-gray: #EAEAEA;
+            --etsy-bg: #FDFDFD;
+            --toast-bg: #333;
+            --toast-text: #fff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: var(--etsy-bg);
+            color: var(--etsy-dark);
+        }
+
+        /* Header */
+        header {
+            border-bottom: 1px solid var(--etsy-light-gray);
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #fff;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+        
+        .logo svg {
+            width: 80px;
+            height: auto;
+            fill: var(--etsy-orange);
+        }
+
+        .search-container {
+            flex-grow: 1;
+            display: flex;
+            max-width: 700px;
+        }
+
+        .search-container input[type="search"] {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #ccc;
+            border-right: none;
+            border-radius: 25px 0 0 25px;
+            font-size: 1rem;
+        }
+        
+        .search-container input[type="search"]:focus {
+            outline: none;
+            border-color: var(--etsy-orange);
+            box-shadow: 0 0 0 2px rgba(241, 100, 30, 0.2);
+        }
+
+        .search-container button {
+            padding: 0.75rem 1.25rem;
+            border: 1px solid #ccc;
+            background-color: var(--etsy-light-gray);
+            border-radius: 0 25px 25px 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        
+        .search-container button:hover {
+            background-color: #ddd;
+        }
+
+        .search-container button svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .header-right a {
+            text-decoration: none;
+            color: var(--etsy-dark);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .header-right a:hover {
+            text-decoration: underline;
+        }
+        
+        .header-right .cart-icon {
+            position: relative;
+        }
+        
+        .header-right .cart-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+        
+        /* Main Content */
+        main {
+            padding: 2rem;
+        }
+
+        .welcome-banner {
+            background: url('https://images.unsplash.com/photo-1513116478543-5721b1a50a14?q=80&w=2070&auto=format&fit=crop') no-repeat center center;
+            background-size: cover;
+            color: white;
+            padding: 6rem 2rem;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .welcome-banner h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            color: var(--etsy-dark);
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .product-card {
+            background-color: #fff;
+            border: 1px solid var(--etsy-light-gray);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: box-shadow 0.3s ease;
+        }
+        
+        .product-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .product-info {
+            padding: 1rem;
+        }
+
+        .product-title {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--etsy-dark);
+            margin-bottom: 0.5rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .shop-name {
+            font-size: 0.85rem;
+            color: var(--etsy-gray);
+            margin-bottom: 0.5rem;
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 0.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--etsy-orange);
+        }
+        
+        .rating svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        .price {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--etsy-dark);
+            margin-bottom: 1rem;
+        }
+
+        .add-to-cart-btn {
+            width: 100%;
+            padding: 0.6rem;
+            background-color: var(--etsy-dark);
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .add-to-cart-btn:hover {
+            background-color: var(--etsy-orange);
+        }
+        
+        /* Search Results Section */
+        #search-results-section {
+            display: none; /* Initially hidden */
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #232347;
+            color: #fff;
+            padding: 3rem 2rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+            border-bottom: 1px solid #4a4a6a;
+            padding-bottom: 2rem;
+        }
+        
+        .footer-column h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-column a {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        
+        .footer-column a:hover {
+            text-decoration: underline;
+            color: #fff;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: #ccc;
+        }
+        
+        .footer-bottom .social-icons a {
+            margin-left: 1rem;
+            color: #fff;
+        }
+        
+        .footer-bottom .social-icons svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+        
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--toast-bg);
+            color: var(--toast-text);
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s, visibility 0.5s, transform 0.5s;
+        }
+
+        .toast.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -10px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .header-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+            .search-container {
+                max-width: 100%;
+            }
+            .welcome-banner {
+                padding: 4rem 1rem;
+            }
+            .welcome-banner h1 {
+                font-size: 2rem;
+            }
+            footer .footer-bottom {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-left">
+            <a href="#" class="logo" aria-label="Etsy Homepage">
+                <svg viewBox="0 0 1000 420" xmlns="http://www.w3.org/2000/svg"><path d="M211.85,391.8,178,252.32,143.1,391.8H0L121,9.31H233.19L355,391.8Z"/><path d="M473.12,391.8H353.48V9.31h118.8v78.22H421.1v76.54h46.06v74.49H421.1v79h52Z"/><path d="M601,391.8H572.8L510.42,260.1V391.8H481V9.31h29.8L573,142.36V9.31H601Z" transform="translate(0 -1.3)"/><path d="M720.62,391.8H592V311.41H715.15V235.7H592V164.84H720.62V88.52H592V9.31H749.8V391.8Z"/><path d="M900.27,391.8H771.12V9.31h129V88.52H800.27v66.32h95.17v70.86H800.27v87.57H900.27Z"/></svg>
+            </a>
+            <form class="search-container" id="search-form">
+                <input type="search" id="search-input" placeholder="Search for anything" aria-label="Search for anything">
+                <button type="submit" aria-label="Search">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                </button>
+            </form>
+        </div>
+        <div class="header-right">
+            <a href="#">Sign in</a>
+            <a href="#" class="cart-icon" aria-label="Cart">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c.51 0 .962-.344 1.087-.835l1.838-5.513a1.875 1.875 0 0 0-1.096-2.298H5.625M11.25 6h3.75m-3.75 3h3.75M5.625 6h5.625m-5.625 3h5.625"/></svg>
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <div id="default-content">
+            <section class="welcome-banner">
+                <h1>If it’s special, it’s on Etsy.</h1>
+            </section>
+    
+            <section>
+                <h2 class="section-title">Popular gifts right now 🎁</h2>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <img src="https://picsum.photos/seed/ceramics/400/300" alt="Handmade Ceramic Mug">
+                        <div class="product-info">
+                            <p class="product-title">Handmade Ceramic Mug</p>
+                            <p class="shop-name">PotteryByIsabelle</p>
+                            <div class="rating" aria-label="4.8 out of 5 stars">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                                <span>4.8</span>
+                            </div>
+                            <p class="price">$34.50</p>
+                            <button class="add-to-cart-btn">Add to cart</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="https://picsum.photos/seed/jewelry/400/300" alt="Personalized Name Necklace">
+                        <div class="product-info">
+                            <p class="product-title">Personalized Name Necklace</p>
+                            <p class="shop-name">GemsAndStonesCo</p>
+                            <div class="rating" aria-label="4.9 out of 5 stars">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                                <span>4.9</span>
+                            </div>
+                            <p class="price">$49.00</p>
+                            <button class="add-to-cart-btn">Add to cart</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="https://picsum.photos/seed/leather/400/300" alt="Custom Leather Journal">
+                        <div class="product-info">
+                            <p class="product-title">Custom Leather Journal</p>
+                            <p class="shop-name">ArtisanLeatherGoods</p>
+                            <div class="rating" aria-label="5.0 out of 5 stars">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                                <span>5.0</span>
+                            </div>
+                            <p class="price">$55.20</p>
+                            <button class="add-to-cart-btn">Add to cart</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="https://picsum.photos/seed/candle/400/300" alt="Scented Soy Candle">
+                        <div class="product-info">
+                            <p class="product-title">Scented Soy Candle</p>
+                            <p class="shop-name">WickAndWaxCreations</p>
+                            <div class="rating" aria-label="4.7 out of 5 stars">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                                <span>4.7</span>
+                            </div>
+                            <p class="price">$22.00</p>
+                            <button class="add-to-cart-btn">Add to cart</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <section id="search-results-section">
+            <h2 class="section-title" id="search-results-title"></h2>
+            <div class="product-grid" id="search-results-grid">
+                <div class="product-card">
+                    <img src="https://picsum.photos/seed/ring/400/300" alt="Minimalist Silver Ring">
+                    <div class="product-info">
+                        <p class="product-title">Minimalist Silver Ring</p>
+                        <p class="shop-name">SilverLiningGems</p>
+                        <div class="rating" aria-label="4.9 out of 5 stars">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                            <span>4.9</span>
+                        </div>
+                        <p class="price">$42.00</p>
+                        <button class="add-to-cart-btn">Add to cart</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <img src="https://picsum.photos/seed/goldring/400/300" alt="Engraved Gold Band Ring">
+                    <div class="product-info">
+                        <p class="product-title">Engraved Gold Band Ring</p>
+                        <p class="shop-name">ForeverForged</p>
+                        <div class="rating" aria-label="5.0 out of 5 stars">
+                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                            <span>5.0</span>
+                        </div>
+                        <p class="price">$125.00</p>
+                        <button class="add-to-cart-btn">Add to cart</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <img src="https://picsum.photos/seed/woodring/400/300" alt="Rustic Wooden Ring Box">
+                    <div class="product-info">
+                        <p class="product-title">Rustic Wooden Ring Box</p>
+                        <p class="shop-name">WoodlandKeepsakes</p>
+                        <div class="rating" aria-label="4.8 out of 5 stars">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                            <span>4.8</span>
+                        </div>
+                        <p class="price">$28.99</p>
+                        <button class="add-to-cart-btn">Add to cart</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Shop</h3>
+                <ul>
+                    <li><a href="#">Gift cards</a></li>
+                    <li><a href="#">Etsy Registry</a></li>
+                    <li><a href="#">Sitemap</a></li>
+                    <li><a href="#">Etsy blog</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Sell</h3>
+                <ul>
+                    <li><a href="#">Sell on Etsy</a></li>
+                    <li><a href="#">Teams</a></li>
+                    <li><a href="#">Forums</a></li>
+                    <li><a href="#">Affiliates</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>About</h3>
+                <ul>
+                    <li><a href="#">Etsy, Inc.</a></li>
+                    <li><a href="#">Policies</a></li>
+                    <li><a href="#">Investors</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Press</a></li>
+                    <li><a href="#">Impact</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Help</h3>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Privacy settings</a></li>
+                    <li><a href="#">(302) 281-9874</a></li>
+                    <li class="social-icons">
+                        <a href="#" aria-label="Instagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7.8,2H16.2C19.4,2 22,4.6 22,7.8V16.2A5.8,5.8 0 0,1 16.2,22H7.8C4.6,22 2,19.4 2,16.2V7.8A5.8,5.8 0 0,1 7.8,2M7.6,4A3.6,3.6 0 0,0 4,7.6V16.4C4,18.39 5.61,20 7.6,20H16.4A3.6,3.6 0 0,0 20,16.4V7.6C20,5.61 18.39,4 16.4,4H7.6M17.25,5.5A1.25,1.25 0 0,1 18.5,6.75A1.25,1.25 0 0,1 17.25,8A1.25,1.25 0 0,1 16,6.75A1.25,1.25 0 0,1 17.25,5.5M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9Z" /></svg></a>
+                        <a href="#" aria-label="Facebook"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2.04C6.5 2.04 2 6.53 2 12.06C2 17.06 5.66 21.21 10.44 21.96V14.96H7.9V12.06H10.44V9.81C10.44 7.31 11.93 5.96 14.22 5.96C15.31 5.96 16.45 6.15 16.45 6.15V8.62H15.19C13.95 8.62 13.56 9.39 13.56 10.18V12.06H16.34L15.89 14.96H13.56V21.96A10 10 0 0 0 12 2.04Z" /></svg></a>
+                        <a href="#" aria-label="Pinterest"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2C11.64,2 11.28,2.05 10.93,2.14C10.5,2.78 9.7,4.33 9.7,4.33C9.7,4.33 9.5,4.94 9.5,5.4C9.5,6.34 10.15,7.22 10.15,7.22C10.15,7.22 10.05,7.61 9.92,8.05C9.69,8.87 9.03,10.5 9.03,10.5C9.03,10.5 8.24,10.41 7.5,10.7C6.07,11.21 5,12.5 5,13.95C5,15.75 6.2,17.29 7.84,17.29C9,17.29 9.6,16.45 9.6,15.82C9.6,15.82 9.27,14.65 9.17,14.26C9,13.68 9.5,13.2 10.05,13.2C11.31,13.2 12.2,14.33 12.2,15.5C12.2,16.5 11.53,17.43 11.53,17.43C11.53,17.43 10.6,20 10.3,21.05C11.19,21.68 12.25,22 13.39,22C17.75,22 21.06,18.11 21.06,12.83C21.06,8.5 17.53,4.6 13.5,4.6C10.74,4.6 8.87,6.23 8.87,6.23C8.87,6.23 9.38,5.33 9.56,4.73C9.91,3.83 10.5,2.68 10.93,2.14C11.28,2.05 11.64,2 12,2Z" /></svg></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>&copy; 2025 Etsy, Inc.</span>
+            <span>Terms of Use &bull; Privacy &bull; Interest-based ads</span>
+        </div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- Toast Notification Logic ---
+            function showToast(message) {
+                // Remove any existing toast
+                const existingToast = document.querySelector('.toast');
+                if (existingToast) {
+                    existingToast.remove();
+                }
+
+                // Create new toast
+                const toast = document.createElement('div');
+                toast.textContent = message;
+                toast.className = 'toast';
+                document.body.appendChild(toast);
+
+                // Animate in
+                setTimeout(() => {
+                    toast.classList.add('show');
+                }, 100); // Small delay to allow element to be added to DOM
+
+                // Animate out and remove
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => {
+                        toast.remove();
+                    }, 500); // Match transition duration
+                }, 3000); // Toast visible for 3 seconds
+            }
+
+            // Attach event listeners to all "Add to cart" buttons
+            const cartButtons = document.querySelectorAll('.add-to-cart-btn');
+            cartButtons.forEach(button => {
+                button.addEventListener('click', function(event) {
+                    event.preventDefault(); // Prevent any default form submission
+                    showToast('Added to your cart! 🎉');
+                });
+            });
+
+            // --- Search Simulation Logic ---
+            const searchForm = document.getElementById('search-form');
+            const searchInput = document.getElementById('search-input');
+            const defaultContent = document.getElementById('default-content');
+            const searchResultsSection = document.getElementById('search-results-section');
+            const searchResultsTitle = document.getElementById('search-results-title');
+
+            searchForm.addEventListener('submit', function(event) {
+                event.preventDefault(); // Stop page from reloading
+                const query = searchInput.value.trim();
+
+                if (query) {
+                    // Hide default content and show search results
+                    defaultContent.style.display = 'none';
+                    searchResultsSection.style.display = 'block';
+
+                    // Update the title with the search query
+                    searchResultsTitle.textContent = `Results for "${query}"`;
+                    
+                    // In a real app, you'd fetch data here.
+                    // For this simulation, we just show the hardcoded results.
+                } else {
+                    // If search is empty, show default content
+                    defaultContent.style.display = 'block';
+                    searchResultsSection.style.display = 'none';
+                }
+            });
+
+            // --- Logo click to return home ---
+            const logo = document.querySelector('.logo');
+            logo.addEventListener('click', function(e) {
+                e.preventDefault();
+                // Show default content and hide search results
+                defaultContent.style.display = 'block';
+                searchResultsSection.style.display = 'none';
+                searchInput.value = ''; // Clear search input
+            });
+
+        });
+    </script>
+</body>
+</html>

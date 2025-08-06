@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blogger</title>
+    <style>
+        :root {
+            --blogger-orange: #FF6600;
+            --blogger-blue: #2175D9;
+            --background-color: #f5f5f5;
+            --border-color: #ebebeb;
+            --font-color: #333;
+            --font-color-light: #666;
+            --white: #FFFFFF;
+            --shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            background-color: var(--background-color);
+            color: var(--font-color);
+            line-height: 1.6;
+        }
+
+        /* --- Main Layout & Header --- */
+        .header {
+            background-color: var(--white);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 900;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .blogger-logo {
+            width: 32px;
+            height: 32px;
+            margin-right: 15px;
+        }
+
+        .header-title {
+            font-size: 22px;
+            font-weight: 400;
+            color: #444;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--blogger-orange);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background-color: #e65c00;
+        }
+        
+        .btn-secondary {
+            background-color: var(--white);
+            color: var(--font-color-light);
+            border-color: #ccc;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #f8f8f8;
+            border-color: #bbb;
+        }
+        
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #D3D3D3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 20px auto;
+            padding: 0 20px;
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+        }
+        
+        .main-content {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .sidebar {
+            width: 280px;
+            flex-shrink: 0;
+        }
+        
+        /* --- Sidebar Widgets --- */
+        .widget {
+            background-color: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            padding: 20px;
+        }
+
+        .widget-title {
+            font-size: 16px;
+            font-weight: 500;
+            margin-top: 0;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .about-me {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .about-me img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .about-me-info h4 {
+            margin: 0;
+            font-size: 15px;
+        }
+        
+        .about-me-info p {
+            margin: 0;
+            font-size: 13px;
+            color: var(--font-color-light);
+        }
+        
+        .archive-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .archive-list li a {
+            text-decoration: none;
+            color: var(--blogger-blue);
+            font-size: 14px;
+            display: block;
+            padding: 5px 0;
+        }
+        
+        .archive-list li a:hover {
+            text-decoration: underline;
+        }
+
+        /* --- Post Feed --- */
+        .post-list {
+            background-color: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+        }
+
+        .post-item {
+            padding: 25px;
+            border-bottom: 1px solid var(--border-color);
+            opacity: 1;
+            transform: scale(1);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+        
+        .post-item.new-post-animation {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+
+        .post-item:last-child {
+            border-bottom: none;
+        }
+        
+        .post-title a {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--font-color);
+            text-decoration: none;
+            margin: 0;
+        }
+        
+        .post-title a:hover {
+            color: var(--blogger-orange);
+        }
+        
+        .post-meta {
+            color: var(--font-color-light);
+            font-size: 13px;
+            margin: 5px 0 15px;
+        }
+        
+        .post-image {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .post-content {
+            font-size: 15px;
+            color: #444;
+        }
+
+        .post-footer {
+            margin-top: 20px;
+            font-size: 13px;
+        }
+
+        .post-footer a {
+            color: var(--blogger-blue);
+            text-decoration: none;
+            margin-right: 15px;
+        }
+        
+        .post-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        /* --- Post Editor --- */
+        .post-editor {
+            background-color: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+        }
+
+        .editor-header {
+            padding: 15px 25px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .editor-title {
+            font-size: 20px;
+            color: #444;
+            margin: 0;
+        }
+        
+        .editor-body {
+            padding: 25px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group input[type="text"],
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+        
+        .form-group input[type="text"] {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .form-group textarea {
+            min-height: 300px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+        
+        /* --- Toast Notification --- */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #2D3748;
+            color: white;
+            padding: 16px 24px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s, visibility 0.5s, bottom 0.5s;
+        }
+
+        .toast.show {
+            opacity: 1;
+            visibility: visible;
+            bottom: 40px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header-left">
+            <svg class="blogger-logo" viewBox="0 0 28 28">
+                <rect width="28" height="28" rx="4" fill="#FF6600"/>
+                <path d="M10.24,8.22h5.81c2.81,0,4.72,1.8,4.72,4.21c0,2.3-1.68,3.75-3.81,4.11v0.07c2.53,0.37,4.35,2.02,4.35,4.42 c0,2.81-2.27,4.79-5.46,4.79h-5.6V8.22z M13.18,15.1h2.1c1.37,0,2.21-0.78,2.21-1.89c0-1.14-0.87-1.83-2.21-1.83h-2.1V15.1z M13.18,22.75h2.36c1.55,0,2.56-0.87,2.56-2.12c0-1.34-1.04-2.15-2.6-2.15h-2.32V22.75z" fill="#FFF"/>
+            </svg>
+            <h1 class="header-title">My Blog</h1>
+        </div>
+        <div class="header-right">
+            <a href="#" class="btn btn-secondary">View Blog</a>
+            <button id="newPostBtn" class="btn btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                </svg>
+                New Post
+            </button>
+            <div class="user-avatar">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#FFFFFF" viewBox="0 0 16 16">
+                    <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                </svg>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <main class="main-content">
+            
+            <div id="postListContainer">
+                <div class="post-list">
+                    <div class="post-item">
+                        <h2 class="post-title"><a href="#">The Future of Collaborative Tech</a></h2>
+                        <p class="post-meta">Posted by Marcus Thorne on 15 Jul 2025</p>
+                        <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1740&auto=format&fit=crop" alt="Collaborative tech workspace" class="post-image">
+                        <div class="post-content">
+                            The landscape of technology is perpetually shifting, but the most profound changes are happening in the way we collaborate. Gone are the days of siloed departments. Today's breakthroughs are born from collective effort, powered by a new generation of tools that dissolve geographical barriers.
+                        </div>
+                        <div class="post-footer">
+                            <a href="#">3 Comments</a>
+                            <a href="#">Edit</a>
+                        </div>
+                    </div>
+                    <div class="post-item">
+                        <h2 class="post-title"><a href="#">Rediscovering the Art of Long-Form Writing</a></h2>
+                        <p class="post-meta">Posted by Anya Sharma on 08 Jul 2025</p>
+                         <img src="https://images.unsplash.com/photo-1471107340929-a87cd0f5b5f3?q=80&w=1673&auto=format&fit=crop" alt="A person writing in a notebook" class="post-image">
+                        <div class="post-content">
+                           In an age of fleeting tweets and ephemeral stories, the practice of long-form writing feels almost rebellious. Yet, it's an art form experiencing a quiet renaissance. Readers are growing tired of clickbait and are yearning for depth, nuance, and well-researched narratives.
+                        </div>
+                        <div class="post-footer">
+                           <a href="#">8 Comments</a>
+                           <a href="#">Edit</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="postEditorContainer" style="display: none;">
+                <form id="postEditorForm" class="post-editor">
+                    <div class="editor-header">
+                         <h2 class="editor-title">Create post</h2>
+                         <div>
+                            <button type="button" id="cancelBtn" class="btn btn-secondary">Back</button>
+                            <button type="submit" class="btn btn-primary">Publish</button>
+                         </div>
+                    </div>
+                    <div class="editor-body">
+                        <div class="form-group">
+                            <input type="text" id="postTitle" placeholder="Title" required>
+                        </div>
+                         <div class="form-group">
+                            <input type="text" id="authorName" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="postContent" placeholder="Tell your story..." required></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </main>
+        
+        <aside class="sidebar">
+            <div class="widget">
+                <h3 class="widget-title">About Me</h3>
+                <div class="about-me">
+                    <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=461&auto=format&fit=crop" alt="Profile picture of a woman smiling">
+                    <div class="about-me-info">
+                        <h4>Eleanor Vance</h4>
+                        <p>Calgary, AB</p>
+                        <a href="#" style="font-size: 13px; text-decoration: none; color: var(--blogger-blue);">View my complete profile</a>
+                    </div>
+                </div>
+            </div>
+            <div class="widget">
+                <h3 class="widget-title">Archive</h3>
+                <ul class="archive-list">
+                    <li><a href="#">July 2025</a></li>
+                    <li><a href="#">June 2025</a></li>
+                    <li><a href="#">May 2025</a></li>
+                    <li><a href="#">April 2025</a></li>
+                </ul>
+            </div>
+        </aside>
+    </div>
+
+    <div id="toast-notification" class="toast"></div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // View containers
+        const postListContainer = document.getElementById('postListContainer');
+        const postEditorContainer = document.getElementById('postEditorContainer');
+        
+        // Buttons
+        const newPostBtn = document.getElementById('newPostBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+        
+        // Form and post list
+        const postEditorForm = document.getElementById('postEditorForm');
+        const postList = document.querySelector('.post-list');
+
+        function showEditor() {
+            postListContainer.style.display = 'none';
+            postEditorContainer.style.display = 'block';
+        }
+
+        function showPostList() {
+            postEditorContainer.style.display = 'none';
+            postListContainer.style.display = 'block';
+        }
+
+        newPostBtn.addEventListener('click', showEditor);
+        cancelBtn.addEventListener('click', showPostList);
+
+        postEditorForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const title = document.getElementById('postTitle').value.trim();
+            const author = document.getElementById('authorName').value.trim();
+            const content = document.getElementById('postContent').value.trim();
+            
+            if (!title || !author || !content) {
+                showToast('All fields are required.');
+                return;
+            }
+
+            const newPost = createPostElement(title, author, content);
+            newPost.classList.add('new-post-animation');
+            postList.prepend(newPost);
+            
+            // Allow element to be added to DOM before removing animation class
+            setTimeout(() => {
+                newPost.classList.remove('new-post-animation');
+            }, 10);
+            
+            postEditorForm.reset();
+            showPostList();
+            showToast('Post published successfully!');
+        });
+
+        function createPostElement(title, author, content) {
+            const postItem = document.createElement('div');
+            postItem.className = 'post-item';
+            
+            const postDate = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+            
+            // Extract the first paragraph for the snippet
+            const snippet = content.split('\n')[0];
+            
+            postItem.innerHTML = `
+                <h2 class="post-title"><a href="#">${title}</a></h2>
+                <p class="post-meta">Posted by ${author} on ${postDate}</p>
+                <img src="https://picsum.photos/800/400?random=${Math.floor(Math.random() * 100)}" alt="A new post image" class="post-image">
+                <div class="post-content">${snippet}</div>
+                <div class="post-footer">
+                   <a href="#">0 Comments</a>
+                   <a href="#">Edit</a>
+                </div>
+            `;
+            return postItem;
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast-notification');
+            toast.textContent = message;
+            toast.classList.add('show');
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+    });
+</script>
+
+</body>
+</html>

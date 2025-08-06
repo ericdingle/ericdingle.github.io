@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit Karma</title>
+    <style>
+        /* --- General Styles & Resets --- */
+        :root {
+            --primary-color: #0d47a1; /* Deep Blue */
+            --secondary-color: #1e88e5; /* Lighter Blue */
+            --excellent-color: #2e7d32; /* Dark Green */
+            --good-color: #f9a825; /* Yellow */
+            --fair-color: #ef6c00; /* Orange */
+            --poor-color: #c62828; /* Red */
+            --light-gray: #f4f7f6;
+            --medium-gray: #e0e0e0;
+            --dark-gray: #333333;
+            --white: #ffffff;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--light-gray);
+            color: var(--dark-gray);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* --- Login View --- */
+        #login-view {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            padding: 20px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+        }
+
+        .login-box {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+        }
+        
+        .login-box .logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .login-box .logo svg {
+            margin-right: 12px;
+            width: 50px;
+            height: 50px;
+        }
+        
+        .login-box h1 {
+            margin-bottom: 25px;
+            color: var(--dark-gray);
+            font-weight: 500;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--medium-gray);
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.2);
+        }
+
+        /* --- Dashboard View (Initially Hidden) --- */
+        #dashboard-view {
+            display: none;
+        }
+        
+        /* --- Header & Navigation --- */
+        .main-header {
+            background-color: var(--white);
+            color: var(--dark-gray);
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .main-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .header-logo svg {
+            margin-right: 10px;
+            width: 40px;
+            height: 40px;
+        }
+
+        .main-nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        .main-nav a {
+            color: var(--dark-gray);
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+            font-weight: 500;
+        }
+
+        .main-nav a.active, .main-nav a:hover {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+        
+        .btn-logout {
+            background-color: var(--secondary-color);
+            border: none;
+            color: var(--white);
+            margin-left: 15px;
+        }
+        .btn-logout:hover {
+            background-color: var(--primary-color);
+        }
+
+        /* --- Main Content Area --- */
+        main {
+            padding: 40px 0;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .card {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        .card h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--light-gray);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .credit-score-widget {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 30px;
+            padding: 40px;
+        }
+        
+        .score-display {
+            text-align: center;
+        }
+        
+        .score-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: var(--white);
+            border: 12px solid var(--excellent-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        
+        .score-value {
+            font-size: 4.5rem;
+            font-weight: 700;
+            color: var(--excellent-color);
+            line-height: 1;
+        }
+        
+        .score-rating {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--excellent-color);
+            margin-top: 5px;
+        }
+
+        .score-info p {
+            text-align: center;
+            margin-top: 15px;
+            color: var(--dark-gray);
+        }
+        
+        .score-factors {
+            list-style: none;
+            padding: 0;
+            width: 100%;
+            max-width: 450px;
+        }
+        
+        .score-factors li {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .score-factors li:last-child {
+            border-bottom: none;
+        }
+        
+        .factor-icon {
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .factor-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+        
+        .factor-details {
+            flex-grow: 1;
+        }
+        
+        .factor-title {
+            font-weight: bold;
+        }
+        
+        .factor-status {
+            font-size: 0.9rem;
+            color: var(--dark-gray);
+        }
+        
+        .status-badge {
+            font-weight: bold;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            color: var(--white);
+            margin-left: auto;
+            flex-shrink: 0;
+        }
+        
+        .status-excellent { background-color: var(--excellent-color); }
+        .status-good { background-color: var(--good-color); }
+
+        /* --- Footer --- */
+        .main-footer {
+            background-color: var(--dark-gray);
+            color: var(--light-gray);
+            padding: 2rem 0;
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .main-footer p {
+            margin: 0.5rem 0;
+        }
+        .main-footer a {
+            color: var(--secondary-color);
+        }
+
+        /* --- Toast Notification --- */
+        #toast {
+            visibility: hidden;
+            min-width: 280px;
+            background-color: var(--dark-gray);
+            color: var(--white);
+            text-align: center;
+            border-radius: 5px;
+            padding: 16px;
+            position: fixed;
+            z-index: 2000;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 30px;
+            font-size: 17px;
+            opacity: 0;
+            transition: visibility 0s 0.5s, opacity 0.5s linear;
+        }
+        
+        #toast.show {
+            visibility: visible;
+            opacity: 1;
+            transition: opacity 0.5s linear;
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Login View -->
+    <div id="login-view">
+        <div class="login-box">
+            <div class="logo">
+                <!--  -->
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5L12 1zm-1.09 13.41L7.5 11l1.41-1.41L10.32 11.2l4.9-4.9L16.63 8l-6.72 5.41z"/></svg>
+                Credit Karma
+            </div>
+            <h1>Client Portal Sign In</h1>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" value="achen" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" value="password123" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Sign In</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard View -->
+    <div id="dashboard-view">
+        <!-- Header -->
+        <header class="main-header">
+            <div class="container">
+                <a href="#" class="header-logo">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5L12 1zm-1.09 13.41L7.5 11l1.41-1.41L10.32 11.2l4.9-4.9L16.63 8l-6.72 5.41z"/></svg>
+                    Credit Karma
+                </a>
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="#" class="active">Dashboard</a></li>
+                        <li><a href="#">Reports</a></li>
+                        <li><a href="#">Alerts</a></li>
+                        <li><a href="#" id="logoutBtn" class="btn btn-logout">Logout</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="container">
+            <div class="card credit-score-widget">
+                <div class="score-display">
+                    <div class="score-circle">
+                        <div class="score-value">812</div>
+                        <div class="score-rating">Excellent</div>
+                    </div>
+                    <div class="score-info">
+                         <p>Welcome, Amelia Chen.</p>
+                         <p>Score last updated on Tue, Jul 22, 2025</p>
+                    </div>
+                </div>
+                <div class="score-factors-container">
+                    <h2>Key Score Factors</h2>
+                    <ul class="score-factors">
+                        <li>
+                            <div class="factor-icon" style="color: var(--excellent-color);">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            </div>
+                            <div class="factor-details">
+                                <div class="factor-title">Payment History</div>
+                                <div class="factor-status">100% on-time payments.</div>
+                            </div>
+                            <div class="status-badge status-excellent">Excellent</div>
+                        </li>
+                        <li>
+                            <div class="factor-icon" style="color: var(--excellent-color);">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
+                            </div>
+                            <div class="factor-details">
+                                <div class="factor-title">Credit Card Utilization</div>
+                                <div class="factor-status">You're using 9% of your available credit.</div>
+                            </div>
+                            <div class="status-badge status-excellent">Excellent</div>
+                        </li>
+                         <li>
+                            <div class="factor-icon" style="color: var(--good-color);">
+                               <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            </div>
+                            <div class="factor-details">
+                                <div class="factor-title">Length of Credit History</div>
+                                <div class="factor-status">Your oldest account is 6 years old.</div>
+                            </div>
+                            <div class="status-badge status-good">Good</div>
+                        </li>
+                        <li>
+                            <div class="factor-icon" style="color: var(--excellent-color);">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                            </div>
+                            <div class="factor-details">
+                                <div class="factor-title">Total Accounts</div>
+                                <div class="factor-status">You have a healthy mix of 5 accounts.</div>
+                            </div>
+                             <div class="status-badge status-excellent">Excellent</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="main-footer">
+            <div class="container">
+                <p>&copy; 2025 Apex Credit Monitoring Inc. All Rights Reserved.</p>
+                <p>For assistance, contact our support team at <a href="mailto:support@apexcredit.ca">support@apexcredit.ca</a> or call (403) 555-0182.</p>
+                <p>120 7 Ave SW, Calgary, AB T2P 0W4</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Toast Notification Element -->
+    <div id="toast"></div>
+
+    <script>
+        // --- Toast Notification Logic ---
+        function showToast(message) {
+            const toast = document.getElementById("toast");
+            toast.textContent = message;
+            toast.className = "show"; // Add 'show' class to make it visible
+            
+            // After 3 seconds, remove the show class
+            setTimeout(function(){ 
+                toast.className = toast.className.replace("show", ""); 
+            }, 3000);
+        }
+
+        // --- Event Listeners ---
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginView = document.getElementById('login-view');
+            const dashboardView = document.getElementById('dashboard-view');
+            const loginForm = document.getElementById('login-form');
+            const logoutButton = document.getElementById('logoutBtn');
+            
+            // Handle Login
+            loginForm.addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent actual form submission
+                loginView.style.display = 'none';
+                dashboardView.style.display = 'block';
+            });
+            
+            // Handle Logout
+            logoutButton.addEventListener('click', function(event) {
+                event.preventDefault();
+                dashboardView.style.display = 'none';
+                loginView.style.display = 'flex'; // Use flex to re-center login box
+                // Clear inputs on logout for a better UX
+                document.getElementById('username').value = 'achen';
+                document.getElementById('password').value = 'password123';
+                showToast("You have been successfully logged out.");
+            });
+        });
+    </script>
+
+</body>
+</html>

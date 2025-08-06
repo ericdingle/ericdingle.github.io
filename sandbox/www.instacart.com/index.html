@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instacart</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            background-color: #f7f7f7;
+            color: #212121;
+        }
+        header {
+            background-color: #fff;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        .logo svg {
+            height: 28px;
+            width: auto;
+        }
+        .search-bar {
+            flex-grow: 1;
+            margin: 0 2rem;
+            position: relative;
+        }
+        .search-bar input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            padding-left: 3rem;
+            border-radius: 2rem;
+            border: 1px solid #e0e0e0;
+            font-size: 1rem;
+        }
+        .search-bar svg {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            fill: #757575;
+        }
+        .cart-button {
+            display: flex;
+            align-items: center;
+            background-color: #388E3C;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 2rem;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .cart-button svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+            margin-right: 0.5rem;
+        }
+        main {
+            padding: 2rem;
+        }
+        .hero {
+            background-image: url('https://images.pexels.com/photos/1092730/pexels-photo-1092730.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 4rem 2rem;
+            border-radius: 1rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .hero h1 {
+            font-size: 3rem;
+            margin: 0;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+        .hero p {
+            font-size: 1.25rem;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+        #product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        .product-card {
+            background-color: #fff;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .product-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+        .product-info {
+            padding: 1rem;
+            flex-grow: 1;
+        }
+        .product-info h3 {
+            font-size: 1rem;
+            margin: 0 0 0.5rem 0;
+        }
+        .product-info p {
+            font-size: 0.875rem;
+            color: #757575;
+            margin: 0;
+        }
+        .product-add {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-top: 1px solid #e0e0e0;
+        }
+        .product-add span {
+            font-weight: 600;
+        }
+        .product-add button {
+            background-color: #388E3C;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            line-height: 32px;
+        }
+        #cart {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 380px;
+            height: 100%;
+            background-color: white;
+            box-shadow: -4px 0 12px rgba(0,0,0,0.15);
+            transition: right 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+        }
+        #cart.open {
+            right: 0;
+        }
+        .cart-header {
+            padding: 1rem;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .cart-header h2 {
+            margin: 0;
+        }
+        #close-cart {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        #cart-items {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+        .cart-item {
+            display: flex;
+            margin-bottom: 1rem;
+        }
+        .cart-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 0.25rem;
+            margin-right: 1rem;
+        }
+        .cart-item-info {
+            flex-grow: 1;
+        }
+        .cart-item-info h4 {
+            margin: 0 0 0.25rem 0;
+        }
+        .cart-item-info p {
+            margin: 0;
+            color: #757575;
+        }
+        .cart-footer {
+            padding: 1rem;
+            border-top: 1px solid #e0e0e0;
+        }
+        .cart-subtotal {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .checkout-button {
+            width: 100%;
+            padding: 1rem;
+            background-color: #388E3C;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #212121;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 2rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        .toast.show {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <svg viewBox="0 0 150 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M11.9,8.1c0.5-0.5,1.2-0.8,1.9-0.8c1.5,0,2.6,1.2,2.6,2.6c0,1.5-1.2,2.6-2.6,2.6c-0.7,0-1.4-0.3-1.9-0.8V8.1z" fill="#F2994A"/>
+                <path d="M22.5,7.3H21v5.1h1.5c1.5,0,2.6-1.2,2.6-2.6C25.1,8.5,24,7.3,22.5,7.3z" fill="#4CAF50"/>
+                <path d="M29.9,7.3h-3.4v5.1h3.4v-1.3h-2.1V10h1.9v-1.3h-1.9V8.6h2.1V7.3z" fill="#4CAF50"/>
+                <path d="M38,7.3h-1.3l-2.6,5.1h1.4l0.5-1.1h2.3l0.5,1.1h1.4L38,7.3z M36.8,10.3l0.6-1.4l0.6,1.4H36.8z" fill="#4CAF50"/>
+                <path d="M45,7.3h-3.4v5.1h1.3v-1.8h2.1c1,0,1.8-0.8,1.8-1.8C46.8,8.1,46,7.3,45,7.3z M45,9.4h-2.1V8.6h2.1c0.5,0,0.8,0.4,0.8,0.8 C45.8,9.1,45.5,9.4,45,9.4z" fill="#4CAF50"/>
+                <path d="M51.9,7.3h-1.3l-1.3,3.8V7.3h-1.3v5.1h1.1l1.3-3.8v3.8h1.3V7.3z" fill="#4CAF50"/>
+                <path d="M59.3,7.3h-3.4v5.1h3.4v-1.3h-2.1V10h1.9v-1.3h-1.9V8.6h2.1V7.3z" fill="#4CAF50"/>
+                <path d="M64.6,9.9c0-1.5,1.2-2.6,2.6-2.6s2.6,1.2,2.6,2.6c0,1.5-1.2,2.6-2.6,2.6S64.6,11.3,64.6,9.9z M68.5,9.9 c0-0.8-0.6-1.3-1.3-1.3s-1.3,0.6-1.3,1.3c0,0.8,0.6,1.3,1.3,1.3S68.5,10.6,68.5,9.9z" fill="#4CAF50"/>
+                <path d="M72.9,7.4v5h1.3V7.4H72.9z" fill="#4CAF50"/>
+                <path d="M78.6,12.4h-3.4V7.4h3.2v1.2h-1.9v1.1h1.8v1.2h-1.8v1.3h2V12.4z" fill="#4CAF50"/>
+                <path d="M82.8,7.4v5h1.3V7.4H82.8z" fill="#4CAF50"/>
+                <path d="M87.4,12.4H86L84,7.4h1.4l1.2,3.6L88,7.4h1.4L87.4,12.4z" fill="#4CAF50"/>
+            </svg>
+        </div>
+        <div class="search-bar">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+            <form id="search-form">
+                <input type="text" id="search-input" placeholder="Search products, stores, and recipes">
+            </form>
+        </div>
+        <a href="#" class="cart-button" id="open-cart">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+            <span id="cart-count">0</span>&nbsp;items
+        </a>
+    </header>
+
+    <main>
+        <div class="hero">
+            <h1>Groceries and more delivered right to your door.</h1>
+            <p>The best of your neighborhood, delivered in as fast as 1 hour.</p>
+        </div>
+
+        <h2 id="grid-title">Featured Products</h2>
+        <div id="product-grid">
+            </div>
+    </main>
+
+    <div id="cart">
+        <div class="cart-header">
+            <h2>Your Cart</h2>
+            <button id="close-cart">&times;</button>
+        </div>
+        <div id="cart-items">
+            </div>
+        <div class="cart-footer">
+            <div class="cart-subtotal">
+                <span>Subtotal</span>
+                <span id="cart-subtotal">$0.00</span>
+            </div>
+            <button class="checkout-button">Continue to Checkout</button>
+        </div>
+    </div>
+    
+    <div id="toast" class="toast"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const products = [
+                { id: 1, name: 'Organic Bananas', price: 1.29, image: 'https://images.pexels.com/photos/2280927/pexels-photo-2280927.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', description: 'per bunch' },
+                { id: 2, name: 'Granny Smith Apples', price: 3.49, image: 'https://images.pexels.com/photos/1510392/pexels-photo-1510392.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', description: 'per lb' },
+                { id: 3, name: 'Whole Milk', price: 4.19, image: 'https://images.pexels.com/photos/248412/pexels-photo-248412.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', description: 'gallon' },
+                { id: 4, name: 'Sourdough Bread', price: 5.99, image: 'https://images.pexels.com/photos/1775043/pexels-photo-1775043.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', description: '1 loaf' },
+                { id: 5, name: 'Free-Range Eggs', price: 6.49, image: 'https://images.pexels.com/photos/162712/egg-white-food-protein-162712.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', description: 'dozen' },
+                { id: 6, name: 'Avocado', price: 2.50, image: 'https://images.pexels.com/photos/557659/pexels-photo-557659.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', description: 'each' },
+                { id: 7, name: 'Cherry Tomatoes', price: 3.99, image: 'https://images.pexels.com/photos/1327838/pexels-photo-1327838.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', description: '1 pint' },
+                { id: 8, name: 'Baby Spinach', price: 4.49, image: 'https://images.pexels.com/photos/5945763/pexels-photo-5945763.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', description: '5 oz bag' }
+            ];
+
+            let cart = [];
+            
+            const productGrid = document.getElementById('product-grid');
+            const gridTitle = document.getElementById('grid-title');
+            const searchForm = document.getElementById('search-form');
+            const searchInput = document.getElementById('search-input');
+            const cartElement = document.getElementById('cart');
+            const openCartBtn = document.getElementById('open-cart');
+            const closeCartBtn = document.getElementById('close-cart');
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartCountElement = document.getElementById('cart-count');
+            const cartSubtotalElement = document.getElementById('cart-subtotal');
+            const toastElement = document.getElementById('toast');
+
+            const renderProducts = (productArray) => {
+                productGrid.innerHTML = '';
+                productArray.forEach(product => {
+                    const card = document.createElement('div');
+                    card.className = 'product-card';
+                    card.innerHTML = `
+                        <img src="${product.image}" alt="${product.name}">
+                        <div class="product-info">
+                            <h3>${product.name}</h3>
+                            <p>${product.description}</p>
+                        </div>
+                        <div class="product-add">
+                            <span>$${product.price.toFixed(2)}</span>
+                            <button data-product-id="${product.id}">+</button>
+                        </div>
+                    `;
+                    productGrid.appendChild(card);
+                });
+            };
+
+            const updateCart = () => {
+                cartItemsContainer.innerHTML = '';
+                let subtotal = 0;
+                let totalItems = 0;
+
+                const cartGrouped = cart.reduce((acc, item) => {
+                    acc[item.id] = acc[item.id] || { ...item, quantity: 0 };
+                    acc[item.id].quantity++;
+                    return acc;
+                }, {});
+
+                Object.values(cartGrouped).forEach(item => {
+                    const cartItem = document.createElement('div');
+                    cartItem.className = 'cart-item';
+                    cartItem.innerHTML = `
+                        <img src="${item.image}" alt="${item.name}">
+                        <div class="cart-item-info">
+                            <h4>${item.name}</h4>
+                            <p>${item.quantity} x $${item.price.toFixed(2)}</p>
+                        </div>
+                        <span>$${(item.quantity * item.price).toFixed(2)}</span>
+                    `;
+                    cartItemsContainer.appendChild(cartItem);
+                    subtotal += item.quantity * item.price;
+                    totalItems += item.quantity;
+                });
+
+                cartSubtotalElement.textContent = `$${subtotal.toFixed(2)}`;
+                cartCountElement.textContent = totalItems;
+            };
+
+            const showToast = (message) => {
+                toastElement.textContent = message;
+                toastElement.classList.add('show');
+                setTimeout(() => {
+                    toastElement.classList.remove('show');
+                }, 2000);
+            };
+
+            productGrid.addEventListener('click', (e) => {
+                if (e.target.tagName === 'BUTTON') {
+                    const productId = parseInt(e.target.dataset.productId);
+                    const productToAdd = products.find(p => p.id === productId);
+                    if (productToAdd) {
+                        cart.push(productToAdd);
+                        updateCart();
+                        showToast(`${productToAdd.name} added to cart`);
+                    }
+                }
+            });
+
+            searchForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const searchTerm = searchInput.value.toLowerCase();
+                if (searchTerm.trim() === '') {
+                    gridTitle.textContent = 'Featured Products';
+                    renderProducts(products);
+                    return;
+                }
+                const filteredProducts = products.filter(p => p.name.toLowerCase().includes(searchTerm));
+                gridTitle.textContent = `${filteredProducts.length} results for "${searchInput.value}"`;
+                renderProducts(filteredProducts);
+            });
+
+            openCartBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                cartElement.classList.add('open');
+            });
+
+            closeCartBtn.addEventListener('click', () => {
+                cartElement.classList.remove('open');
+            });
+            
+            // Initial render
+            renderProducts(products);
+        });
+    </script>
+</body>
+</html>

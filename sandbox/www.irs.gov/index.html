@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internal Revenue Service</title>
+    <style>
+        /* --- General Styles & Resets --- */
+        :root {
+            --primary-color: #0d47a1; /* Deep Blue */
+            --secondary-color: #1e88e5; /* Lighter Blue */
+            --accent-color: #4CAF50; /* Green for success */
+            --light-gray: #f4f7f6;
+            --medium-gray: #e0e0e0;
+            --dark-gray: #333333;
+            --white: #ffffff;
+            --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--light-gray);
+            color: var(--dark-gray);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* --- Login View --- */
+        #login-view {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            padding: 20px;
+        }
+
+        .login-box {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        
+        .login-box .logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .login-box .logo svg {
+            margin-right: 10px;
+            width: 45px;
+            height: 45px;
+        }
+        
+        .login-box h1 {
+            margin-bottom: 25px;
+            color: var(--dark-gray);
+            font-weight: 500;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--medium-gray);
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(13, 71, 161, 0.2);
+        }
+
+        /* --- Dashboard View (Initially Hidden) --- */
+        #dashboard-view {
+            display: none;
+        }
+        
+        /* --- Header & Navigation --- */
+        .main-header {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+        }
+
+        .main-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--white);
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .header-logo svg {
+            margin-right: 10px;
+            width: 40px;
+            height: 40px;
+        }
+
+        .main-nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        .main-nav a {
+            color: var(--white);
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .main-nav a:hover, .main-nav a.active {
+            background-color: var(--secondary-color);
+        }
+
+        /* --- Main Content Area --- */
+        main {
+            padding: 40px 0;
+        }
+
+        .welcome-banner {
+            background: var(--white);
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            border-left: 5px solid var(--secondary-color);
+        }
+
+        .welcome-banner h1 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .card {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        .card h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--light-gray);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* --- Documents Table --- */
+        .documents-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .documents-table th, .documents-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .documents-table th {
+            background-color: var(--light-gray);
+            font-weight: bold;
+        }
+
+        .documents-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .documents-table tr:hover {
+            background-color: #e3f2fd;
+        }
+
+        /* --- Buttons --- */
+        .btn {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn-primary {
+            background-color: var(--secondary-color);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        
+        .btn-download {
+            width: auto;
+        }
+
+        .btn-logout {
+            background-color: transparent;
+            border: 1px solid var(--white);
+            width: auto;
+            padding: 8px 15px;
+        }
+        .btn-logout:hover {
+            background-color: var(--white);
+            color: var(--primary-color);
+        }
+
+        /* --- Footer --- */
+        .main-footer {
+            background-color: var(--dark-gray);
+            color: var(--light-gray);
+            padding: 2rem 0;
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .main-footer p {
+            margin: 0.5rem 0;
+        }
+
+        /* --- Toast Notification --- */
+        #toast {
+            visibility: hidden;
+            min-width: 280px;
+            background-color: var(--dark-gray);
+            color: var(--white);
+            text-align: center;
+            border-radius: 5px;
+            padding: 16px;
+            position: fixed;
+            z-index: 2000;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 30px;
+            font-size: 17px;
+            opacity: 0;
+            transition: visibility 0s 0.5s, opacity 0.5s linear;
+        }
+        
+        #toast.show {
+            visibility: visible;
+            opacity: 1;
+            transition: opacity 0.5s linear;
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="login-view">
+        <div class="login-box">
+            <div class="logo">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"></path></svg>
+                Internal Revenue Service
+            </div>
+            <h1>Client Portal Sign In</h1>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" value="achen@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" value="password123" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Sign In</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="dashboard-view">
+        <header class="main-header">
+            <div class="container">
+                <a href="#" class="header-logo">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"></path></svg>
+                    Internal Revenue Service
+                </a>
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="#" class="active">Dashboard</a></li>
+                        <li><a href="#">My Account</a></li>
+                        <li><a href="#" id="logoutBtn" class="btn btn-logout">Logout</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <main class="container">
+            <div class="welcome-banner">
+                <h1>Welcome Back, Amelia Chen</h1>
+                <p>Here you can access your tax documents and manage your account details. Last login: July 22, 2025 at 1:46 PM.</p>
+            </div>
+
+            <div class="card">
+                <h2>Your Tax Documents</h2>
+                <p style="margin-bottom: 20px;">Select a document from the list below to start your download.</p>
+                <table class="documents-table">
+                    <thead>
+                        <tr>
+                            <th>Tax Year</th>
+                            <th>Document Type</th>
+                            <th>Date Issued</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2024</td>
+                            <td>T1 General - Income Tax and Benefit Return</td>
+                            <td>April 15, 2025</td>
+                            <td><button class="btn btn-primary btn-download">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M480-320 280-520l56-58 104 104v-326h80v326l104-104 56 58-200 200ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z"/></svg>
+                                Download
+                            </button></td>
+                        </tr>
+                        <tr>
+                            <td>2023</td>
+                            <td>Notice of Assessment</td>
+                            <td>May 20, 2024</td>
+                            <td><button class="btn btn-primary btn-download">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M480-320 280-520l56-58 104 104v-326h80v326l104-104 56 58-200 200ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z"/></svg>
+                                Download
+                            </button></td>
+                        </tr>
+                        <tr>
+                            <td>2023</td>
+                            <td>T4 Statement of Remuneration Paid</td>
+                            <td>February 28, 2024</td>
+                            <td><button class="btn btn-primary btn-download">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M480-320 280-520l56-58 104 104v-326h80v326l104-104 56 58-200 200ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z"/></svg>
+                                Download
+                            </button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+
+        <footer class="main-footer">
+            <div class="container">
+                <p>&copy; 2025 VeriTax Solutions Inc. All Rights Reserved.</p>
+                <p>Need help? Contact support at <a href="mailto:support@veritaxsolutions.ca" style="color: var(--secondary-color);">support@veritaxsolutions.ca</a> or call us at (403) 298-7410.</p>
+            </div>
+        </footer>
+    </div>
+
+    <div id="toast"></div>
+
+    <script>
+        // --- Toast Notification Logic ---
+        function showToast(message) {
+            const toast = document.getElementById("toast");
+            toast.textContent = message;
+            toast.className = "show"; // Add 'show' class to make it visible
+            
+            // After 3 seconds, remove the show class
+            setTimeout(function(){ 
+                toast.className = toast.className.replace("show", ""); 
+            }, 3000);
+        }
+
+        // --- Event Listeners ---
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginView = document.getElementById('login-view');
+            const dashboardView = document.getElementById('dashboard-view');
+            const loginForm = document.getElementById('login-form');
+            const logoutButton = document.getElementById('logoutBtn');
+            
+            // Handle Login
+            loginForm.addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent actual form submission
+                loginView.style.display = 'none';
+                dashboardView.style.display = 'block';
+            });
+            
+            // Handle Logout
+            logoutButton.addEventListener('click', function(event) {
+                event.preventDefault();
+                dashboardView.style.display = 'none';
+                loginView.style.display = 'flex'; // Use flex to re-center login box
+                showToast("You have been successfully logged out.");
+            });
+
+            // Add click listener to all download buttons
+            const downloadButtons = document.querySelectorAll('.btn-download');
+            downloadButtons.forEach(button => {
+                button.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    const row = this.closest('tr');
+                    const year = row.cells[0].textContent;
+                    const docType = row.cells[1].textContent;
+                    showToast(`Preparing download for ${year} ${docType}...`);
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>

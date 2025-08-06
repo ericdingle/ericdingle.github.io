@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mayo Clinic</title>
+    <style>
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            margin: 0;
+            background-color: #f7f7f7;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* --- Header & Navigation --- */
+        header {
+            background-color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo svg {
+            width: 50px;
+            height: 50px;
+            margin-right: 1rem;
+        }
+
+        .logo h1 {
+            margin: 0;
+            font-size: 1.75rem;
+            font-weight: bold;
+            color: #002d72; /* Official Mayo Clinic dark blue */
+        }
+
+        nav a {
+            color: #002d72;
+            text-decoration: none;
+            margin-left: 1.5rem;
+            padding: 0.5rem 0;
+            font-weight: 500;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            background-image: url("http://googleusercontent.com/image_collection/image_retrieval/11919463477727418805_0");
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 6rem 2rem;
+            text-align: left;
+        }
+
+        .hero-content {
+            background-color: rgba(0, 45, 114, 0.8); /* Semi-transparent dark blue overlay */
+            max-width: 600px;
+            padding: 2rem;
+            border-radius: 5px;
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            margin: 0 0 1rem 0;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* --- Search Section --- */
+        .search-container {
+            background-color: #f0f0f0;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .search-box {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px 0 0 5px;
+            border-right: none;
+        }
+
+        .search-box button {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border: 1px solid #0057b8;
+            background-color: #0057b8;
+            color: white;
+            cursor: pointer;
+            border-radius: 0 5px 5px 0;
+        }
+
+        /* --- Main Content --- */
+        .main-content {
+            padding: 3rem 2rem;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        article {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        article h3 {
+            color: #002d72;
+            border-bottom: 2px solid #e5e5e5;
+            padding-bottom: 0.5rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        article h3:first-of-type {
+            margin-top: 0;
+        }
+
+        article p {
+            margin-bottom: 1rem;
+        }
+
+        .search-result-item {
+            margin-bottom: 1rem;
+        }
+
+        .search-result-item strong {
+            color: #0057b8;
+        }
+
+        aside {
+            display: grid;
+            grid-template-rows: auto auto;
+            gap: 1.5rem;
+            align-content: start;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            overflow: hidden; /* Ensures image corners are rounded */
+        }
+
+        .card img {
+            width: 100%;
+            display: block;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .card h4 {
+            color: #002d72;
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+        }
+        
+        .card a {
+            color: #0057b8;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .card a:hover {
+            text-decoration: underline;
+        }
+
+        /* --- Footer --- */
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            border-top: 3px solid #0057b8;
+        }
+
+        footer p {
+            margin: 0.5rem 0;
+            font-size: 0.9rem;
+        }
+        
+        footer a {
+            color: white;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* --- Toast Message --- */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 5px;
+            display: none;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <svg viewBox="0 0 512 560" xmlns="http://www.w3.org/2000/svg"><path d="M256 0L0 144v272l256 144 256-144V144L256 0z m192 384l-192 108.8L64 384V179.2l192-108.8L448 179.2V384z" fill="#002d72"/></svg>
+            <h1>Mayo Clinic</h1>
+        </div>
+        <nav>
+            <a href="#">Request an Appointment</a>
+            <a href="#">Find a Doctor</a>
+            <a href="#">Patient & Visitor Guide</a>
+            <a href="#">Diseases & Conditions</a>
+        </nav>
+    </header>
+
+    <div class="hero">
+        <div class="hero-content">
+            <h2>The right answers for you.</h2>
+            <p>We provide unparalleled expertise in a caring environment. It's where you'll find the answers you've been looking for.</p>
+        </div>
+    </div>
+
+    <div class="search-container">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search for diseases, conditions, and medical concerns">
+            <button onclick="performSearch()">Search</button>
+        </div>
+    </div>
+
+    <main class="main-content">
+        <article>
+            <h3>From Our Experts</h3>
+            <p>At Mayo Clinic, we're dedicated to providing expert care for the whole person. Our teams are driven by a commitment to innovation and research, ensuring we offer the latest treatments and a level of care you won't find anywhere else.</p>
+            <p>With major campuses in Rochester, Minnesota; Scottsdale and Phoenix, Arizona; and Jacksonville, Florida, our reach extends globally, providing hope and healing to millions each year.</p>
+
+            <div id="searchResults">
+                </div>
+        </article>
+        <aside>
+            <div class="card">
+                <img src="http://googleusercontent.com/image_collection/image_retrieval/2015883609703523964_0" alt="Doctor consulting with a patient">
+                <div class="card-content">
+                    <h4>Why Choose Mayo Clinic?</h4>
+                    <p>Unmatched expertise, integrated care, and a commitment to you.</p>
+                    <a href="#">Learn More &rarr;</a>
+                </div>
+            </div>
+            <div class="card">
+                <img src="http://googleusercontent.com/image_collection/image_retrieval/16455280601740463517_0" alt="Scientist in a medical laboratory">
+                <div class="card-content">
+                    <h4>Research & Clinical Trials</h4>
+                    <p>Discover the groundbreaking research that's changing medicine.</p>
+                    <a href="#">Explore our Research &rarr;</a>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <footer>
+        <p>&copy; 1998-2025 Mayo Foundation for Medical Education and Research (MFMER). All rights reserved.</p>
+        <p>200 First St. SW, Rochester, Minnesota 55905 | 507-284-2511</p>
+        <p><a href="#">Any use of this site constitutes your agreement to the Terms and Conditions and Privacy Policy</a></p>
+    </footer>
+
+    <div class="toast" id="toast">
+        Your search results are displayed below.
+    </div>
+
+    <script>
+        const searchResultsContainer = document.getElementById('searchResults');
+
+        const fakeData = {
+            "migraine": {
+                title: "Migraine",
+                content: "A migraine is a headache that can cause severe throbbing pain or a pulsing sensation, usually on one side of the head. It's often accompanied by nausea, vomiting, and extreme sensitivity to light and sound. Migraine attacks can last for hours to days, and the pain can be so severe that it interferes with your daily activities."
+            },
+            "arthritis": {
+                title: "Arthritis",
+                content: "Arthritis is the swelling and tenderness of one or more joints. The main symptoms of arthritis are joint pain and stiffness, which typically worsen with age. The most common types of arthritis are osteoarthritis and rheumatoid arthritis. Treatment focuses on relieving symptoms and improving joint function."
+            },
+            "hypertension": {
+                title: "Hypertension (High Blood Pressure)",
+                content: "Hypertension, or high blood pressure, is a common condition in which the long-term force of the blood against your artery walls is high enough that it may eventually cause health problems, such as heart disease. Blood pressure is determined both by the amount of blood your heart pumps and the amount of resistance to blood flow in your arteries."
+            }
+        };
+
+        function performSearch() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            let resultHTML = '<h3>Search Results</h3>';
+
+            if (query && fakeData[query]) {
+                const result = fakeData[query];
+                resultHTML += `
+                    <div class="search-result-item">
+                        <strong>${result.title}</strong>
+                        <p>${result.content}</p>
+                    </div>`;
+            } else {
+                resultHTML += '<p>No results found for your search. Please try a different term, such as "migraine", "arthritis", or "hypertension".</p>';
+            }
+
+            searchResultsContainer.innerHTML = resultHTML;
+            showToast();
+        }
+
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.style.display = 'block';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3000);
+        }
+    </script>
+
+</body>
+</html>

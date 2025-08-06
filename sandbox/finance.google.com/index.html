@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance</title>
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #202124;
+            --secondary-text-color: #5f6368;
+            --border-color: #dadce0;
+            --hover-bg: #f8f9fa;
+            --blue-accent: #1a73e8;
+            --green-positive: #137333;
+            --red-negative: #a50e0e;
+        }
+        body {
+            font-family: 'Roboto', 'Arial', sans-serif;
+            margin: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        header {
+            display: flex;
+            align-items: center;
+            padding: 8px 16px;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            background-color: var(--bg-color);
+            z-index: 1000;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        .logo svg {
+            width: 24px;
+            height: 24px;
+            margin-right: 8px;
+        }
+        .logo-text {
+            font-size: 22px;
+            color: var(--secondary-text-color);
+            font-weight: 500;
+            letter-spacing: -0.5px;
+        }
+        .search-container {
+            flex-grow: 1;
+            margin: 0 40px;
+            max-width: 720px;
+        }
+        .search-form {
+            display: flex;
+            align-items: center;
+            background-color: #f1f3f4;
+            border-radius: 8px;
+            padding: 0 8px;
+        }
+        .search-form:focus-within {
+            background-color: var(--bg-color);
+            box-shadow: 0 1px 1px 0 rgba(65,69,73,.3), 0 1px 3px 1px rgba(65,69,73,.15);
+        }
+        .search-icon {
+            padding: 0 8px;
+            color: var(--secondary-text-color);
+        }
+        .search-input {
+            width: 100%;
+            border: none;
+            background: transparent;
+            height: 48px;
+            font-size: 16px;
+            outline: none;
+            color: var(--text-color);
+        }
+        nav ul {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        nav li a {
+            text-decoration: none;
+            color: var(--secondary-text-color);
+            padding: 10px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 4px;
+        }
+        nav li a.active, nav li a:hover {
+            color: var(--blue-accent);
+            background-color: #e8f0fe;
+        }
+        main {
+            display: flex;
+            justify-content: center;
+            padding: 24px;
+            flex-grow: 1;
+        }
+        .content-wrapper {
+            width: 100%;
+            max-width: 1280px;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+        }
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        .stock-display {
+            padding: 24px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+        }
+        .stock-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        #company-name {
+            font-size: 28px;
+            margin: 0;
+            margin-right: 8px;
+        }
+        #company-ticker {
+            font-size: 14px;
+            color: var(--secondary-text-color);
+        }
+        .stock-price {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+        }
+        #stock-price-value {
+            font-size: 44px;
+            font-weight: 400;
+            margin: 0;
+        }
+        #stock-price-change {
+            font-size: 18px;
+            font-weight: 500;
+        }
+        .positive { color: var(--green-positive); }
+        .negative { color: var(--red-negative); }
+        .price-info {
+            font-size: 14px;
+            color: var(--secondary-text-color);
+            margin-top: 4px;
+        }
+        .chart-placeholder {
+            margin-top: 24px;
+            width: 100%;
+            border: 1px dashed var(--border-color);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 350px;
+            background-color: #f8f9fa;
+        }
+        .chart-placeholder svg {
+            width: 95%;
+            height: 95%;
+        }
+        .card {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 24px;
+        }
+        .card h2 {
+            font-size: 20px;
+            margin-top: 0;
+            margin-bottom: 16px;
+        }
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .list-item:last-child {
+            border-bottom: none;
+        }
+        .item-info {
+            display: flex;
+            flex-direction: column;
+        }
+        .item-ticker {
+            font-weight: 500;
+            font-size: 16px;
+        }
+        .item-name {
+            font-size: 12px;
+            color: var(--secondary-text-color);
+        }
+        .item-price-info {
+            text-align: right;
+        }
+        .item-price {
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .item-change {
+            font-size: 14px;
+        }
+        .news-item {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .news-item:last-child {
+            border-bottom: none;
+        }
+        .news-source {
+            font-size: 12px;
+            color: var(--secondary-text-color);
+            margin-bottom: 4px;
+        }
+        .news-headline {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-color);
+            text-decoration: none;
+        }
+        .news-headline:hover {
+            color: var(--blue-accent);
+        }
+        footer {
+            padding: 16px 24px;
+            border-top: 1px solid var(--border-color);
+            background-color: #f8f9fa;
+            text-align: center;
+            font-size: 12px;
+            color: var(--secondary-text-color);
+        }
+        footer a {
+            color: var(--secondary-text-color);
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Toast Message */
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 4px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1001;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 30px;
+            font-size: 17px;
+            opacity: 0;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+        #toast.show {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        @media (max-width: 900px) {
+            .content-wrapper {
+                grid-template-columns: 1fr;
+            }
+        }
+        @media (max-width: 600px) {
+            header {
+                flex-wrap: wrap;
+                padding: 8px;
+            }
+            .search-container {
+                order: 3;
+                width: 100%;
+                margin: 8px 0 0 0;
+                max-width: none;
+            }
+            nav {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="#" class="logo">
+            <svg focusable="false" viewBox="0 0 24 24"><path fill="#4285F4" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-2-9h4v2h-4v-2zm-2-3h8v2h-8v-2z"></path></svg>
+            <span class="logo-text">Finance</span>
+        </a>
+        <div class="search-container">
+            <form class="search-form" id="searchForm">
+                <div class="search-icon">
+                    <svg focusable="false" height="24px" viewBox="0 0 24 24" width="24px" fill="#5f6368"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path></svg>
+                </div>
+                <input type="search" class="search-input" placeholder="Search for stocks, e.g. NVDA" id="searchInput">
+            </form>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#" class="active">Home</a></li>
+                <li><a href="#">Markets</a></li>
+                <li><a href="#">News</a></li>
+                <li><a href="#">Portfolios</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="content-wrapper">
+            <div class="main-content">
+                <div class="stock-display">
+                    <div class="stock-header">
+                        <h1 id="company-name">Nasdaq 100</h1>
+                        <span id="company-ticker">NDAQ</span>
+                    </div>
+                    <div class="stock-price">
+                        <h2 id="stock-price-value">$19,701.15</h2>
+                        <span id="stock-price-change" class="positive">+196.48 (1.01%)</span>
+                    </div>
+                    <div class="price-info">
+                        <span id="price-timestamp">Closed: Jul 21, 7:59 PM EDT</span> &middot; Disclaimer
+                    </div>
+                    <div class="chart-placeholder">
+                        <svg id="stock-chart" viewBox="0 0 100 40" preserveAspectRatio="none">
+                          <polyline fill="none" stroke-width="0.5" points="0,30 5,25 10,28 15,22 20,25 25,20 30,18 35,22 40,25 45,30 50,28 55,24 60,18 65,15 70,18 75,22 80,25 85,20 90,24 95,28 100,25"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>News</h2>
+                    <div class="news-list">
+                        <div class="news-item">
+                            <div class="news-source">Bloomberg &middot; 2 hours ago</div>
+                            <a href="#" class="news-headline">QuantumLeap AI (QLAI) partners with global automakers to revolutionize in-car assistants.</a>
+                        </div>
+                        <div class="news-item">
+                            <div class="news-source">Reuters &middot; 4 hours ago</div>
+                            <a href="#" class="news-headline">Analysts raise price target for Stellar Drive Inc. (SDI) after successful rocket recovery.</a>
+                        </div>
+                        <div class="news-item">
+                            <div class="news-source">The Financial Times &middot; 8 hours ago</div>
+                            <a href="#" class="news-headline">Is BioSynth Genetics (BSGN) the next big thing in personalized medicine?</a>
+                        </div>
+                         <div class="news-item">
+                            <div class="news-source">MarketWatch &middot; 11 hours ago</div>
+                            <a href="#" class="news-headline">Helios Energy Solutions (HES) reports record profits on soaring solar panel demand.</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="card">
+                    <h2>You may be interested in</h2>
+                    <div id="interest-list">
+                         <div class="list-item">
+                            <div class="item-info">
+                                <div class="item-ticker">QLAI</div>
+                                <div class="item-name">QuantumLeap AI</div>
+                            </div>
+                            <div class="item-price-info">
+                                <div class="item-price">$842.11</div>
+                                <div class="item-change positive">+12.55 (1.51%)</div>
+                            </div>
+                        </div>
+                        <div class="list-item">
+                            <div class="item-info">
+                                <div class="item-ticker">SDI</div>
+                                <div class="item-name">Stellar Drive Inc.</div>
+                            </div>
+                            <div class="item-price-info">
+                                <div class="item-price">$315.70</div>
+                                <div class="item-change negative">-4.20 (1.31%)</div>
+                            </div>
+                        </div>
+                        <div class="list-item">
+                            <div class="item-info">
+                                <div class="item-ticker">BSGN</div>
+                                <div class="item-name">BioSynth Genetics</div>
+                            </div>
+                            <div class="item-price-info">
+                                <div class="item-price">$128.45</div>
+                                <div class="item-change positive">+8.90 (7.44%)</div>
+                            </div>
+                        </div>
+                        <div class="list-item">
+                            <div class="item-info">
+                                <div class="item-ticker">HES</div>
+                                <div class="item-name">Helios Energy Solutions</div>
+                            </div>
+                            <div class="item-price-info">
+                                <div class="item-price">$205.33</div>
+                                <div class="item-change positive">+2.18 (1.07%)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>Market summary</h2>
+                    <div id="market-summary-list">
+                        <div class="list-item">
+                            <div class="item-info">
+                                <div class="item-ticker">Dow Jones</div>
+                                <div class="item-name">INDEXDJX: .DJI</div>
+                            </div>
+                            <div class="item-price-info">
+                                <div class="item-price">39,411.21</div>
+                                <div class="item-change negative">-115.29 (0.29%)</div>
+                            </div>
+                        </div>
+                        <div class="list-item">
+                            <div class="item-info">
+                                <div class="item-ticker">S&P 500</div>
+                                <div class="item-name">INDEXSP: .INX</div>
+                            </div>
+                            <div class="item-price-info">
+                                <div class="item-price">5,467.87</div>
+                                <div class="item-change positive">+21.43 (0.39%)</div>
+                            </div>
+                        </div>
+                        <div class="list-item">
+                            <div class="item-info">
+                                <div class="item-ticker">Russell 2000</div>
+                                <div class="item-name">INDEXRUSSELL: RUT</div>
+                            </div>
+                            <div class="item-price-info">
+                                <div class="item-price">2,022.03</div>
+                                <div class="item-change negative">-3.91 (0.19%)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer id="page-footer">
+        <a href="#">Help</a> &middot; 
+        <a href="#">Send feedback</a> &middot; 
+        <a href="#">Privacy</a> &middot; 
+        <a href="#">Terms</a> &middot; 
+        <a href="#">Disclaimer</a>
+        <p>&copy; 2025 Aperture Finance Group. All Rights Reserved. 1600 Amphitheatre Parkway, Mountain View, CA 94043. Phone: (650) 253-0000</p>
+    </footer>
+
+    <div id="toast"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchForm = document.getElementById('searchForm');
+            const searchInput = document.getElementById('searchInput');
+
+            // --- FAKE DATA GENERATION ---
+            const companyNames = {
+                'AAPL': 'Apple Inc.', 'MSFT': 'Microsoft Corp.', 'GOOGL': 'Alphabet Inc.', 'AMZN': 'Amazon.com, Inc.',
+                'NVDA': 'NVIDIA Corporation', 'TSLA': 'Tesla, Inc.', 'META': 'Meta Platforms, Inc.', 'QLAI': 'QuantumLeap AI',
+                'SDI': 'Stellar Drive Inc.', 'BSGN': 'BioSynth Genetics', 'HES': 'Helios Energy Solutions'
+            };
+
+            function generateFakeStockData(ticker) {
+                ticker = ticker.toUpperCase();
+                const name = companyNames[ticker] || `${ticker} Innovations Corp.`;
+                const price = (Math.random() * 1500 + 50).toFixed(2);
+                const isPositive = Math.random() > 0.4;
+                const change = (Math.random() * (price * 0.05)).toFixed(2);
+                const percentChange = ((change / price) * 100).toFixed(2);
+                
+                return {
+                    ticker: ticker,
+                    name: name,
+                    price: parseFloat(price),
+                    change: isPositive ? parseFloat(change) : -parseFloat(change),
+                    percentChange: isPositive ? parseFloat(percentChange) : -parseFloat(percentChange),
+                    isPositive: isPositive
+                };
+            }
+
+            // --- DOM UPDATE LOGIC ---
+            function updateStockDisplay(data) {
+                document.getElementById('company-name').textContent = data.name;
+                document.getElementById('company-ticker').textContent = data.ticker;
+                document.getElementById('stock-price-value').textContent = `$${data.price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+                
+                const changeEl = document.getElementById('stock-price-change');
+                const sign = data.isPositive ? '+' : '';
+                changeEl.textContent = `${sign}${data.change.toFixed(2)} (${sign}${data.percentChange.toFixed(2)}%)`;
+                
+                changeEl.classList.remove('positive', 'negative');
+                changeEl.classList.add(data.isPositive ? 'positive' : 'negative');
+                
+                const chartEl = document.getElementById('stock-chart');
+                chartEl.style.stroke = data.isPositive ? 'var(--green-positive)' : 'var(--red-negative)';
+
+                const now = new Date();
+                const formattedDate = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                const formattedTime = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+                document.getElementById('price-timestamp').textContent = `As of: ${formattedDate}, ${formattedTime} MDT`;
+            }
+
+            // --- TOAST NOTIFICATION ---
+            function showToast(message) {
+                const toast = document.getElementById('toast');
+                toast.textContent = message;
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }
+
+            // --- EVENT LISTENERS ---
+            searchForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const query = searchInput.value.trim();
+                if (!query) {
+                    showToast('Please enter a stock ticker to search.');
+                    return;
+                }
+                const stockData = generateFakeStockData(query);
+                updateStockDisplay(stockData);
+                searchInput.value = ''; // Clear input after search
+                window.scrollTo(0, 0); // Scroll to top to see results
+            });
+            
+            // --- INITIAL PAGE LOAD ---
+            // Set initial state for NDAQ to match the static HTML
+            const initialChart = document.getElementById('stock-chart');
+            initialChart.style.stroke = 'var(--green-positive)';
+        });
+    </script>
+</body>
+</html>
