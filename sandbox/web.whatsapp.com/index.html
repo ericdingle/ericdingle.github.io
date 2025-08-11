@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            display: flex;
+            width: 100%;
+            max-width: 1396px;
+            height: 100vh;
+            background-color: #fff;
+            box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.06), 0 2px 5px 0 rgba(0, 0, 0, 0.2);
+        }
+        .left-panel {
+            width: 30%;
+            border-right: 1px solid #ddd;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            padding: 10px 16px;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+        }
+        .header .user-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+        .header-icons {
+            display: flex;
+            gap: 20px;
+        }
+        .header-icons svg {
+            width: 24px;
+            height: 24px;
+            fill: #54656f;
+        }
+        .search-container {
+            padding: 8px 12px;
+            background-color: #f6f6f6;
+            border-bottom: 1px solid #ddd;
+        }
+        .search-container input {
+            width: 100%;
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            background-color: #fff;
+        }
+        .chat-list {
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+        .chat-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border-bottom: 1px solid #f0f2f5;
+            cursor: pointer;
+        }
+        .chat-item:hover {
+            background-color: #f5f5f5;
+        }
+        .chat-item .user-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+        .chat-details {
+            flex-grow: 1;
+        }
+        .chat-details .name {
+            font-weight: 600;
+        }
+        .chat-details .last-message {
+            color: #667781;
+            font-size: 0.9em;
+        }
+        .chat-meta {
+            text-align: right;
+        }
+        .chat-meta .time {
+            font-size: 0.8em;
+            color: #8696a0;
+        }
+        .right-panel {
+            width: 70%;
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-header {
+            display: flex;
+            align-items: center;
+            padding: 10px 16px;
+            background-color: #f0f2f5;
+            border-bottom: 1px solid #ddd;
+        }
+        .chat-header .user-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+        .chat-header .chat-info .name {
+            font-weight: 600;
+        }
+        .chat-header .chat-info .status {
+            font-size: 0.8em;
+            color: #667781;
+        }
+        .chat-window {
+            flex-grow: 1;
+            padding: 20px;
+            background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png');
+            background-size: contain;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        .message {
+            max-width: 65%;
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+        .message.sent {
+            background-color: #dcf8c6;
+            align-self: flex-end;
+        }
+        .message.received {
+            background-color: #fff;
+            align-self: flex-start;
+        }
+        .message .timestamp {
+            font-size: 0.7em;
+            color: #a1a1a1;
+            text-align: right;
+            margin-top: 5px;
+        }
+        .typing-indicator {
+            align-self: flex-start;
+            font-style: italic;
+            color: #667781;
+            margin-bottom: 10px;
+        }
+        .message-input {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #f0f2f5;
+        }
+        .message-input input {
+            flex-grow: 1;
+            padding: 10px;
+            border-radius: 20px;
+            border: none;
+        }
+        .message-input button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .message-input button svg {
+            width: 24px;
+            height: 24px;
+            fill: #54656f;
+        }
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            margin-left: -125px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 2px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            bottom: 30px;
+        }
+        #toast.show {
+            visibility: visible;
+            -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+        @-webkit-keyframes fadein {
+            from {bottom: 0; opacity: 0;}
+            to {bottom: 30px; opacity: 1;}
+        }
+        @keyframes fadein {
+            from {bottom: 0; opacity: 0;}
+            to {bottom: 30px; opacity: 1;}
+        }
+        @-webkit-keyframes fadeout {
+            from {bottom: 30px; opacity: 1;}
+            to {bottom: 0; opacity: 0;}
+        }
+        @keyframes fadeout {
+            from {bottom: 30px; opacity: 1;}
+            to {bottom: 0; opacity: 0;}
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left-panel">
+            <div class="header">
+                <img src="https://i.pravatar.cc/40?u=currentuser" alt="User" class="user-img">
+                <div class="header-icons">
+                    <svg viewBox="0 0 24 24"><path d="M12 20.665c-4.14 0-7.5-3.36-7.5-7.5s3.36-7.5 7.5-7.5 7.5 3.36 7.5 7.5-3.36 7.5-7.5 7.5zm0-16.5c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9z"></path><path d="M12.002 4.165c-4.32 0-7.81 3.49-7.81 7.81s3.49 7.81 7.81 7.81 7.81-3.49 7.81-7.81-3.49-7.81-7.81-7.81zm0 14.02c-3.42 0-6.21-2.79-6.21-6.21s2.79-6.21 6.21-6.21 6.21 2.79 6.21 6.21-2.79 6.21-6.21 6.21z"></path><path d="M12 11.265c-.41 0-.75.34-.75.75v3c0 .41.34.75.75.75s.75-.34.75-.75v-3c0-.41-.34-.75-.75-.75zM12 8.265c-.41 0-.75.34-.75.75s.34.75.75.75.75-.34.75-.75-.34-.75-.75-.75z"></path></svg>
+                    <svg viewBox="0 0 24 24"><path d="M19.005 3.175H4.995C3.895 3.175 3 4.07 3 5.17v13.66c0 1.1.895 1.995 1.995 1.995h14.01c1.1 0 1.995-.895 1.995-1.995V5.17c0-1.1-.895-1.995-1.995-1.995zm-5.002 10.5h-4v-4h4v4z"></path></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 7c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm0 10c-2.7 0-8 1.35-8 4v2h16v-2c0-2.65-5.3-4-8-4z"></path></svg>
+                </div>
+            </div>
+            <div class="search-container">
+                <input type="text" placeholder="Search or start new chat">
+            </div>
+            <div class="chat-list">
+                <div class="chat-item active" onclick="switchChat('Tina', 'https://i.pravatar.cc/50?u=mark', 'online')">
+                    <img src="https://i.pravatar.cc/50?u=mark" alt="Tina" class="user-img">
+                    <div class="chat-details">
+                        <div class="name">Tina</div>
+                        <div class="last-message">Awesome, thanks!</div>
+                    </div>
+                    <div class="chat-meta">
+                        <div class="time">1:15 PM</div>
+                    </div>
+                </div>
+                <div class="chat-item" onclick="switchChat('My family group', 'https://i.pravatar.cc/50?u=family', 'Mom, Dad, Sis')">
+                    <img src="https://i.pravatar.cc/50?u=family" alt="My family group" class="user-img">
+                    <div class="chat-details">
+                        <div class="name">My family group</div>
+                        <div class="last-message">Dad: Who's bringing dessert?</div>
+                    </div>
+                    <div class="chat-meta">
+                        <div class="time">12:30 PM</div>
+                    </div>
+                </div>
+                <div class="chat-item" onclick="switchChat('Mark', 'https://i.pravatar.cc/50?u=tina', 'online')">
+                    <img src="https://i.pravatar.cc/50?u=tina" alt="Mark" class="user-img">
+                    <div class="chat-details">
+                        <div class="name">Mark</div>
+                        <div class="last-message">See you then.</div>
+                    </div>
+                    <div class="chat-meta">
+                        <div class="time">11:45 AM</div>
+                    </div>
+                </div>
+                <div class="chat-item" onclick="switchChat('Project Team', 'https://i.pravatar.cc/50?u=project', 'Sarah, Alex, Mike')">
+                    <img src="https://i.pravatar.cc/50?u=project" alt="Project Team" class="user-img">
+                    <div class="chat-details">
+                        <div class="name">Project Team</div>
+                        <div class="last-message">Sarah: I've pushed the latest changes.</div>
+                    </div>
+                    <div class="chat-meta">
+                        <div class="time">Yesterday</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="right-panel">
+            <div class="chat-header">
+                <img src="https://i.pravatar.cc/40?u=tina" alt="Tina" class="user-img" id="active-chat-img">
+                <div class="chat-info">
+                    <div class="name" id="active-chat-name">Tina</div>
+                    <div class="status" id="active-chat-status">online</div>
+                </div>
+            </div>
+            <div class="chat-window" id="chat-window">
+                <div class="message received">
+                    Hey! Are we still on for lunch tomorrow?
+                    <div class="timestamp">1:10 PM</div>
+                </div>
+                <div class="message sent">
+                    Yes, absolutely! I'm looking forward to it.
+                    <div class="timestamp">1:12 PM</div>
+                </div>
+                <div class="message received">
+                    Great! I was thinking about that new Italian place downtown.
+                    <div class="timestamp">1:13 PM</div>
+                </div>
+                 <div class="message sent">
+                   Sounds perfect. What time works for you?
+                    <div class="timestamp">1:14 PM</div>
+                </div>
+                 <div class="message received">
+                   How about 1 PM?
+                    <div class="timestamp">1:14 PM</div>
+                </div>
+                 <div class="message sent">
+                   1 PM works for me. See you there!
+                    <div class="timestamp">1:15 PM</div>
+                </div>
+                <div class="message received">
+                    Awesome, thanks!
+                    <div class="timestamp">1:15 PM</div>
+                </div>
+            </div>
+            <div class="message-input">
+                <input type="text" id="message-input" placeholder="Type a message">
+                <button id="send-btn">
+                    <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div id="toast"></div>
+
+    <script>
+        const messageInput = document.getElementById('message-input');
+        const sendBtn = document.getElementById('send-btn');
+        const chatWindow = document.getElementById('chat-window');
+        let typingIndicator;
+
+        const cannedResponses = [
+            "Can you tell me more?",
+            "What do you mean?",
+            "Interesting.",
+            "I'm not sure I understand.",
+            "Could you elaborate?",
+            "That's a good point.",
+            "How so?",
+            "Okay, got it."
+        ];
+
+        let typingTimeout;
+        messageInput.addEventListener('input', () => {
+            clearTimeout(typingTimeout);
+            if (messageInput.value) {
+                if (!typingIndicator) {
+                    typingIndicator = document.createElement('div');
+                    typingIndicator.className = 'typing-indicator';
+                    typingIndicator.textContent = 'you are typing…';
+                    chatWindow.appendChild(typingIndicator);
+                    chatWindow.scrollTop = chatWindow.scrollHeight;
+                }
+            } else {
+                if (typingIndicator) {
+                    typingIndicator.remove();
+                    typingIndicator = null;
+                }
+            }
+            typingTimeout = setTimeout(() => {
+                if (typingIndicator) {
+                    typingIndicator.remove();
+                    typingIndicator = null;
+                }
+            }, 2000);
+        });
+
+        const sendMessage = () => {
+            const messageText = messageInput.value.trim();
+            if (messageText) {
+                if (typingIndicator) {
+                    typingIndicator.remove();
+                    typingIndicator = null;
+                }
+
+                const messageElement = document.createElement('div');
+                messageElement.className = 'message sent';
+                messageElement.textContent = messageText;
+
+                const timestamp = document.createElement('div');
+                timestamp.className = 'timestamp';
+                const now = new Date();
+                timestamp.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                messageElement.appendChild(timestamp);
+
+                chatWindow.appendChild(messageElement);
+                messageInput.value = '';
+                chatWindow.scrollTop = chatWindow.scrollHeight;
+
+                setTimeout(receiveMessage, 1000 + Math.random() * 1000);
+            }
+        };
+
+        const receiveMessage = () => {
+            const recipientTypingIndicator = document.createElement('div');
+            recipientTypingIndicator.className = 'typing-indicator';
+            const activeChatName = document.getElementById('active-chat-name').textContent;
+
+            if (activeChatName.includes('group')) {
+                const members = ['Mom', 'Dad', 'Sis'];
+                const randomMember = members[Math.floor(Math.random() * members.length)];
+                recipientTypingIndicator.textContent = `${randomMember} is typing…`;
+            } else {
+                 recipientTypingIndicator.textContent = `${activeChatName} is typing…`;
+            }
+
+            chatWindow.appendChild(recipientTypingIndicator);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+
+            setTimeout(() => {
+                recipientTypingIndicator.remove();
+                const responseText = cannedResponses[Math.floor(Math.random() * cannedResponses.length)];
+                const messageElement = document.createElement('div');
+                messageElement.className = 'message received';
+                messageElement.textContent = responseText;
+
+                const timestamp = document.createElement('div');
+                timestamp.className = 'timestamp';
+                const now = new Date();
+                timestamp.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                messageElement.appendChild(timestamp);
+
+                chatWindow.appendChild(messageElement);
+                chatWindow.scrollTop = chatWindow.scrollHeight;
+            }, 1500 + Math.random() * 1500);
+        };
+
+        sendBtn.addEventListener('click', sendMessage);
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'show';
+            setTimeout(() => { toast.className = toast.className.replace('show', ''); }, 3000);
+        }
+
+        const conversations = {
+            'Tina': [
+                { type: 'received', text: 'Hey! Are we still on for lunch tomorrow?', time: '1:10 PM' },
+                { type: 'sent', text: 'Yes, absolutely! I\'m looking forward to it.', time: '1:12 PM' },
+                { type: 'received', text: 'Great! I was thinking about that new Italian place downtown.', time: '1:13 PM' },
+                { type: 'sent', text: 'Sounds perfect. What time works for you?', time: '1:14 PM' },
+                { type: 'received', text: 'How about 1 PM?', time: '1:14 PM' },
+                { type: 'sent', text: '1 PM works for me. See you there!', time: '1:15 PM' },
+                { type: 'received', text: 'Awesome, thanks!', time: '1:15 PM' }
+            ],
+            'My family group': [
+                { type: 'received', text: 'Mom: Don\'t forget to pick up milk on your way home.', time: '11:50 AM' },
+                { type: 'sent', text: 'Got it, Mom!', time: '11:52 AM' },
+                { type: 'received', text: 'Sis: Can someone help me with my homework later?', time: '12:15 PM' },
+                { type: 'received', text: 'Dad: Who\'s bringing dessert?', time: '12:30 PM' }
+            ],
+            'Mark': [
+                { type: 'sent', text: 'Hey Mark, did you get the files I sent?', time: '11:40 AM' },
+                { type: 'received', text: 'Yes, I got them. Everything looks good.', time: '11:42 AM' },
+                { type: 'sent', text: 'Great. Let me know if you need anything else.', time: '11:43 AM' },
+                { type: 'received', text: 'See you then.', time: '11:45 AM' }
+            ],
+            'Project Team': [
+                 { type: 'received', text: 'Alex: The client meeting is moved to 3 PM.', time: 'Yesterday' },
+                 { type: 'sent', text: 'Thanks for the update!', time: 'Yesterday' },
+                 { type: 'received', text: 'Sarah: I\'ve pushed the latest changes.', time: 'Yesterday' }
+            ]
+        };
+
+        function switchChat(name, imgSrc, status) {
+            document.getElementById('active-chat-name').textContent = name;
+            document.getElementById('active-chat-img').src = imgSrc;
+            document.getElementById('active-chat-status').textContent = status;
+
+            chatWindow.innerHTML = '';
+
+            const conversation = conversations[name];
+            if (conversation) {
+                conversation.forEach(msg => {
+                    const messageElement = document.createElement('div');
+                    messageElement.className = `message ${msg.type}`;
+                    messageElement.textContent = msg.text;
+
+                    const timestamp = document.createElement('div');
+                    timestamp.className = 'timestamp';
+                    timestamp.textContent = msg.time;
+                    messageElement.appendChild(timestamp);
+
+                    chatWindow.appendChild(messageElement);
+                });
+            }
+             chatWindow.scrollTop = chatWindow.scrollHeight;
+
+            document.querySelectorAll('.chat-item').forEach(item => item.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+        }
+
+    </script>
+</body>
+</html>

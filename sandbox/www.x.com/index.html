@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twitter</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .break-words {
+           word-break: break-word;
+        }
+        .tweet-action-button:hover svg {
+            fill: currentColor;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+
+    <div id="app-container" class="max-w-xl mx-auto min-h-screen border-x border-gray-700">
+
+        <!-- Auth Page -->
+        <div id="auth-page">
+            <div class="flex flex-col items-center justify-center h-screen p-6">
+                <svg class="w-12 h-12 text-blue-400 mb-8" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M23.643 4.937c-.835.37-1.732.62-2.675.733.962-.576 1.7-1.49 2.048-2.578-.9.534-1.897.922-2.958 1.13-.85-.904-2.06-1.47-3.4-1.47-2.572 0-4.658 2.086-4.658 4.66 0 .364.042.718.12 1.06-3.873-.195-7.304-2.05-9.602-4.868-.4.69-.63 1.49-.63 2.342 0 1.616.823 3.043 2.072 3.878-.764-.025-1.482-.234-2.11-.583v.06c0 2.257 1.605 4.14 3.737 4.568-.39.106-.803.163-1.227.163-.3 0-.593-.028-.877-.082.593 1.85 2.313 3.198 4.352 3.234-1.595 1.25-3.604 1.995-5.786 1.995-.376 0-.747-.022-1.112-.065 2.062 1.323 4.51 2.093 7.14 2.093 8.57 0 13.255-7.098 13.255-13.254 0-.2-.005-.402-.014-.602.91-.658 1.7-1.477 2.323-2.41z"></path>
+                </svg>
+
+                <div id="auth-container" class="w-full max-w-sm">
+                     <!-- Sign Up Form -->
+                    <form id="signup-form" class="bg-gray-800 p-8 rounded-lg shadow-lg mb-4">
+                        <h2 class="text-2xl font-bold mb-6 text-center">Create your account</h2>
+                        <div class="mb-4">
+                            <label for="signup-username" class="block text-gray-400 mb-2">Username</label>
+                            <input type="text" id="signup-username" placeholder="Your Handle" class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="signup-email" class="block text-gray-400 mb-2">Email</label>
+                            <input type="email" id="signup-email" placeholder="test@example.com" class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div class="mb-6">
+                            <label for="signup-password" class="block text-gray-400 mb-2">Password</label>
+                            <input type="password" id="signup-password" class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full transition duration-300">Sign Up</button>
+                    </form>
+
+                    <p class="text-center text-gray-500">
+                        Already have an account? <a href="#" id="show-login" class="text-blue-400 hover:underline">Log in</a>
+                    </p>
+                </div>
+
+                <div id="login-container" class="w-full max-w-sm hidden">
+                     <!-- Login Form -->
+                    <form id="login-form" class="bg-gray-800 p-8 rounded-lg shadow-lg mb-4">
+                         <h2 class="text-2xl font-bold mb-6 text-center">Log in to your account</h2>
+                        <div class="mb-4">
+                            <label for="login-email" class="block text-gray-400 mb-2">Email</label>
+                            <input type="email" id="login-email" placeholder="test@example.com" class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div class="mb-6">
+                            <label for="login-password" class="block text-gray-400 mb-2">Password</label>
+                            <input type="password" id="login-password" class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full transition duration-300">Log In</button>
+                    </form>
+
+                     <p class="text-center text-gray-500">
+                        Don't have an account? <a href="#" id="show-signup" class="text-blue-400 hover:underline">Sign up</a>
+                    </p>
+                </div>
+
+                <p id="auth-error" class="text-red-400 mt-4 text-center"></p>
+
+            </div>
+        </div>
+
+        <!-- App Page -->
+        <div id="app-page" class="hidden">
+            <!-- Header -->
+            <header class="sticky top-0 z-10 bg-gray-900/80 backdrop-blur-md border-b border-gray-700">
+                <div class="flex items-center p-3 space-x-4">
+                    <h1 class="text-xl font-bold flex-shrink-0">Home</h1>
+                    <div class="relative flex-grow">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        </div>
+                        <input type="search" id="search-input" placeholder="Search Tweets" class="w-full bg-gray-800 border border-gray-700 rounded-full py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <button id="logout-button" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full text-sm transition duration-300 flex-shrink-0">Logout</button>
+                </div>
+            </header>
+
+            <!-- Tweet Form -->
+            <div class="p-4 border-b border-gray-700">
+                <form id="tweet-form">
+                    <div class="flex">
+                        <img id="new-tweet-avatar" src="https://placehold.co/48x48" alt="Your Avatar" class="w-12 h-12 rounded-full flex-shrink-0 mr-4">
+                        <textarea id="tweet-input" class="w-full bg-transparent text-xl placeholder-gray-500 focus:outline-none resize-none" rows="3" placeholder="What's happening?"></textarea>
+                    </div>
+                    <div class="flex justify-end items-center mt-2">
+                        <p id="char-count" class="text-sm text-gray-500 mr-4">280</p>
+                        <button type="submit" id="tweet-submit-button" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-full disabled:bg-blue-300/50 disabled:cursor-not-allowed transition duration-300">Tweet</button>
+                    </div>
+                </form>
+                 <p id="tweet-error" class="text-red-400 mt-2 text-right"></p>
+            </div>
+
+            <!-- Tweets Feed -->
+            <div id="tweets-feed">
+                <!-- Tweets will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // NOTE: All data is stored locally during the session.
+
+        // --- DOM ELEMENT REFERENCES ---
+        const authPage = document.getElementById('auth-page');
+        const appPage = document.getElementById('app-page');
+        const signupForm = document.getElementById('signup-form');
+        const loginForm = document.getElementById('login-form');
+        const logoutButton = document.getElementById('logout-button');
+        const tweetForm = document.getElementById('tweet-form');
+        const tweetsFeed = document.getElementById('tweets-feed');
+        const authError = document.getElementById('auth-error');
+        const tweetError = document.getElementById('tweet-error');
+        const showLoginBtn = document.getElementById('show-login');
+        const showSignupBtn = document.getElementById('show-signup');
+        const loginContainer = document.getElementById('login-container');
+        const authContainer = document.getElementById('auth-container');
+        const tweetInput = document.getElementById('tweet-input');
+        const charCount = document.getElementById('char-count');
+        const tweetSubmitButton = document.getElementById('tweet-submit-button');
+        const newTweetAvatar = document.getElementById('new-tweet-avatar');
+        const searchInput = document.getElementById('search-input');
+
+        // --- FAKE AUTHENTICATION & LOCAL DATA STORE ---
+        let fakeUser = null;
+
+        const createTweetDate = (offsetMinutes) => new Date(new Date().getTime() - offsetMinutes * 60000);
+
+        // Pre-populated tweets with unique avatar IDs from picsum.photos
+        const initialTweets = [
+            { id: `kate@example.com-${createTweetDate(5).getTime()}`, text: "Just landed in Tokyo! The energy here is unreal. First stop: Shibuya Crossing and then ALL the ramen. � #Japan #Travel #Tokyo", authorName: "Traveler_Kate", authorEmail: "kate@example.com", createdAt: createTweetDate(5), avatarUrl: 'https://picsum.photos/id/1012/48' },
+            { id: `leo@example.com-${createTweetDate(15).getTime()}`, text: "Spent the weekend refactoring a legacy codebase. It's like code archaeology. Found some real... gems. 😅 #programming #webdev", authorName: "Leo the Coder", authorEmail: "leo@example.com", createdAt: createTweetDate(15), avatarUrl: 'https://picsum.photos/id/1025/48' },
+            { id: `maria@example.com-${createTweetDate(32).getTime()}`, text: "I will never get tired of a perfect Neapolitan pizza. That chewy, charred crust is everything. 🤌 #foodie #pizza #italianfood", authorName: "Maria Garcia", authorEmail: "maria@example.com", createdAt: createTweetDate(32), avatarUrl: 'https://picsum.photos/id/1062/48' },
+            { id: `pulse@example.com-${createTweetDate(45).getTime()}`, text: "The new infrastructure bill is facing a tough vote in the Senate this week. Key amendments are being debated. Following closely. #politics #congress", authorName: "PoliticalPulse", authorEmail: "pulse@example.com", createdAt: createTweetDate(45), avatarUrl: 'https://picsum.photos/id/1074/48' },
+            { id: `ben@example.com-${createTweetDate(68).getTime()}`, text: "Woke up at 4 AM to catch the sunrise over the Grand Canyon. My camera (and my soul) is full. Absolutely breathtaking. #photography #travel", authorName: "Ben Carter", authorEmail: "ben@example.com", createdAt: createTweetDate(68), avatarUrl: 'https://picsum.photos/id/200/48' },
+            { id: `dogs@example.com-${createTweetDate(90).getTime()}`, text: "This is your daily reminder to tell your dog they are the best dog in the entire world. That is all. #dogsoftwitter #pets", authorName: "Dog Lovers United", authorEmail: "dogs@example.com", createdAt: createTweetDate(90), avatarUrl: 'https://picsum.photos/id/237/48' },
+            { id: `alain@example.com-${createTweetDate(110).getTime()}`, text: "Perfecting my coq au vin recipe. The secret is a quality Burgundy and patience. Lots of patience. Bon appétit! #FrenchFood #cooking", authorName: "Chef Alain", authorEmail: "alain@example.com", createdAt: createTweetDate(110), avatarUrl: 'https://picsum.photos/id/305/48' },
+            { id: `emily@example.com-${createTweetDate(120).getTime()}`, text: "Interesting inflation report out today. The numbers are slightly higher than projected, which could influence the Fed's next move. #economy #finance", authorName: "EconEmily", authorEmail: "emily@example.com", createdAt: createTweetDate(120), avatarUrl: 'https://picsum.photos/id/431/48' },
+            { id: `anna@example.com-${createTweetDate(155).getTime()}`, text: "My backpack is packed and I'm off to Peru! First time in South America. Any tips for visiting Machu Picchu are welcome! #travel #Peru", authorName: "Wanderlust Anna", authorEmail: "anna@example.com", createdAt: createTweetDate(155), avatarUrl: 'https://picsum.photos/id/433/48' },
+            { id: `catman@example.com-${createTweetDate(180).getTime()}`, text: "My cat has successfully trained me to provide snacks every time he makes eye contact. I am merely his butler. #catlife #pets", authorName: "The Cat Butler", authorEmail: "catman@example.com", createdAt: createTweetDate(180), avatarUrl: 'https://picsum.photos/id/593/48' },
+            { id: `green@example.com-${createTweetDate(210).getTime()}`, text: "A new study highlights the alarming rate of glacial melt in the Arctic. We need decisive global action, not just promises. #climatechange #environment", authorName: "Green Future Now", authorEmail: "green@example.com", createdAt: createTweetDate(210), avatarUrl: 'https://picsum.photos/id/628/48' },
+            { id: `streetfood@example.com-${createTweetDate(240).getTime()}`, text: "The tacos al pastor from this tiny stand in Mexico City might have changed my life. The pineapple is key. 🍍 #food #travel #MexicoCity", authorName: "Street Food Stories", authorEmail: "streetfood@example.com", createdAt: createTweetDate(240), avatarUrl: 'https://picsum.photos/id/659/48' },
+            { id: `alex@example.com-${createTweetDate(280).getTime()}`, text: "Finally finished the custom bookshelves for my home office. Nothing more satisfying than building something with your own hands. #DIY #woodworking", authorName: "Alex The Builder", authorEmail: "alex@example.com", createdAt: createTweetDate(280), avatarUrl: 'https://picsum.photos/id/776/48' },
+            { id: `global@example.com-${createTweetDate(300).getTime()}`, text: "The latest round of trade negotiations seems to be productive. A potential deal could have major impacts on the auto industry. #politics #worldnews", authorName: "Global Affairs Geek", authorEmail: "global@example.com", createdAt: createTweetDate(300), avatarUrl: 'https://picsum.photos/id/823/48' },
+            { id: `rescue@example.com-${createTweetDate(330).getTime()}`, text: "Meet Luna! This sweet girl was found as a stray but is now safe in a foster home, learning to trust again. Look at that smile! ❤️ #adoptdontshop #rescue", authorName: "Rescue Tails", authorEmail: "rescue@example.com", createdAt: createTweetDate(330), avatarUrl: 'https://picsum.photos/id/837/48' },
+            { id: `sam@example.com-${createTweetDate(360).getTime()}`, text: "Currently swinging in a hammock in the Maldives, listening to the waves. Is this real life? Don't think I'm ever coming home. #travel #beachlife", authorName: "Island Hopper", authorEmail: "sam@example.com", createdAt: createTweetDate(360), avatarUrl: 'https://picsum.photos/id/866/48' },
+            { id: `baker@example.com-${createTweetDate(400).getTime()}`, text: "The smell of freshly baked croissants in the morning is pure happiness. That's it, that's the tweet. #baking #food", authorName: "Bakery Bliss", authorEmail: "baker@example.com", createdAt: createTweetDate(400), avatarUrl: 'https://picsum.photos/id/986/48' },
+            { id: `tech@example.com-${createTweetDate(420).getTime()}`, text: "The new AI model released today is seriously impressive. Its natural language understanding is leagues ahead of previous versions. The future is now. #AI #tech", authorName: "Tech Tidbits", authorEmail: "tech@example.com", createdAt: createTweetDate(420), avatarUrl: 'https://picsum.photos/id/999/48' },
+            { id: `hiker@example.com-${createTweetDate(480).getTime()}`, text: "Conquered the trails in Zion National Park this weekend. The Narrows was an unforgettable experience. #hiking #outdoors #nature", authorName: "Hiking Adventures", authorEmail: "hiker@example.com", createdAt: createTweetDate(480), avatarUrl: 'https://picsum.photos/id/10/48' },
+            { id: `dc@example.com-${createTweetDate(510).getTime()}`, text: "Election season is unofficially kicking off. Seeing a lot of early polling and strategy shifts. It's going to be an interesting year. #politics #elections", authorName: "Political Junkie", authorEmail: "dc@example.com", createdAt: createTweetDate(510), avatarUrl: 'https://picsum.photos/id/42/48' }
+        ];
+
+        let localTweets = [...initialTweets];
+
+        // --- UI TOGGLING ---
+        const showAuthPage = () => {
+            authPage.classList.remove('hidden');
+            appPage.classList.add('hidden');
+        };
+
+        const showAppPage = () => {
+            authPage.classList.add('hidden');
+            appPage.classList.remove('hidden');
+        };
+
+        showLoginBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            authContainer.classList.add('hidden');
+            loginContainer.classList.remove('hidden');
+            authError.textContent = '';
+        });
+
+        showSignupBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginContainer.classList.add('hidden');
+            authContainer.classList.remove('hidden');
+            authError.textContent = '';
+        });
+
+        // --- FAKE AUTHENTICATION LOGIC ---
+        function handleFakeAuth(email, username) {
+            const userEmail = email.trim() === '' ? 'test@example.com' : email;
+            const userName = username && username.trim() !== '' ? username.trim() : userEmail.split('@')[0];
+
+            fakeUser = {
+                email: userEmail,
+                name: userName,
+                uid: `fake-user-${Date.now()}`,
+                avatarUrl: `https://picsum.photos/seed/${userEmail}/48`
+            };
+
+            newTweetAvatar.src = fakeUser.avatarUrl;
+            authError.textContent = '';
+            showAppPage();
+            renderTweets();
+        }
+
+        signupForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = signupForm['signup-email'].value;
+            const username = signupForm['signup-username'].value;
+            handleFakeAuth(email, username);
+            signupForm.reset();
+        });
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = loginForm['login-email'].value;
+            handleFakeAuth(email, null);
+            loginForm.reset();
+        });
+
+        logoutButton.addEventListener('click', () => {
+            fakeUser = null;
+            localTweets = [...initialTweets];
+            tweetsFeed.innerHTML = '';
+            newTweetAvatar.src = 'https://placehold.co/48x48';
+            searchInput.value = '';
+            showAuthPage();
+        });
+
+        // --- TWEET & RETWEET FUNCTIONALITY ---
+        tweetInput.addEventListener('input', () => {
+            const remaining = 280 - tweetInput.value.length;
+            charCount.textContent = remaining;
+            charCount.classList.toggle('text-red-500', remaining < 0);
+            charCount.classList.toggle('text-gray-500', remaining >= 0);
+            tweetSubmitButton.disabled = remaining < 0 || tweetInput.value.trim() === '';
+        });
+
+        tweetForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const tweetContent = tweetInput.value.trim();
+
+            if (tweetContent === '' || tweetContent.length > 280) {
+                 tweetError.textContent = "Tweet cannot be empty or longer than 280 characters.";
+                 setTimeout(() => tweetError.textContent = '', 3000);
+                 return;
+            }
+
+            if (!fakeUser) {
+                tweetError.textContent = "You must be logged in to tweet.";
+                return;
+            }
+
+            const newTweet = {
+                id: `${fakeUser.email}-${new Date().getTime()}`,
+                text: tweetContent,
+                authorEmail: fakeUser.email,
+                authorName: fakeUser.name,
+                createdAt: new Date(),
+                avatarUrl: fakeUser.avatarUrl
+            };
+            localTweets.unshift(newTweet);
+            renderTweets(searchInput.value);
+            tweetForm.reset();
+            charCount.textContent = '280';
+            tweetSubmitButton.disabled = true;
+        });
+
+        tweetsFeed.addEventListener('click', (e) => {
+            const retweetButton = e.target.closest('.retweet-button');
+            if (!retweetButton) return;
+            if (!fakeUser) {
+                alert("Please log in to retweet.");
+                return;
+            }
+
+            const tweetId = retweetButton.dataset.tweetId;
+            const tweetToRetweet = localTweets.find(t => t.id === tweetId);
+
+            if (tweetToRetweet) {
+                const newRetweet = {
+                    id: `${fakeUser.email}-${new Date().getTime()}`,
+                    authorEmail: fakeUser.email,
+                    authorName: fakeUser.name,
+                    createdAt: new Date(),
+                    avatarUrl: fakeUser.avatarUrl,
+                    retweetOf: tweetToRetweet
+                };
+                localTweets.unshift(newRetweet);
+                renderTweets(searchInput.value);
+            }
+        });
+
+
+        // --- SEARCH FUNCTIONALITY ---
+        searchInput.addEventListener('input', () => {
+            renderTweets(searchInput.value);
+        });
+
+        // --- RENDER TWEETS (with filtering and retweets) ---
+        function renderTweets(searchTerm = '') {
+            tweetsFeed.innerHTML = '';
+            const lowerCaseSearchTerm = searchTerm.toLowerCase().trim();
+
+            const filteredTweets = lowerCaseSearchTerm === ''
+                ? localTweets
+                : localTweets.filter(tweet => {
+                    const originalTweet = tweet.retweetOf || tweet;
+                    return originalTweet.authorName.toLowerCase().includes(lowerCaseSearchTerm) ||
+                           originalTweet.text.toLowerCase().includes(lowerCaseSearchTerm);
+                });
+
+            if (filteredTweets.length === 0) {
+                tweetsFeed.innerHTML = `<div class="p-8 text-center text-gray-500">No results for "${sanitizeHTML(searchTerm)}"</div>`;
+                return;
+            }
+
+            filteredTweets.forEach(tweet => {
+                const tweetElement = document.createElement('div');
+                tweetElement.className = 'p-4 border-b border-gray-700';
+
+                const isRetweet = !!tweet.retweetOf;
+                const tweetToShow = isRetweet ? tweet.retweetOf : tweet;
+                const author = isRetweet ? tweet.authorName : tweetToShow.authorName;
+
+                const timeAgo = formatTimeAgo(tweetToShow.createdAt);
+                const handle = tweetToShow.authorEmail.split('@')[0];
+
+                let retweetHeader = '';
+                if(isRetweet) {
+                    retweetHeader = `
+                        <div class="flex items-center text-gray-500 text-sm mb-2 ml-6">
+                            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M23.77 15.67c-.292-.293-.767-.293-1.06 0l-2.22 2.22V7.65c0-2.068-1.683-3.75-3.75-3.75h-5.85c-.414 0-.75.336-.75.75s.336.75.75.75h5.85c1.24 0 2.25 1.01 2.25 2.25v10.24l-2.22-2.22c-.293-.293-.768-.293-1.06 0s-.293.768 0 1.06l3.5 3.5c.145.147.337.22.53.22s.383-.072.53-.22l3.5-3.5c.294-.292.294-.767.002-1.06zM12.25 8.33H6.42l2.22-2.22c.293-.293.293-.768 0-1.06s-.768-.293-1.06 0l-3.5 3.5c-.145.147-.337.22-.53.22s-.383-.072-.53-.22l-3.5-3.5c-.292-.293-.292-.768 0-1.06s.767-.293 1.06 0l2.22 2.22h5.83c2.068 0 3.75 1.682 3.75 3.75v10.26l2.22-2.22c.293-.293.768-.293 1.06 0s.293.768 0 1.06l-3.5 3.5c-.145.147-.337.22-.53.22s-.383-.072-.53-.22l-3.5-3.5c-.292-.292-.292-.767 0-1.06s.767-.293 1.06 0l2.22 2.22V12.08c0-1.24-1.01-2.25-2.25-2.25z"/></svg>
+                            <span>${author} Retweeted</span>
+                        </div>
+                    `;
+                }
+
+                tweetElement.innerHTML = `
+                    ${retweetHeader}
+                    <div class="flex">
+                        <img src="${tweetToShow.avatarUrl}" alt="${tweetToShow.authorName}'s avatar" class="w-12 h-12 rounded-full flex-shrink-0 mr-4 bg-gray-700">
+                        <div class="w-full">
+                            <div class="flex items-baseline flex-wrap">
+                                <span class="font-bold mr-2">${sanitizeHTML(tweetToShow.authorName)}</span>
+                                <span class="text-gray-500 text-sm break-words">@${handle}</span>
+                                <span class="text-gray-500 text-sm mx-2">·</span>
+                                <span class="text-gray-500 text-sm">${timeAgo}</span>
+                            </div>
+                            <p class="mt-1 break-words">${sanitizeHTML(tweetToShow.text)}</p>
+                            ${!isRetweet ? `
+                            <div class="flex justify-start items-center mt-3 text-gray-500">
+                                <button class="flex items-center space-x-2 hover:text-green-500 tweet-action-button retweet-button" data-tweet-id="${tweetToShow.id}">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M23.77 15.67c-.292-.293-.767-.293-1.06 0l-2.22 2.22V7.65c0-2.068-1.683-3.75-3.75-3.75h-5.85c-.414 0-.75.336-.75.75s.336.75.75.75h5.85c1.24 0 2.25 1.01 2.25 2.25v10.24l-2.22-2.22c-.293-.293-.768-.293-1.06 0s-.293.768 0 1.06l3.5 3.5c.145.147.337.22.53.22s.383-.072.53-.22l3.5-3.5c.294-.292.294-.767.002-1.06zM12.25 8.33H6.42l2.22-2.22c.293-.293.293-.768 0-1.06s-.768-.293-1.06 0l-3.5 3.5c-.145.147-.337.22-.53.22s-.383-.072-.53-.22l-3.5-3.5c-.292-.293-.292-.768 0-1.06s.767-.293 1.06 0l2.22 2.22h5.83c2.068 0 3.75 1.682 3.75 3.75v10.26l2.22-2.22c.293-.293.768-.293 1.06 0s.293.768 0 1.06l-3.5 3.5c-.145.147-.337.22-.53.22s-.383-.072-.53-.22l-3.5-3.5c-.292-.292-.292-.767 0-1.06s.767-.293 1.06 0l2.22 2.22V12.08c0-1.24-1.01-2.25-2.25-2.25z"/></svg>
+                                </button>
+                            </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+                tweetsFeed.appendChild(tweetElement);
+            });
+        }
+
+        // --- UTILITY FUNCTIONS ---
+        function sanitizeHTML(str) {
+            const temp = document.createElement('div');
+            temp.textContent = str;
+            return temp.innerHTML;
+        }
+
+        function formatTimeAgo(date) {
+            const seconds = Math.floor((new Date() - new Date(date)) / 1000);
+            if (seconds < 5) return "now";
+            let interval = seconds / 31536000;
+            if (interval > 1) return Math.floor(interval) + "y";
+            interval = seconds / 2592000;
+            if (interval > 1) return Math.floor(interval) + "mo";
+            interval = seconds / 86400;
+            if (interval > 1) return Math.floor(interval) + "d";
+            interval = seconds / 3600;
+            if (interval > 1) return Math.floor(interval) + "h";
+            interval = seconds / 60;
+            if (interval > 1) return Math.floor(interval) + "m";
+            return Math.floor(seconds) + "s";
+        }
+
+        // --- START THE APP ---
+        window.onload = () => {
+            showAuthPage();
+            tweetSubmitButton.disabled = true;
+        }
+    </script>
+</body>
+</html>

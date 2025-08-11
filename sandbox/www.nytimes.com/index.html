@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The New York Times</title>
+    <style>
+        /* Basic Reset & Typography */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: "Georgia", "Times New Roman", Times, serif;
+            background-color: #FEFEFE;
+            color: #121212;
+            overflow-x: hidden;
+        }
+
+        /* Header & Navigation */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            border-bottom: 1px solid #E2E2E2;
+        }
+        .header-left, .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .subscribe-btn {
+            background-color: #5671a6;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-weight: bold;
+            font-size: 14px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .login-btn {
+            background-color: transparent;
+            color: #333;
+            border: 1px solid #333;
+            padding: 7px 15px;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .site-title {
+            font-family: "UnifrakturCook", cursive; /* A font similar to NYT's old English style */
+            font-size: 3em;
+            font-weight: bold;
+            text-align: center;
+            padding: 10px 0;
+            letter-spacing: -1px;
+            border-bottom: 2px solid #121212;
+            border-top: 2px solid #121212;
+            margin: 10px 20px;
+        }
+        .date-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 20px;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 12px;
+            color: #666;
+            border-bottom: 1px solid #E2E2E2;
+        }
+        .date-bar span { font-weight: bold; }
+
+        /* Main Content Grid */
+        .main-content {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+        .main-article {
+            border-right: 1px solid #E2E2E2;
+            padding-right: 30px;
+        }
+        .main-article img {
+            width: 100%;
+            height: auto;
+            margin-bottom: 15px;
+        }
+        .main-article h1 {
+            font-size: 2.5em;
+            line-height: 1.1;
+            margin: 0 0 10px 0;
+        }
+        .byline {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+        .article-summary {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #333;
+        }
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .side-article {
+            border-bottom: 1px solid #E2E2E2;
+            padding-bottom: 20px;
+        }
+        .side-article:last-child {
+            border-bottom: none;
+        }
+        .side-article img {
+            width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+        .side-article h2 {
+            font-size: 1.4em;
+            margin: 0 0 5px 0;
+            line-height: 1.2;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-dialog {
+            background: #fff;
+            padding: 30px;
+            border-radius: 5px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+        .modal-dialog h2 {
+            margin-top: 0;
+            font-size: 1.5em;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .modal-content {
+            max-height: 300px;
+            overflow-y: auto;
+            font-size: 0.9em;
+            line-height: 1.5;
+            color: #444;
+            margin: 20px 0;
+            padding-right: 15px;
+        }
+        .modal-actions {
+            text-align: right;
+            margin-top: 20px;
+        }
+        .modal-accept-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+
+        /* Toast Message */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #28a745;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 5px;
+            z-index: 2000;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 1em;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+        .toast.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            .main-article {
+                border-right: none;
+                padding-right: 0;
+                border-bottom: 1px solid #E2E2E2;
+                padding-bottom: 20px;
+            }
+            .site-title {
+                font-size: 2.5em;
+            }
+            .header {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div id="tos-modal" class="modal-overlay">
+        <div class="modal-dialog">
+            <h2>Terms of Service</h2>
+            <div class="modal-content">
+                <p>Welcome to The New York Times. By accessing our content, you agree to the following terms and conditions. Please read them carefully.</p>
+                <p><strong>1. Content Usage:</strong> All content, including articles, images, and trademarks, is the property of The New York Times and its licensors. Content is provided for personal, non-commercial use only. Any redistribution or reproduction of part or all of the contents in any form is prohibited other than the following: you may print or download to a local hard disk extracts for your personal and non-commercial use only.</p>
+                <p><strong>2. User Conduct:</strong> You agree not to use the website in a way that may impair the performance, corrupt the content, or otherwise reduce the overall functionality of the website. You also agree not to compromise the security of the website or attempt to gain access to secured areas or sensitive information.</p>
+                <p><strong>3. Disclaimer:</strong> The information is provided by The New York Times and while we endeavor to keep the information up to date and correct, we make no representations or warranties of any kind, express or implied, about the completeness, accuracy, reliability, suitability or availability with respect to the website or the information, products, services, or related graphics contained on the website for any purpose.</p>
+                <p>By clicking "Accept," you acknowledge that you have read, understood, and agree to be bound by these Terms of Service.</p>
+            </div>
+            <div class="modal-actions">
+                <button id="accept-btn" class="modal-accept-btn">Accept</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-message" class="toast">Terms of Service accepted. Welcome!</div>
+
+    <header class="header">
+        <div class="header-left">
+            <svg height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+            <svg height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+        </div>
+        <div class="header-center">
+            U.S. | INTERNATIONAL | CANADA | ESPAÑOL
+        </div>
+        <div class="header-right">
+            <button class="subscribe-btn">SUBSCRIBE FOR $1/WEEK</button>
+            <button class="login-btn">LOG IN</button>
+        </div>
+    </header>
+    
+    <div class="date-bar">
+        <span id="current-date"></span>
+        <span>Today's Paper</span>
+    </div>
+
+    <h1 class="site-title">The New York Times</h1>
+
+    <main class="main-content">
+        <section class="main-article">
+            <img src="https://picsum.photos/seed/mainarticle/800/500" alt="View of a bustling city skyline at dusk">
+            <h1>Global Tech Summit Postponed Amidst Rising Geopolitical Tensions</h1>
+            <p class="byline">By Alistair Finch and Clara Dubois</p>
+            <p class="article-summary">GENEVA — The highly anticipated Global Technology Summit, scheduled to take place next month, has been indefinitely postponed, organizers announced today. The decision comes as diplomatic strains between major world powers have reached a fever pitch, creating an environment of uncertainty that organizers deemed "not conducive to open and collaborative dialogue." Sources suggest that disagreements over new international data sharing protocols were a primary catalyst for the breakdown in pre-summit negotiations.</p>
+        </section>
+
+        <aside class="sidebar">
+            <article class="side-article">
+                <h2>Breakthrough in Algae-Based Biofuels Could Revolutionize Air Travel</h2>
+                <p class="byline">By Kenji Tanaka</p>
+                <img src="https://picsum.photos/seed/biofuel/400/250" alt="Microscopic view of algae cells glowing green">
+                <p>Researchers at the Oceanic Institute of Vancouver have announced a landmark achievement in creating a stable, high-energy biofuel from common marine algae, promising a potential 70% reduction in carbon emissions for commercial flights.</p>
+            </article>
+            <article class="side-article">
+                <h2>Ancient Roman Villa Unearthed Near Naples With Intact Murals</h2>
+                <p class="byline">By Sofia Rossi</p>
+                <img src="https://picsum.photos/seed/romans/400/250" alt="Archaeological dig site with pottery shards">
+                <p>An archaeological team has discovered a remarkably preserved Roman villa from the 1st century A.D. The site, buried for centuries by volcanic ash, contains vibrant frescoes depicting mythological scenes, offering a new window into provincial Roman life.</p>
+            </article>
+            <article class="side-article">
+                <h2>Opinion: The Four-Day Work Week Is No Longer A Dream, It's A Necessity</h2>
+                <p class="byline">By Eleanor Vance</p>
+                <p>As burnout rates soar and productivity stagnates, the evidence is clear: the traditional five-day, 40-hour work week is an outdated model. It's time for businesses to embrace a more flexible, human-centric approach.</p>
+            </article>
+        </aside>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- Date Display ---
+            const dateElement = document.getElementById('current-date');
+            const today = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            dateElement.textContent = today.toLocaleDateString('en-US', options);
+
+            // --- Modal and Toast Logic ---
+            const modal = document.getElementById('tos-modal');
+            const acceptBtn = document.getElementById('accept-btn');
+            const toast = document.getElementById('toast-message');
+
+            // Show the modal on page load
+            modal.style.display = 'flex';
+
+            acceptBtn.addEventListener('click', function() {
+                // Hide the modal
+                modal.style.display = 'none';
+
+                // Show the toast message
+                toast.classList.add('show');
+
+                // Hide the toast message after 3 seconds
+                setTimeout(function() {
+                    toast.classList.remove('show');
+                }, 3000);
+            });
+        });
+    </script>
+
+</body>
+</html>

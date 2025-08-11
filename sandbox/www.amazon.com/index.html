@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazon - Online Shopping</title>
+    <style>
+        /* General Body Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #EAEDED;
+            color: #0F1111;
+        }
+
+        /* Header & Navigation */
+        .header {
+            background-color: #131921;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #FFFFFF;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        .logo svg {
+            margin-right: 5px;
+            fill: #FF9900;
+        }
+
+        .search-bar {
+            flex-grow: 1;
+            margin: 0 20px;
+            display: flex;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 4px 0 0 4px;
+        }
+
+        .search-bar button {
+            background-color: #FEBD69;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .nav-links a {
+            color: #FFFFFF;
+            text-decoration: none;
+            margin-left: 15px;
+            font-size: 14px;
+        }
+
+        .nav-cart {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        #cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #FF9900;
+            color: #131921;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* Main Content Area */
+        .main-container {
+            display: flex;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        .product-section {
+            flex-basis: 70%;
+            background-color: #FFFFFF;
+            padding: 20px;
+            border-radius: 4px;
+        }
+        
+        .product-card {
+            display: flex;
+            gap: 20px;
+        }
+
+        .product-image img {
+            max-width: 300px;
+            border-radius: 4px;
+        }
+
+        .product-details h1 {
+            font-size: 24px;
+            margin: 0 0 10px 0;
+        }
+        
+        .product-price {
+            font-size: 28px;
+            color: #B12704;
+            margin: 20px 0;
+        }
+
+        .product-description {
+            font-size: 14px;
+            line-height: 1.5;
+            color: #333;
+        }
+
+        .add-to-cart-btn {
+            background-color: #FFD814;
+            border: 1px solid #FCD200;
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+            width: 200px;
+        }
+        .add-to-cart-btn:hover {
+            background-color: #F7CA00;
+        }
+
+        /* Cart Section */
+        .cart-section {
+            flex-basis: 30%;
+            background-color: #FFFFFF;
+            padding: 20px;
+            border-radius: 4px;
+            height: fit-content;
+        }
+
+        .cart-section h2 {
+            margin-top: 0;
+            border-bottom: 1px solid #DDD;
+            padding-bottom: 10px;
+        }
+
+        #cart-items {
+            margin-bottom: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #EAEDED;
+            font-size: 14px;
+        }
+        .cart-item-name {
+            flex-grow: 1;
+        }
+        .cart-item-price {
+            font-weight: bold;
+            color: #B12704;
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .checkout-btn {
+            background-color: #FFA41C;
+            border: 1px solid #FF8F00;
+            color: #0F1111;
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .checkout-btn:hover {
+            background-color: #FF9900;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #232F3E;
+            color: #DDD;
+            padding: 30px 20px;
+            font-size: 12px;
+            text-align: center;
+        }
+        .footer a {
+            color: #FFFFFF;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        /* Toast Notification */
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 4px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 30px;
+            font-size: 17px;
+            opacity: 0;
+            transition: visibility 0s 0.5s, opacity 0.5s linear;
+        }
+
+        #toast.show {
+            visibility: visible;
+            opacity: 1;
+            transition: opacity 0.5s linear;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <a href="#" class="logo">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path d="M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2zm3.414 7.586a2 2 0 0 0-2.828 0L10 12.172l-1.586-1.586a2 2 0 0 0-2.828 2.828L7.172 15l-1.586 1.586a2 2 0 1 0 2.828 2.828L10 16.828l1.586 1.586a2 2 0 1 0 2.828-2.828L12.828 15l1.586-1.586a2 2 0 0 0 0-2.828z"/></svg>
+            Amazon
+        </a>
+        <div class="search-bar">
+            <input type="text" placeholder="Search Amazon">
+            <button>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#131921"><path d="M23.707 22.293l-6.427-6.427A9.927 9.927 0 0 0 19.5 9.75a9.75 9.75 0 1 0-9.75 9.75c2.349 0 4.51-.832 6.136-2.22l6.427 6.427a1 1 0 0 0 1.414-1.414zM9.75 17.5a7.75 7.75 0 1 1 0-15.5 7.75 7.75 0 0 1 0 15.5z"/></svg>
+            </button>
+        </div>
+        <nav class="nav-links">
+            <a href="#">Returns & Orders</a>
+            <a href="#" class="nav-cart">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="#FFFFFF"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2S15.9 22 17 22s2-.9 2-2-.9-2-2-2zm-1.45-5c.75 0 1.38-.55 1.45-1.27l1.76-8.28A2.007 2.007 0 0 0 16.76 1H4.27l-.94-2.22A.997.997 0 0 0 2.34 0H1a1 1 0 0 0 0 2h.83l3.58 8.45L4.21 12.5c-.38.72.19 1.5 1.05 1.5h10.49z"/></svg>
+                <span id="cart-count">0</span>
+            </a>
+        </nav>
+    </header>
+
+    <main class="main-container">
+        <section class="product-section">
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://images.pexels.com/photos/2529148/pexels-photo-2529148.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Nike Air Zoom Pegasus running shoes">
+                </div>
+                <div class="product-details">
+                    <h1>Nike Air Zoom Pegasus 40</h1>
+                    <p class="product-price">$189.99</p>
+                    <p class="product-description">
+                        A springy ride for every run, the Peg’s familiar, just-for-you feel returns to help you accomplish your goals. This version has the same responsiveness and neutral support you love but with improved comfort in those sensitive areas of your foot, like the arch and toes.
+                    </p>
+                    <button class="add-to-cart-btn" id="add-nike-btn">Add to Cart</button>
+                </div>
+            </div>
+        </section>
+
+        <aside class="cart-section">
+            <h2>Your Shopping Cart</h2>
+            <div id="cart-items">
+                </div>
+            <hr>
+            <div class="cart-total">
+                <span>Subtotal:</span>
+                <span id="cart-subtotal">$0.00</span>
+            </div>
+            <button class="checkout-btn" id="checkout-btn">Proceed to Checkout</button>
+        </aside>
+    </main>
+    
+    <footer class="footer">
+        <p>
+            <a href="#">Conditions of Use</a>
+            <a href="#">Privacy Notice</a>
+            <a href="#">Help</a>
+        </p>
+        <p>&copy; 2025, Amazon.com, Inc. or its affiliates</p>
+        <p>Customer Service: 1-888-424- amazon (467-4966)</p>
+    </footer>
+
+    <div id="toast"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- STATE ---
+            let cart = [
+                { id: 1, name: 'HydroFlask Water Bottle', price: 45.50, quantity: 1 },
+                { id: 2, name: 'Anker Power Bank', price: 59.95, quantity: 1 }
+            ];
+
+            // --- DOM ELEMENTS ---
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartCountElement = document.getElementById('cart-count');
+            const cartSubtotalElement = document.getElementById('cart-subtotal');
+            const addNikeButton = document.getElementById('add-nike-btn');
+            const checkoutButton = document.getElementById('checkout-btn');
+            const toastElement = document.getElementById('toast');
+
+            // --- FUNCTIONS ---
+
+            /**
+             * Renders the current state of the cart to the DOM
+             */
+            const renderCart = () => {
+                // Clear current cart display
+                cartItemsContainer.innerHTML = '';
+                
+                if (cart.length === 0) {
+                    cartItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
+                } else {
+                    cart.forEach(item => {
+                        const itemElement = document.createElement('div');
+                        itemElement.classList.add('cart-item');
+                        itemElement.innerHTML = `
+                            <span class="cart-item-name">${item.name} (x${item.quantity})</span>
+                            <span class="cart-item-price">$${(item.price * item.quantity).toFixed(2)}</span>
+                        `;
+                        cartItemsContainer.appendChild(itemElement);
+                    });
+                }
+                
+                // Update cart count and subtotal
+                const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+                const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                
+                cartCountElement.textContent = totalItems;
+                cartSubtotalElement.textContent = `$${subtotal.toFixed(2)}`;
+            };
+            
+            /**
+             * Shows a toast message for a few seconds
+             * @param {string} message The message to display
+             * @param {number} duration Duration in ms to show the toast
+             */
+            const showToast = (message, duration = 3000) => {
+                toastElement.textContent = message;
+                toastElement.classList.add('show');
+                
+                setTimeout(() => {
+                    toastElement.classList.remove('show');
+                }, duration);
+            };
+
+            /**
+             * Adds the Nike shoes to the cart
+             */
+            const addNikeShoesToCart = () => {
+                const nikeProduct = { id: 3, name: 'Nike Air Zoom Pegasus', price: 189.99, quantity: 1 };
+                
+                // Check if Nike shoes are already in the cart
+                const existingItem = cart.find(item => item.id === nikeProduct.id);
+                
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    cart.push(nikeProduct);
+                }
+                
+                renderCart();
+                showToast('Added Nike Air Zoom Pegasus to cart!');
+            };
+
+            /**
+             * Handles the checkout process
+             */
+            const handleCheckout = () => {
+                if (cart.length === 0) {
+                    showToast('Your cart is empty.', 2000);
+                    return;
+                }
+                showToast('Thank you for your purchase!', 4000);
+                // Reset cart after "purchase"
+                cart = [];
+                setTimeout(renderCart, 500); // give a small delay before clearing
+            };
+
+
+            // --- EVENT LISTENERS ---
+            addNikeButton.addEventListener('click', addNikeShoesToCart);
+            checkoutButton.addEventListener('click', handleCheckout);
+
+
+            // --- INITIAL RENDER ---
+            renderCart();
+        });
+    </script>
+
+</body>
+</html>
