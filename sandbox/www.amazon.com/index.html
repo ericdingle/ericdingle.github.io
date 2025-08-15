@@ -61,6 +61,7 @@
             text-decoration: none;
             margin-left: 15px;
             font-size: 14px;
+            cursor: pointer;
         }
 
         .nav-cart {
@@ -81,15 +82,18 @@
             font-weight: bold;
         }
 
-        /* Main Content Area */
-        .main-container {
-            display: flex;
+        /* Page containers */
+        #product-page, #cart-page {
             padding: 20px;
-            gap: 20px;
+        }
+
+        /* Product Page */
+        #product-page {
+            display: flex;
         }
 
         .product-section {
-            flex-basis: 70%;
+            width: 100%;
             background-color: #FFFFFF;
             padding: 20px;
             border-radius: 4px;
@@ -136,22 +140,34 @@
             background-color: #F7CA00;
         }
 
-        /* Cart Section */
-        .cart-section {
-            flex-basis: 30%;
+        /* Cart Page */
+        #cart-page {
+            display: none; /* Hidden by default */
+            max-width: 900px;
+            margin: 0 auto;
             background-color: #FFFFFF;
             padding: 20px;
             border-radius: 4px;
-            height: fit-content;
         }
-
-        .cart-section h2 {
+        
+        #cart-page h2 {
             margin-top: 0;
             border-bottom: 1px solid #DDD;
             padding-bottom: 10px;
         }
+        
+        #back-to-shopping {
+            color: #007185;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 20px;
+        }
+        #back-to-shopping:hover {
+            text-decoration: underline;
+            color: #C7511F;
+        }
 
-        #cart-items {
+        #cart-items-page {
             margin-bottom: 20px;
         }
 
@@ -159,9 +175,9 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 0;
+            padding: 15px 0;
             border-bottom: 1px solid #EAEDED;
-            font-size: 14px;
+            font-size: 16px;
         }
         .cart-item-name {
             flex-grow: 1;
@@ -172,11 +188,10 @@
         }
 
         .cart-total {
-            display: flex;
-            justify-content: space-between;
-            font-size: 18px;
+            text-align: right;
+            font-size: 20px;
             font-weight: bold;
-            margin-top: 15px;
+            margin-top: 20px;
         }
 
         .checkout-btn {
@@ -189,9 +204,19 @@
             border-radius: 8px;
             cursor: pointer;
             margin-top: 20px;
+            max-width: 300px;
+            display: block;
+            margin-left: auto;
         }
         .checkout-btn:hover {
             background-color: #FF9900;
+        }
+        
+        #empty-cart-message {
+            font-size: 18px;
+            color: #555;
+            text-align: center;
+            padding: 40px;
         }
 
         /* Footer */
@@ -248,42 +273,40 @@
             </button>
         </div>
         <nav class="nav-links">
-            <a href="#">Returns & Orders</a>
-            <a href="#" class="nav-cart">
+            <a id="cart-nav-link" class="nav-cart">
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="#FFFFFF"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2S15.9 22 17 22s2-.9 2-2-.9-2-2-2zm-1.45-5c.75 0 1.38-.55 1.45-1.27l1.76-8.28A2.007 2.007 0 0 0 16.76 1H4.27l-.94-2.22A.997.997 0 0 0 2.34 0H1a1 1 0 0 0 0 2h.83l3.58 8.45L4.21 12.5c-.38.72.19 1.5 1.05 1.5h10.49z"/></svg>
                 <span id="cart-count">0</span>
             </a>
         </nav>
     </header>
 
-    <main class="main-container">
-        <section class="product-section">
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://images.pexels.com/photos/2529148/pexels-photo-2529148.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Nike Air Zoom Pegasus running shoes">
+    <main>
+        <div id="product-page">
+            <section class="product-section">
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.pexels.com/photos/847402/pexels-photo-847402.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Nike Dri-FIT running socks">
+                    </div>
+                    <div class="product-details">
+                        <h1>Nike Dri-FIT Cushion Crew Training Socks (3-Pack)</h1>
+                        <p class="product-price">$24.99</p>
+                        <p class="product-description">
+                            Power through your workout with the Nike Dri-FIT Cushion Socks. A thick terry sole gives you extra comfort for footdrills and lifts, while high-friction yarns in the footbed reduce slippage. Sweat-wicking fabric helps pull sweat away from the skin to help keep your feet dry and comfortable.
+                        </p>
+                        <button class="add-to-cart-btn" id="add-nike-btn">Add to Cart</button>
+                    </div>
                 </div>
-                <div class="product-details">
-                    <h1>Nike Air Zoom Pegasus 40</h1>
-                    <p class="product-price">$189.99</p>
-                    <p class="product-description">
-                        A springy ride for every run, the Peg’s familiar, just-for-you feel returns to help you accomplish your goals. This version has the same responsiveness and neutral support you love but with improved comfort in those sensitive areas of your foot, like the arch and toes.
-                    </p>
-                    <button class="add-to-cart-btn" id="add-nike-btn">Add to Cart</button>
-                </div>
-            </div>
-        </section>
+            </section>
+        </div>
 
-        <aside class="cart-section">
+        <div id="cart-page">
+            <a href="#" id="back-to-shopping">&larr; Continue Shopping</a>
             <h2>Your Shopping Cart</h2>
-            <div id="cart-items">
+            <div id="cart-items-page">
                 </div>
-            <hr>
-            <div class="cart-total">
-                <span>Subtotal:</span>
-                <span id="cart-subtotal">$0.00</span>
-            </div>
-            <button class="checkout-btn" id="checkout-btn">Proceed to Checkout</button>
-        </aside>
+            <div id="cart-summary">
+                 </div>
+        </div>
     </main>
     
     <footer class="footer">
@@ -293,7 +316,7 @@
             <a href="#">Help</a>
         </p>
         <p>&copy; 2025, Amazon.com, Inc. or its affiliates</p>
-        <p>Customer Service: 1-888-424- amazon (467-4966)</p>
+        <p>Customer Service: 1-888-424- horizon (467-4966)</p>
     </footer>
 
     <div id="toast"></div>
@@ -307,24 +330,54 @@
             ];
 
             // --- DOM ELEMENTS ---
-            const cartItemsContainer = document.getElementById('cart-items');
+            const productPage = document.getElementById('product-page');
+            const cartPage = document.getElementById('cart-page');
+            const cartNavLink = document.getElementById('cart-nav-link');
+            const backToShoppingLink = document.getElementById('back-to-shopping');
+            
             const cartCountElement = document.getElementById('cart-count');
-            const cartSubtotalElement = document.getElementById('cart-subtotal');
             const addNikeButton = document.getElementById('add-nike-btn');
-            const checkoutButton = document.getElementById('checkout-btn');
             const toastElement = document.getElementById('toast');
+            
+            const cartItemsContainerPage = document.getElementById('cart-items-page');
+            const cartSummaryContainer = document.getElementById('cart-summary');
 
             // --- FUNCTIONS ---
+            
+            /**
+             * Shows the main product page and hides the cart page
+             */
+            const showProductPage = () => {
+                productPage.style.display = 'flex';
+                cartPage.style.display = 'none';
+            };
+            
+            /**
+             * Shows the cart page, hides the product page, and renders cart content
+             */
+            const showCartPage = () => {
+                productPage.style.display = 'none';
+                cartPage.style.display = 'block';
+                renderCartPage();
+            };
+            
+            /**
+             * Updates the small cart counter in the header
+             */
+            const updateHeaderCartCount = () => {
+                const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+                cartCountElement.textContent = totalItems;
+            };
 
             /**
-             * Renders the current state of the cart to the DOM
+             * Renders the full cart content on the dedicated cart page
              */
-            const renderCart = () => {
-                // Clear current cart display
-                cartItemsContainer.innerHTML = '';
+            const renderCartPage = () => {
+                cartItemsContainerPage.innerHTML = '';
+                cartSummaryContainer.innerHTML = '';
                 
                 if (cart.length === 0) {
-                    cartItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
+                    cartItemsContainerPage.innerHTML = '<p id="empty-cart-message">Your cart is empty.</p>';
                 } else {
                     cart.forEach(item => {
                         const itemElement = document.createElement('div');
@@ -333,22 +386,25 @@
                             <span class="cart-item-name">${item.name} (x${item.quantity})</span>
                             <span class="cart-item-price">$${(item.price * item.quantity).toFixed(2)}</span>
                         `;
-                        cartItemsContainer.appendChild(itemElement);
+                        cartItemsContainerPage.appendChild(itemElement);
                     });
+
+                    const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                    cartSummaryContainer.innerHTML = `
+                        <hr>
+                        <div class="cart-total">
+                            <span>Subtotal:</span>
+                            <span>$${subtotal.toFixed(2)}</span>
+                        </div>
+                        <button class="checkout-btn" id="checkout-btn-page">Proceed to Checkout</button>
+                    `;
+                    // Add event listener to the new button
+                    document.getElementById('checkout-btn-page').addEventListener('click', handleCheckout);
                 }
-                
-                // Update cart count and subtotal
-                const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-                const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-                
-                cartCountElement.textContent = totalItems;
-                cartSubtotalElement.textContent = `$${subtotal.toFixed(2)}`;
             };
             
             /**
              * Shows a toast message for a few seconds
-             * @param {string} message The message to display
-             * @param {number} duration Duration in ms to show the toast
              */
             const showToast = (message, duration = 3000) => {
                 toastElement.textContent = message;
@@ -360,12 +416,11 @@
             };
 
             /**
-             * Adds the Nike shoes to the cart
+             * Adds the Nike socks to the cart
              */
-            const addNikeShoesToCart = () => {
-                const nikeProduct = { id: 3, name: 'Nike Air Zoom Pegasus', price: 189.99, quantity: 1 };
+            const addNikeSocksToCart = () => {
+                const nikeProduct = { id: 3, name: 'Nike Dri-FIT Socks (3-Pack)', price: 24.99, quantity: 1 };
                 
-                // Check if Nike shoes are already in the cart
                 const existingItem = cart.find(item => item.id === nikeProduct.id);
                 
                 if (existingItem) {
@@ -374,32 +429,40 @@
                     cart.push(nikeProduct);
                 }
                 
-                renderCart();
-                showToast('Added Nike Air Zoom Pegasus to cart!');
+                updateHeaderCartCount();
+                showToast('Added Nike Dri-FIT Socks to cart!');
             };
 
             /**
              * Handles the checkout process
              */
             const handleCheckout = () => {
-                if (cart.length === 0) {
-                    showToast('Your cart is empty.', 2000);
-                    return;
-                }
+                if (cart.length === 0) return;
+                
                 showToast('Thank you for your purchase!', 4000);
-                // Reset cart after "purchase"
-                cart = [];
-                setTimeout(renderCart, 500); // give a small delay before clearing
+                cart = []; // Reset cart
+                
+                // Update views after a short delay
+                setTimeout(() => {
+                    updateHeaderCartCount();
+                    renderCartPage(); // Re-render the now empty cart page
+                    showProductPage(); // Navigate back to shopping
+                }, 500);
             };
 
-
             // --- EVENT LISTENERS ---
-            addNikeButton.addEventListener('click', addNikeShoesToCart);
-            checkoutButton.addEventListener('click', handleCheckout);
-
+            addNikeButton.addEventListener('click', addNikeSocksToCart);
+            cartNavLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                showCartPage();
+            });
+            backToShoppingLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                showProductPage();
+            });
 
             // --- INITIAL RENDER ---
-            renderCart();
+            updateHeaderCartCount();
         });
     </script>
 

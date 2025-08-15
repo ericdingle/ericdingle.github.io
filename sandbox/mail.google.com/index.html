@@ -3,973 +3,576 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gmail</title>
+    <title>Gmail - Inbox</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
-
         :root {
-            --primary-color: #1a73e8; /* Blue */
-            --primary-dark: #174ea6;
-            --sidebar-width: 260px;
-            --header-height: 64px;
-            --bg-light: #f6f8fc;
-            --text-dark: #3c4043;
-            --text-light: #5f6368;
-            --border-color: #dadce0;
-            --hover-bg: #e8f0fe;
-            --active-bg: #cfe2ff;
-            --button-bg: #d3e3fd;
-            --button-text: #0b57d0;
-            --compose-bg: #c2e7ff;
+            --primary-bg: #ffffff;
+            --secondary-bg: #f2f6fc;
+            --border-color: #e0e0e0;
+            --text-color: #3c4043;
+            --link-color: #1a73e8;
+            --accent-color: #d93025;
+            --compose-button-bg: #c2e7ff;
+            --compose-button-text: #001d35;
+            --hover-bg: #f1f3f4;
+            --font-family: 'Roboto', Arial, sans-serif;
         }
 
         body {
-            font-family: 'Roboto', sans-serif;
             margin: 0;
-            padding: 0;
-            background-color: var(--bg-light);
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            color: var(--text-dark);
-            overflow: hidden; /* Prevent scrollbar from toast/modals initially */
+            font-family: var(--font-family);
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            overflow: hidden;
         }
 
-        /* Header */
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* --- Header --- */
         .header {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            height: var(--header-height);
-            padding: 0 20px;
-            background-color: #fff;
+            padding: 8px 16px;
             border-bottom: 1px solid var(--border-color);
-            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            position: sticky;
+            position: fixed;
             top: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--primary-bg);
             z-index: 1000;
         }
 
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 15px;
+        .header .menu-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 12px;
+            border-radius: 50%;
         }
-
-        .header-logo {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 22px;
-            font-weight: 500;
-            color: var(--text-dark);
-        }
-
-        .header-logo svg {
-            width: 30px;
-            height: 30px;
-            fill: var(--primary-color);
-        }
+        .header .menu-btn:hover { background-color: var(--hover-bg); }
+        .header .menu-btn svg { display: block; }
+        
+        .logo { display: flex; align-items: center; margin-left: 16px; }
+        .logo svg { width: 32px; height: 32px; }
+        .logo span { font-size: 22px; margin-left: 8px; color: #5f6368; }
 
         .search-bar {
             flex-grow: 1;
+            margin: 0 32px;
             max-width: 720px;
-            background-color: var(--bg-light);
-            border-radius: 8px;
-            padding: 8px 15px;
+            background-color: var(--secondary-bg);
+            border-radius: 24px;
             display: flex;
             align-items: center;
-            gap: 10px;
-            border: 1px solid transparent;
-            transition: all 0.2s ease-in-out;
+            padding: 4px 8px;
         }
-
         .search-bar:focus-within {
-            background-color: #fff;
-            box-shadow: 0 1px 3px 0 rgba(60, 64, 67, 0.3), 0 4px 8px 3px rgba(60, 64, 67, 0.15);
-            border-color: var(--primary-color);
+            background-color: var(--primary-bg);
+            box-shadow: 0 1px 2px 0 rgba(0,0,0,0.2);
         }
-
+        .search-bar .search-btn { background: none; border: none; padding: 8px; cursor: pointer; border-radius: 50%;}
+        .search-bar .search-btn:hover { background-color: var(--hover-bg); }
         .search-bar input {
+            width: 100%;
             border: none;
-            outline: none;
             background: transparent;
             font-size: 16px;
-            color: var(--text-dark);
-            flex-grow: 1;
-            padding: 2px 0;
+            padding: 8px;
+            outline: none;
         }
 
-        .search-bar svg {
-            width: 20px;
-            height: 20px;
-            fill: var(--text-light);
-        }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .header-icon-button {
-            width: 40px;
-            height: 40px;
+        .header-right { display: flex; align-items: center; }
+        .header-right .icon-btn {
+            background: none;
+            border: none;
+            padding: 12px;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             cursor: pointer;
-            transition: background-color 0.15s ease-in-out;
         }
-
-        .header-icon-button:hover {
-            background-color: rgba(0, 0, 0, 0.08);
-        }
-
-        .header-icon-button svg {
-            width: 24px;
-            height: 24px;
-            fill: var(--text-light);
-        }
-
+        .header-right .icon-btn:hover { background-color: var(--hover-bg); }
         .profile-pic {
             width: 32px;
             height: 32px;
             border-radius: 50%;
-            background-color: #b7e0e7; /* Light blue placeholder */
+            background-color: #6d4c41;
+            color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
-            font-weight: 500;
-            color: var(--primary-dark);
-            cursor: pointer;
+            font-weight: bold;
+            margin-left: 16px;
         }
-
-        /* Main Content */
-        .main-content {
-            display: flex;
-            flex-grow: 1;
-            overflow: hidden; /* For inner scrolling */
-        }
-
-        /* Sidebar */
+        
+        /* --- Sidebar --- */
         .sidebar {
-            width: var(--sidebar-width);
-            background-color: #fff;
-            padding: 20px 0;
+            width: 256px;
+            padding-top: 80px;
+            display: flex;
+            flex-direction: column;
             border-right: 1px solid var(--border-color);
-            flex-shrink: 0;
-            overflow-y: auto;
+            background-color: var(--primary-bg);
+            transition: width 0.2s ease;
         }
-
-        .compose-button {
+        .compose-btn {
             display: flex;
             align-items: center;
-            gap: 10px;
-            background-color: var(--compose-bg);
-            border-radius: 16px;
+            justify-content: center;
+            margin: 16px;
             padding: 16px 24px;
-            margin: 0 15px 20px;
-            font-size: 15px;
-            font-weight: 500;
-            color: var(--text-dark);
-            box-shadow: 0 1px 3px 0 rgba(60, 64, 67, 0.15);
+            border-radius: 16px;
+            border: none;
+            background-color: var(--compose-button-bg);
+            color: var(--compose-button-text);
+            font-size: 1rem;
             cursor: pointer;
-            transition: box-shadow 0.15s ease-in-out;
-            text-decoration: none; /* For link styling */
+            box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
         }
-
-        .compose-button:hover {
-            box-shadow: 0 1px 6px 0 rgba(60, 64, 67, 0.3);
-        }
-
-        .compose-button svg {
-            width: 24px;
-            height: 24px;
-            fill: var(--text-dark);
-        }
-
-        .nav-list {
+        .compose-btn svg { margin-right: 12px; }
+        
+        .nav-menu {
             list-style: none;
             padding: 0;
             margin: 0;
         }
-
-        .nav-item a {
+        .nav-item {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 8px 24px;
-            font-size: 14px;
-            color: var(--text-dark);
-            text-decoration: none;
-            border-top-right-radius: 999px;
-            border-bottom-right-radius: 999px;
-            margin-right: 10px;
-            transition: background-color 0.15s ease-in-out;
-        }
-
-        .nav-item a:hover {
-            background-color: var(--hover-bg);
-        }
-
-        .nav-item.active a {
-            background-color: var(--active-bg);
-            font-weight: 500;
-            color: var(--primary-dark);
-        }
-
-        .nav-item.active a svg {
-            fill: var(--primary-dark);
-        }
-
-        .nav-item a .icon {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .nav-item a .icon svg {
-            width: 20px;
-            height: 20px;
-            fill: var(--text-light);
-        }
-
-        .nav-item a .count {
-            font-weight: 500;
-            color: var(--text-light);
-        }
-
-        .create-account-button {
-            display: block;
-            background-color: var(--button-bg);
-            color: var(--button-text);
-            border: none;
-            padding: 10px 15px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 500;
+            padding: 6px 24px;
+            margin-right: 16px;
+            border-top-right-radius: 20px;
+            border-bottom-right-radius: 20px;
             cursor: pointer;
-            margin: 20px 15px 0;
-            text-align: center;
-            text-decoration: none;
-            transition: background-color 0.15s ease-in-out;
         }
-
-        .create-account-button:hover {
-            background-color: #bddbff;
+        .nav-item:hover { background-color: var(--hover-bg); }
+        .nav-item.active {
+            background-color: var(--accent-color);
+            color: white;
+            font-weight: bold;
         }
+        .nav-item.active svg { fill: white; }
+        .nav-item svg { margin-right: 18px; fill: #5f6368; }
 
-        /* Email List Area */
-        .email-area {
+        /* --- Main Content --- */
+        .main-content {
             flex-grow: 1;
-            background-color: #fff;
-            margin: 20px;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px 0 rgba(60, 64, 67, 0.15);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .email-toolbar {
-            display: flex;
-            align-items: center;
-            padding: 10px 20px;
-            border-bottom: 1px solid var(--border-color);
-            gap: 15px;
-            background-color: #fff;
-        }
-
-        .checkbox-container {
-            display: inline-block;
-            position: relative;
-            padding-left: 28px;
-            cursor: pointer;
-            font-size: 22px;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            margin-right: 5px;
-        }
-
-        .checkbox-container input {
-            position: absolute;
-            opacity: 0;
-            cursor: pointer;
-            height: 0;
-            width: 0;
-        }
-
-        .checkmark {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 20px;
-            width: 20px;
-            background-color: #eee;
-            border-radius: 4px;
-        }
-
-        .checkbox-container:hover input ~ .checkmark {
-            background-color: #ccc;
-        }
-
-        .checkbox-container input:checked ~ .checkmark {
-            background-color: var(--primary-color);
-        }
-
-        .checkmark:after {
-            content: "";
-            position: absolute;
-            display: none;
-        }
-
-        .checkbox-container input:checked ~ .checkmark:after {
-            display: block;
-        }
-
-        .checkbox-container .checkmark:after {
-            left: 7px;
-            top: 3px;
-            width: 6px;
-            height: 12px;
-            border: solid white;
-            border-width: 0 3px 3px 0;
-            -webkit-transform: rotate(45deg);
-            -ms-transform: rotate(45deg);
-            transform: rotate(45deg);
-        }
-
-        .toolbar-icon-button {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: background-color 0.15s ease-in-out;
-        }
-
-        .toolbar-icon-button:hover {
-            background-color: var(--hover-bg);
-        }
-
-        .toolbar-icon-button svg {
-            width: 20px;
-            height: 20px;
-            fill: var(--text-light);
-        }
-
-        .email-list {
-            flex-grow: 1;
+            padding-top: 65px;
             overflow-y: auto;
-            border-top: 1px solid var(--border-color); /* Separator from toolbar */
         }
+        
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            color: #5f6368;
+        }
+        .empty-state h3 { font-size: 1.2rem; margin-bottom: 8px; }
+        .empty-state p { font-size: 0.9rem; }
 
+        /* --- Email List --- */
+        .email-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
         .email-item {
             display: flex;
             align-items: center;
-            padding: 12px 20px;
+            padding: 12px 16px;
             border-bottom: 1px solid var(--border-color);
             cursor: pointer;
-            transition: background-color 0.15s ease-in-out;
-            position: relative; /* For actions */
-            gap: 15px;
         }
-
-        .email-item:last-child {
-            border-bottom: none;
-        }
-
         .email-item:hover {
-            background-color: var(--hover-bg);
-            box-shadow: 0 1px 3px 0 rgba(60, 64, 67, 0.15);
-            z-index: 1; /* To make shadow visible over next item */
+            box-shadow: inset 1px 0 0 #dadce0, inset -1px 0 0 #dadce0, 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+            z-index: 2;
         }
+        .email-item.unread { font-weight: bold; }
+        .email-sender { width: 180px; padding-right: 16px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
+        .email-subject { flex-grow: 1; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
+        .email-snippet { color: #5f6368; margin-left: 8px; flex-shrink: 0;}
+        .email-timestamp { margin-left: 24px; font-size: 12px; color: #5f6368; }
+        .email-item.unread .email-timestamp,
+        .email-item.unread .email-sender,
+        .email-item.unread .email-subject { color: #202124; }
 
-        .email-item .sender {
-            font-weight: 500;
-            flex-shrink: 0;
-            width: 150px; /* Fixed width for sender */
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .email-item .subject-snippet {
-            flex-grow: 1;
+        /* --- Email View --- */
+        .email-view { padding: 24px; }
+        .email-view-header {
             display: flex;
-            gap: 8px;
-            min-width: 0; /* Allow text to shrink */
-        }
-
-        .email-item .subject {
-            font-weight: 500;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            flex-shrink: 0; /* Don't allow subject to shrink more than needed */
-            max-width: 40%; /* Limit subject width */
-        }
-
-        .email-item .snippet {
-            color: var(--text-light);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            flex-grow: 1;
-        }
-
-        .email-item .date {
-            font-size: 13px;
-            color: var(--text-light);
-            flex-shrink: 0;
-            width: 80px; /* Fixed width for date */
-            text-align: right;
-        }
-
-        .email-actions {
-            position: absolute;
-            right: 20px;
-            background-color: #fff;
-            padding: 5px;
-            border-radius: 4px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-            display: flex;
-            gap: 5px;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.15s ease-in-out;
-        }
-
-        .email-item:hover .email-actions {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .email-actions .icon-button {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 16px;
+            margin-bottom: 24px;
+        }
+        .back-btn { background: none; border: none; padding: 12px; border-radius: 50%; cursor: pointer; }
+        .back-btn:hover { background-color: var(--hover-bg); }
+        .email-view-subject { font-size: 24px; }
+        .email-view-details { display: flex; margin-bottom: 16px; }
+        .sender-avatar {
+            width: 40px; height: 40px; border-radius: 50%;
+            background-color: #0b57d0; color: white;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px; font-weight: bold;
+            margin-right: 16px;
+        }
+        .sender-info span { display: block; }
+        .sender-info .sender-name { font-weight: bold; }
+        .sender-info .sender-email { font-size: 14px; color: #5f6368; }
+        .email-view-body { line-height: 1.6; font-size: 15px; white-space: pre-wrap; }
+        .email-actions { margin-top: 32px; display: flex; gap: 12px; }
+        .action-btn {
+            padding: 10px 24px;
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            background: none;
+            font-size: 14px;
             cursor: pointer;
-            transition: background-color 0.15s ease-in-out;
-        }
-
-        .email-actions .icon-button:hover {
-            background-color: var(--hover-bg);
-        }
-
-        .email-actions .icon-button svg {
-            width: 20px;
-            height: 20px;
-            fill: var(--text-light);
-        }
-
-        /* Modals */
-        .modal-backdrop {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.4);
             display: flex;
             align-items: center;
-            justify-content: center;
+            gap: 8px;
+        }
+        .action-btn:hover { background-color: var(--hover-bg); }
+
+        /* --- Compose Modal --- */
+        .compose-modal {
+            position: fixed;
+            bottom: 0;
+            right: 80px;
+            width: 560px;
+            max-width: 90vw;
+            background-color: var(--primary-bg);
+            border-radius: 8px 8px 0 0;
+            box-shadow: 0 8px 10px 1px rgba(0,0,0,0.14), 0 3px 14px 2px rgba(0,0,0,0.12), 0 5px 5px -3px rgba(0,0,0,0.2);
+            display: none;
+            flex-direction: column;
+            z-index: 1001;
+        }
+        .compose-header {
+            background-color: #444746;
+            color: white;
+            padding: 8px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 8px 8px 0 0;
+        }
+        .compose-header span { font-size: 14px; font-weight: bold; }
+        .compose-header button { background: none; border: none; color: white; cursor: pointer; padding: 4px; }
+        .compose-body { display: flex; flex-direction: column; padding: 12px; }
+        .compose-body input, .compose-body textarea {
+            border: none;
+            border-bottom: 1px solid var(--border-color);
+            padding: 8px 0;
+            font-size: 14px;
+            outline: none;
+        }
+        .compose-body input:focus, .compose-body textarea:focus {
+            border-bottom-color: var(--link-color);
+            border-bottom-width: 2px;
+        }
+        .compose-body textarea {
+            border-bottom: none;
+            resize: none;
+            flex-grow: 1;
+            height: 250px;
+            margin-top: 12px;
+        }
+        .compose-footer {
+            padding: 12px;
+            display: flex;
+            align-items: center;
+        }
+        .send-btn {
+            background-color: var(--link-color);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 18px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .send-btn:hover { background-color: #1b66c9; }
+
+        /* --- Toast Notification --- */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #323232;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-size: 14px;
             z-index: 2000;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
-            overflow-y: auto; /* Allow scrolling within backdrop if content is tall */
+            transition: opacity 0.3s, visibility 0.3s;
         }
-
-        .modal-backdrop:target {
+        .toast.show {
             opacity: 1;
             visibility: visible;
         }
 
-        .modal-content {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-            width: 90%;
-            max-width: 600px;
-            padding: 25px;
-            position: relative;
-            transform: translateY(20px);
-            transition: transform 0.3s ease-in-out;
-        }
-
-        .modal-backdrop:target .modal-content {
-            transform: translateY(0);
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 15px;
-            border-bottom: 1px solid var(--border-color);
-            margin-bottom: 20px;
-        }
-
-        .modal-header h3 {
-            margin: 0;
-            font-size: 20px;
-            color: var(--text-dark);
-        }
-
-        .modal-close {
-            text-decoration: none;
-            color: var(--text-light);
-            font-size: 24px;
-            line-height: 1;
-            cursor: pointer;
-            transition: color 0.15s ease-in-out;
-        }
-
-        .modal-close:hover {
-            color: var(--text-dark);
-        }
-
-        .form-group {
-            margin-bottom: 18px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 14px;
-            color: var(--text-light);
-            margin-bottom: 5px;
-        }
-
-        .form-group input[type="text"],
-        .form-group input[type="email"],
-        .form-group input[type="password"],
-        .form-group textarea {
-            width: calc(100% - 20px);
-            padding: 10px;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            font-size: 16px;
-            color: var(--text-dark);
-            box-sizing: border-box;
-            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 1px var(--primary-color);
-        }
-
-        .form-group textarea {
-            min-height: 120px;
-            resize: vertical;
-        }
-
-        .modal-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            padding-top: 15px;
-            border-top: 1px solid var(--border-color);
-            margin-top: 25px;
-        }
-
-        .modal-actions button,
-        .modal-actions a {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: 500;
-            cursor: pointer;
-            text-decoration: none;
-            text-align: center;
-            transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out;
-        }
-
-        .modal-actions .button-primary {
-            background-color: var(--primary-color);
-            color: #fff;
-        }
-
-        .modal-actions .button-primary:hover {
-            background-color: var(--primary-dark);
-        }
-
-        .modal-actions .button-secondary {
-            background-color: #f0f0f0;
-            color: var(--text-dark);
-        }
-
-        .modal-actions .button-secondary:hover {
-            background-color: #e0e0e0;
-        }
-
-        /* Toast Message (Fake) */
-        .toast-message {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background-color: #323232; /* Dark background */
-            color: #fff;
-            padding: 12px 20px;
-            border-radius: 4px;
-            font-size: 14px;
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-            z-index: 3000;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(20px);
-            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out, visibility 0.3s ease-in-out;
-            /* To simulate it showing, you would add a class like '.show-toast' with JS */
-            /* .show-toast { opacity: 1; visibility: visible; transform: translateY(0); } */
-        }
     </style>
 </head>
 <body>
+    <div class="container">
+        <header class="header">
+            <button class="menu-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path></svg>
+            </button>
+            <div class="logo">
+                <svg viewBox="0 0 1024 1024"><path fill="#ea4335" d="M121.1,437.9L121.1,437.9l-2.9,2.9l-0.7,0.7l-0.7,0.7c-0.7,0.7-1.4,1.4-2.2,2.2L0,551.4h251.4l125.7-125.7H121.1z M852.2,437.2h25.8c12,0,21.7,9.7,21.7,21.7v234.3c0,12-9.7,21.7-21.7,21.7h-25.8V437.2z M901.7,288.5c-9.5-9.5-22-14.7-35.3-14.7H157.6c-13.3,0-25.8,5.2-35.3,14.7L0,404.9v51.2h376.8L512,320.7l135.2,135.3H1024v-51.2L901.7,288.5z M624.5,437.9h255.9L754.7,563.6H500L624.5,437.9z M375.5,563.6L250,437.9H0l125.7,125.7h249.8V563.6z M1024,716.9h-25.8c-12,0-21.7-9.7-21.7-21.7V458.9h47.5V716.9z M646.2,563.6h255.9v155.1c0,12-9.7,21.7-21.7,21.7H624.5V563.6z"/></svg>
+                <span>Gmail</span>
+            </div>
+            <div class="search-bar">
+                <button class="search-btn" id="search-btn">
+                    <svg focusable="false" height="24px" viewBox="0 0 24 24" width="24px"><path d="M20.49,19l-5.73-5.73C15.53,12.2,16,10.91,16,9.5C16,5.91,13.09,3,9.5,3S3,5.91,3,9.5C3,13.09,5.91,16,9.5,16 c1.41,0,2.7-0.47,3.77-1.24L19,20.49L20.49,19z M5,9.5C5,7.01,7.01,5,9.5,5S14,7.01,14,9.5S11.99,14,9.5,14S5,11.99,5,9.5z"></path></svg>
+                </button>
+                <input type="text" id="search-input" placeholder="Search mail">
+            </div>
+            <div class="header-right">
+                <button class="icon-btn">
+                    <svg width="24" height="24" viewBox="0 0 24 24"><path fill="#5f6368" d="M11,18c0,1.1-0.9,2-2,2s-2-0.9-2-2s0.9-2,2-2S11,16.9,11,18z M15.6,10.5l-2.4-2.4l1.4-1.4l2.4,2.4L15.6,10.5z M18,11 c0-1.1-0.9-2-2-2s-2,0.9-2,2s0.9,2,2,2S18,12.1,18,11z M19,3H5C3.9,3,3,3.9,3,5v14c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V5 C21,3.9,20.1,3,19,3z M19,19H5V5h14V19z"></path></svg>
+                </button>
+                <div class="profile-pic">A</div>
+            </div>
+        </header>
 
-    <header class="header">
-        <div class="header-left">
-            <div class="header-logo">
-                <svg viewBox="0 0 24 24">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14H8l-2-2 2-2h2c1.1 0 2 .9 2 2v2c0 1.1-.9 2-2 2zm6-4h-2V8h2c1.1 0 2 .9 2 2v2c0 1.1-.9 2-2 2z"/>
-                </svg>
-                Gmail
-            </div>
-        </div>
-        <div class="search-bar">
-            <svg viewBox="0 0 24 24">
-                <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-            </svg>
-            <input type="text" placeholder="Search mail">
-        </div>
-        <div class="header-right">
-            <div class="header-icon-button">
-                <svg viewBox="0 0 24 24">
-                    <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.93 6 11v5l-2 2v1h16v-1l-2-2z"/>
-                </svg>
-            </div>
-            <div class="header-icon-button">
-                <svg viewBox="0 0 24 24">
-                    <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
-                </svg>
-            </div>
-            <div class="profile-pic">A</div>
-        </div>
-    </header>
-
-    <main class="main-content">
         <aside class="sidebar">
-            <a href="#compose-modal" class="compose-button">
-                <svg viewBox="0 0 24 24">
-                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
-                </svg>
+            <button class="compose-btn" id="compose-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M14.06,9.02l.92.92L5.92,19H5v-.92l9.06-9.06M17.66,3c-.25,0-.51.1-.7.29l-1.83,1.83l3.75,3.75l1.83-1.83c.39-.39.39-1.02,0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29zm-3.6,3.19L3,17.25V21h3.75L17.81,9.94l-3.75-3.75z"></path></svg>
                 Compose
-            </a>
-            <ul class="nav-list">
-                <li class="nav-item active">
-                    <a href="#">
-                        <div class="icon">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 2v.5L12 12 5 5.5V5h14zM5 19V7.5l7 4.5 7-4.5V19H5z"/>
-                            </svg>
-                            Inbox
-                        </div>
-                        <span class="count">7</span>
-                    </a>
+            </button>
+            <ul class="nav-menu">
+                <li class="nav-item active" id="inbox-nav">
+                    <svg width="24" height="24" viewBox="0 0 24 24"><path d="M20,4H4C2.9,4,2,4.9,2,6v12c0,1.1,0.9,2,2,2h16c1.1,0,2-0.9,2-2V6C22,4.9,21.1,4,20,4z M20,8l-8,5l-8-5V6l8,5l8-5V8z"></path></svg>
+                    Inbox
                 </li>
                 <li class="nav-item">
-                    <a href="#">
-                        <div class="icon">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                            </svg>
-                            Starred
-                        </div>
-                    </a>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="#5f6368"><path d="M22,9.24l-7.19-0.62L12,2L9.19,8.63L2,9.24l5.46,4.73L5.82,21L12,17.27L18.18,21l-1.63-7.03L22,9.24z M12,15.4 l-3.76,2.27l1-4.28l-3.32-2.88l4.38-0.38L12,6.1l1.71,4.04l4.38,0.38l-3.32,2.88l1,4.28L12,15.4z"></path></svg>
+                    Starred
                 </li>
                 <li class="nav-item">
-                    <a href="#">
-                        <div class="icon">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-.22-13.06L6.5 12.22l1.41 1.41L11 10.59V17h2v-6.41l3.09 3.09 1.41-1.41L12.22 6.94c-.39-.39-1.02-.39-1.41 0z"/>
-                            </svg>
-                            Snoozed
-                        </div>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#">
-                        <div class="icon">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M1.01 7L12 12l10.99-5.01L12 2 1.01 7zm0 10l10.99 5 10.99-5-10.99-5-10.99 5zM12 11.23L1.01 6.22 12 1.23l10.99 4.99-10.99 4.99z"/>
-                            </svg>
-                            Sent
-                        </div>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#">
-                        <div class="icon">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M20 6H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 2v2l-8 5-8-5V8h16zm-8 7l-8-5v7h16v-7l-8 5z"/>
-                            </svg>
-                            Drafts
-                        </div>
-                        <span class="count">2</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#">
-                        <div class="icon">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M3 3v18h18V3H3zm16 16H5V5h14v14z"/>
-                            </svg>
-                            All Mail
-                        </div>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#">
-                        <div class="icon">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8h16v10zM6 9l6 4 6-4v2l-6 4-6-4V9z"/>
-                            </svg>
-                            Spam
-                        </div>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#">
-                        <div class="icon">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zm2.46-7.12l1.41-1.41L12 12.59l2.12-2.12 1.41 1.41L13.41 14l2.12 2.12-1.41 1.41L12 15.41l-2.12 2.12-1.41-1.41L10.59 14l-2.13-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4z"/>
-                            </svg>
-                            Trash
-                        </div>
-                    </a>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="#5f6368"><path d="M2.01,21L23,12L2.01,3L2,10l15,2l-15,2L2.01,21z"></path></svg>
+                    Sent
                 </li>
             </ul>
-            <a href="#create-account-modal" class="create-account-button">Create New Account</a>
         </aside>
 
-        <section class="email-area">
-            <div class="email-toolbar">
-                <label class="checkbox-container">
-                    <input type="checkbox">
-                    <span class="checkmark"></span>
-                </label>
-                <div class="toolbar-icon-button">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
-                    </svg>
-                </div>
-                <div class="toolbar-icon-button">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
-                    </svg>
-                </div>
-            </div>
-            <div class="email-list">
-                <div class="email-item">
-                    <label class="checkbox-container">
-                        <input type="checkbox">
-                        <span class="checkmark"></span>
-                    </label>
-                    <div class="email-actions">
-                        <div class="icon-button">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                            </svg>
-                        </div>
-                        <div class="icon-button">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zm2.46-7.12l1.41-1.41L12 12.59l2.12-2.12 1.41 1.41L13.41 14l2.12 2.12-1.41 1.41L12 15.41l-2.12 2.12-1.41-1.41L10.59 14l-2.13-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4z"/>
-                            </svg>
-                        </div>
-                    </div>
-                    <span class="sender">Elena Petrova</span>
-                    <div class="subject-snippet">
-                        <span class="subject">Project Update: Q3 Performance</span>
-                        <span class="snippet">— Hope you're having a productive week! Just wanted to share the latest numbers from our Q3 project review. It looks like we're on track.</span>
-                    </div>
-                    <span class="date">Jul 18</span>
-                </div>
-                <div class="email-item">
-                    <label class="checkbox-container">
-                        <input type="checkbox">
-                        <span class="checkmark"></span>
-                    </label>
-                    <div class="email-actions">
-                        <div class="icon-button"><svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></div>
-                        <div class="icon-button"><svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zm2.46-7.12l1.41-1.41L12 12.59l2.12-2.12 1.41 1.41L13.41 14l2.12 2.12-1.41 1.41L12 15.41l-2.12 2.12-1.41-1.41L10.59 14l-2.13-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4z"/></svg></div>
-                    </div>
-                    <span class="sender">Marcus Thorne</span>
-                    <div class="subject-snippet">
-                        <span class="subject">Invitation: Annual Team Building Retreat</span>
-                        <span class="snippet">— We're excited to invite you to our annual team building retreat at Whispering Pines Resort. Please RSVP by August 5th.</span>
-                    </div>
-                    <span class="date">Jul 17</span>
-                </div>
-                <div class="email-item">
-                    <label class="checkbox-container">
-                        <input type="checkbox">
-                        <span class="checkmark"></span>
-                    </label>
-                    <div class="email-actions">
-                        <div class="icon-button"><svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></div>
-                        <div class="icon-button"><svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zm2.46-7.12l1.41-1.41L12 12.59l2.12-2.12 1.41 1.41L13.41 14l2.12 2.12-1.41 1.41L12 15.41l-2.12 2.12-1.41-1.41L10.59 14l-2.13-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4z"/></svg></div>
-                    </div>
-                    <span class="sender">Sophia Chen</span>
-                    <div class="subject-snippet">
-                        <span class="subject">Invoice #98765 for June Services</span>
-                        <span class="snippet">— Attached please find your invoice for services rendered in June. Payment due by July 31st.</span>
-                    </div>
-                    <span class="date">Jul 15</span>
-                </div>
-                <div class="email-item">
-                    <label class="checkbox-container">
-                        <input type="checkbox">
-                        <span class="checkmark"></span>
-                    </label>
-                    <div class="email-actions">
-                        <div class="icon-button"><svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></div>
-                        <div class="icon-button"><svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zm2.46-7.12l1.41-1.41L12 12.59l2.12-2.12 1.41 1.41L13.41 14l2.12 2.12-1.41 1.41L12 15.41l-2.12 2.12-1.41-1.41L10.59 14l-2.13-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4z"/></svg></div>
-                    </div>
-                    <span class="sender">David Kim</span>
-                    <div class="subject-snippet">
-                        <span class="subject">Your Order #654321 Has Shipped!</span>
-                        <span class="snippet">— Great news! Your recent order from TechGadgets has been shipped and is on its way. You can track your package using the link.</span>
-                    </div>
-                    <span class="date">Jul 14</span>
-                </div>
-                <div class="email-item">
-                    <label class="checkbox-container">
-                        <input type="checkbox">
-                        <span class="checkmark"></span>
-                    </label>
-                    <div class="email-actions">
-                        <div class="icon-button"><svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></div>
-                        <div class="icon-button"><svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zm2.46-7.12l1.41-1.41L12 12.59l2.12-2.12 1.41 1.41L13.41 14l2.12 2.12-1.41 1.41L12 15.41l-2.12 2.12-1.41-1.41L10.59 14l-2.13-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4z"/></svg></div>
-                    </div>
-                    <span class="sender">Chloe Dubois</span>
-                    <div class="subject-snippet">
-                        <span class="subject">Vacation Photos from Banff Trip!</span>
-                        <span class="snippet">— Hope you're doing well! Attached are some photos from our recent trip to Banff National Park. The scenery was stunning.</span>
-                    </div>
-                    <span class="date">Jul 12</span>
-                </div>
-                <div class="email-item">
-                    <label class="checkbox-container">
-                        <input type="checkbox">
-                        <span class="checkmark"></span>
-                    </label>
-                    <div class="email-actions">
-                        <div class="icon-button"><svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></div>
-                        <div class="icon-button"><svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zm2.46-7.12l1.41-1.41L12 12.59l2.12-2.12 1.41 1.41L13.41 14l2.12 2.12-1.41 1.41L12 15.41l-2.12 2.12-1.41-1.41L10.59 14l-2.13-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4z"/></svg></div>
-                    </div>
-                    <span class="sender">Marketing Team</span>
-                    <div class="subject-snippet">
-                        <span class="subject">New Product Launch: Smart Home Hub 3.0</span>
-                        <span class="snippet">— Get ready for the future! We're thrilled to announce the launch of our revolutionary Smart Home Hub 3.0.</span>
-                    </div>
-                    <span class="date">Jul 10</span>
-                </div>
-                <div class="email-item">
-                    <label class="checkbox-container">
-                        <input type="checkbox">
-                        <span class="checkmark"></span>
-                    </label>
-                    <div class="email-actions">
-                        <div class="icon-button"><svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></div>
-                        <div class="icon-button"><svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zm2.46-7.12l1.41-1.41L12 12.59l2.12-2.12 1.41 1.41L13.41 14l2.12 2.12-1.41 1.41L12 15.41l-2.12 2.12-1.41-1.41L10.59 14l-2.13-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4z"/></svg></div>
-                    </div>
-                    <span class="sender">Customer Support</span>
-                    <div class="subject-snippet">
-                        <span class="subject">Your recent inquiry regarding product return (Ref: CS908)</span>
-                        <span class="snippet">— Thank you for reaching out to our support team. We've received your request about returning item ABC.</span>
-                    </div>
-                    <span class="date">Jul 8</span>
-                </div>
-            </div>
-        </section>
-    </main>
+        <main class="main-content" id="main-content">
+            </main>
+    </div>
 
-    <div id="compose-modal" class="modal-backdrop">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>New Message</h3>
-                <a href="#" class="modal-close">&times;</a>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <input type="text" placeholder="Recipients" value="recipient@example.com">
-                </div>
-                <div class="form-group">
-                    <input type="text" placeholder="Subject" value="Regarding our meeting tomorrow">
-                </div>
-                <div class="form-group">
-                    <textarea placeholder="Message body">Hi there,
-
-Just a quick reminder about our meeting tomorrow at 10 AM. Looking forward to discussing the latest project updates.
-
-Best regards,
-Anya</textarea>
-                </div>
-            </div>
-            <div class="modal-actions">
-                <a href="#" class="button-primary">Send</a>
-                <a href="#" class="button-secondary">Discard</a>
-            </div>
+    <div class="compose-modal" id="compose-modal">
+        <div class="compose-header">
+            <span id="compose-title">New Message</span>
+            <button id="compose-close-btn">&times;</button>
+        </div>
+        <div class="compose-body">
+            <input type="email" id="compose-to" placeholder="To">
+            <input type="text" id="compose-subject" placeholder="Subject">
+            <textarea id="compose-body"></textarea>
+        </div>
+        <div class="compose-footer">
+            <button class="send-btn" id="send-btn">Send</button>
         </div>
     </div>
+    
+    <div class="toast" id="toast"></div>
 
-    <div id="create-account-modal" class="modal-backdrop">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Create Your Account</h3>
-                <a href="#" class="modal-close">&times;</a>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="full-name">Full Name</label>
-                    <input type="text" id="full-name" placeholder="Anya Sharma">
-                </div>
-                <div class="form-group">
-                    <label for="new-email">Desired Email Address</label>
-                    <input type="email" id="new-email" placeholder="anya.sharma@mailclient.com">
-                </div>
-                <div class="form-group">
-                    <label for="new-password">Password</label>
-                    <input type="password" id="new-password" placeholder="••••••••">
-                </div>
-                <div class="form-group">
-                    <label for="confirm-password">Confirm Password</label>
-                    <input type="password" id="confirm-password" placeholder="••••••••">
-                </div>
-            </div>
-            <div class="modal-actions">
-                <a href="#" class="button-primary">Create Account</a>
-                <a href="#" class="button-secondary">Cancel</a>
-            </div>
-        </div>
-    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mainContent = document.getElementById('main-content');
+            const composeBtn = document.getElementById('compose-btn');
+            const composeModal = document.getElementById('compose-modal');
+            const composeCloseBtn = document.getElementById('compose-close-btn');
+            const sendBtn = document.getElementById('send-btn');
+            const toast = document.getElementById('toast');
+            const inboxNav = document.getElementById('inbox-nav');
+            const searchInput = document.getElementById('search-input');
+            const searchBtn = document.getElementById('search-btn');
+            
+            // --- Data ---
+            const emails = [
+                { id: 1, sender: 'Elena Vance', email: 'elena.vance@blusky-innovations.com', subject: 'Re: Project Alpha Launch Timeline', snippet: 'Thanks for the updated timeline. I have a few questions about the Q3 marketing budget...', body: `Hi Team,\n\nThanks for the updated timeline. I have a few questions about the Q3 marketing budget. Can we schedule a brief call tomorrow morning to discuss?\n\nPlease let me know what time works best.\n\nBest,\nElena`, timestamp: '9:15 AM', read: false },
+                { id: 5, sender: 'GlobalStay Hotels', email: 'reservations@globalstay.com', subject: 'Your hotel booking details for The Grand Summit', snippet: 'Confirmation #GS84321 for your stay from Sep 5 to Sep 8 is confirmed.', body: `Dear Guest,\n\nThis email confirms your hotel reservation at The Grand Summit.\n\nConfirmation #: GS84321\nCheck-in: Sep 5, 2025\nCheck-out: Sep 8, 2025\n\nWe look forward to welcoming you.\n\nSincerely,\nGlobalStay Hotels`, timestamp: '11:05 AM', read: false },
+                { id: 6, sender: 'SkyHigh Airlines', email: 'booking@skyhigh-air.com', subject: 'Your flight confirmation to Denver (DEN)', snippet: 'Booking reference: 6F2X9R. Please review your flight itinerary.', body: `Flight Confirmation\n\nBooking Reference: 6F2X9R\nPassenger: Ava Green\n\nDeparture: Calgary (YYC) - Sep 5, 2025 at 2:30 PM\nArrival: Denver (DEN) - Sep 5, 2025 at 4:15 PM\nFlight: SH221\n\nThank you for choosing SkyHigh Airlines.`, timestamp: '10:58 AM', read: true },
+                { id: 2, sender: 'Kai Chen', email: 'kai.chen@quantumdynamics.io', subject: 'Feedback on design mockups', snippet: 'I\'ve attached my feedback on the latest round of mockups. Overall, looking great!', body: `Hi Ava,\n\nI've attached my feedback on the latest round of mockups. Overall, looking great! Just a few minor tweaks suggested on pages 3 and 5.\n\nLet me know if you have any questions.\n\nCheers,\nKai`, timestamp: 'Yesterday', read: true },
+                { id: 3, sender: 'Acme Corp Portal', email: 'noreply@acmecorp.com', subject: 'Your weekly performance report is ready', snippet: 'Log in to your dashboard to view the latest analytics for the week ending Aug 14.', body: `Dear User,\n\nYour weekly performance report for the week ending Aug 14, 2025, is now available.\n\nLog in to your dashboard to view the latest analytics.\n\nThank you,\nThe Acme Corp Team`, timestamp: 'Aug 14', read: true },
+                { id: 4, sender: 'Sofia Reyes', email: 'sofia.r@streamline.net', subject: 'Catering for the Annual Summit', snippet: 'Following up on our conversation, I\'ve received quotes from three vendors.', body: `Hi there,\n\nFollowing up on our conversation from last week, I've received quotes from three vendors for the Annual Summit catering.\n\nThey are attached for your review. My preference is for "The Gourmet Table" based on their menu options and pricing.\n\nBest,\nSofia`, timestamp: 'Aug 12', read: false },
+            ];
 
-    <div class="toast-message">
-        Email sent successfully! (This is a simulated message)
-    </div>
+            // --- UI Rendering ---
+            function renderEmailList(emailList) {
+                if (emailList.length === 0) {
+                     mainContent.innerHTML = `
+                        <div class="empty-state">
+                            <h3>No conversations match your search</h3>
+                            <p>Try a different search term or go back to your inbox.</p>
+                        </div>
+                     `;
+                     return;
+                }
+                mainContent.innerHTML = `
+                    <ul class="email-list">
+                        ${emailList.map(email => `
+                            <li class="email-item ${email.read ? '' : 'unread'}" data-id="${email.id}">
+                                <span class="email-sender">${email.sender}</span>
+                                <span class="email-subject">${email.subject}</span>
+                                <span class="email-snippet">- ${email.snippet}</span>
+                                <span class="email-timestamp">${email.timestamp}</span>
+                            </li>
+                        `).join('')}
+                    </ul>
+                `;
+            }
 
+            function renderEmailView(email) {
+                mainContent.innerHTML = `
+                    <div class="email-view">
+                        <div class="email-view-header">
+                            <button class="back-btn" id="back-btn">
+                                <svg width="24" height="24" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path></svg>
+                            </button>
+                            <h2 class="email-view-subject">${email.subject}</h2>
+                            <div></div>
+                        </div>
+                        <div class="email-view-details">
+                            <div class="sender-avatar">${email.sender.charAt(0)}</div>
+                            <div class="sender-info">
+                                <span class="sender-name">${email.sender}</span>
+                                <span class="sender-email">&lt;${email.email}&gt;</span>
+                            </div>
+                        </div>
+                        <div class="email-view-body">${email.body}</div>
+                        <div class="email-actions">
+                            <button class="action-btn" data-action="reply" data-id="${email.id}">
+                                <svg width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M10,9V5l-7,7l7,7v-4.1c5,0,8.5,1.6,11,5.1c-1-5-4-10-11-11z"></path></svg>
+                                Reply
+                            </button>
+                            <button class="action-btn" data-action="forward" data-id="${email.id}">
+                                <svg width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M12,8V4l8,8l-8,8v-4H4V8H12z"></path></svg>
+                                Forward
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // --- Toast Notification Logic ---
+            let toastTimer;
+            function showToast(message) {
+                toast.textContent = message;
+                toast.classList.add('show');
+                clearTimeout(toastTimer);
+                toastTimer = setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }
+
+            // --- Compose Modal Logic ---
+            function openComposeModal(data = {}) {
+                document.getElementById('compose-title').textContent = data.title || 'New Message';
+                document.getElementById('compose-to').value = data.to || '';
+                document.getElementById('compose-subject').value = data.subject || '';
+                document.getElementById('compose-body').value = data.body || '';
+                composeModal.style.display = 'flex';
+                document.getElementById('compose-body').focus();
+            }
+
+            function closeComposeModal() {
+                composeModal.style.display = 'none';
+            }
+
+            // --- Search Logic ---
+            function handleSearch() {
+                const searchTerm = searchInput.value.toLowerCase().trim();
+                if (searchTerm === '') {
+                    renderEmailList(emails);
+                    return;
+                }
+                const filteredEmails = emails.filter(email => 
+                    email.sender.toLowerCase().includes(searchTerm) ||
+                    email.subject.toLowerCase().includes(searchTerm) ||
+                    email.body.toLowerCase().includes(searchTerm)
+                );
+                renderEmailList(filteredEmails);
+            }
+
+            // --- Event Listeners ---
+            mainContent.addEventListener('click', (e) => {
+                const emailItem = e.target.closest('.email-item');
+                const backBtn = e.target.closest('#back-btn');
+                const actionBtn = e.target.closest('.action-btn');
+
+                if (emailItem) {
+                    const emailId = parseInt(emailItem.dataset.id);
+                    const email = emails.find(em => em.id === emailId);
+                    if (email) {
+                        email.read = true;
+                        renderEmailView(email);
+                    }
+                }
+                
+                if (backBtn) {
+                    renderEmailList(emails);
+                }
+
+                if (actionBtn) {
+                    const emailId = parseInt(actionBtn.dataset.id);
+                    const action = actionBtn.dataset.action;
+                    const email = emails.find(em => em.id === emailId);
+
+                    if (action === 'reply') {
+                        openComposeModal({
+                            title: 'Reply',
+                            to: email.email,
+                            subject: `Re: ${email.subject}`,
+                            body: `\n\n\n---- On ${email.timestamp}, ${email.sender} wrote: ----\n${email.body}`
+                        });
+                    } else if (action === 'forward') {
+                         openComposeModal({
+                            title: 'Forward',
+                            subject: `Fwd: ${email.subject}`,
+                            body: `\n\n\n---- Forwarded message ----\nFrom: ${email.sender} <${email.email}>\nSubject: ${email.subject}\n\n${email.body}`
+                        });
+                    }
+                }
+            });
+            
+            inboxNav.addEventListener('click', () => {
+                renderEmailList(emails);
+                searchInput.value = ''; // Clear search bar
+            });
+
+            composeBtn.addEventListener('click', () => openComposeModal());
+            composeCloseBtn.addEventListener('click', closeComposeModal);
+
+            sendBtn.addEventListener('click', () => {
+                const to = document.getElementById('compose-to').value;
+                if(to) {
+                    closeComposeModal();
+                    showToast('Message sent.');
+                } else {
+                    showToast('Please specify at least one recipient.');
+                }
+            });
+            
+            searchBtn.addEventListener('click', handleSearch);
+            searchInput.addEventListener('keyup', (e) => {
+                if (e.key === 'Enter') {
+                    handleSearch();
+                }
+            });
+
+            // --- Initial Load ---
+            renderEmailList(emails);
+        });
+    </script>
 </body>
 </html>
