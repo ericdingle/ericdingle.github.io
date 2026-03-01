@@ -1,7 +1,7 @@
 import babel from '@rollup/plugin-babel';
 import resolve from '@rollup/plugin-node-resolve';
+import terser from '@rollup/plugin-terser';
 import serve from 'rollup-plugin-serve';
-import {terser} from 'rollup-plugin-terser';
 
 export default {
   input: 'components/index-app.js',
