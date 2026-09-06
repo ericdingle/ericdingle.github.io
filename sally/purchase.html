@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+  <script src="./scripts/header-bar.js"></script>
+  <script src="./scripts/page-bar.js"></script>
+  <script src="./scripts/footer-bar.js"></script>
+  <style>
+  body {
+    margin: 0;
+  }
+
+  #content {
+    display: flex;
+    padding: 50px 125px;
+  }
+  #content .column {
+    flex: 1;
+  }
+  #content .heading {
+    font-family: Montserrat;
+    font-size: 22px;
+    font-weight: 500;
+  }
+  #content p {
+    font-family: Open Sans;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 2;
+    margin: 20px 0;
+  }
+  #content a {
+    color: #53939C;
+    text-decoration: none;
+  }
+  #content form div {
+    margin: 20px 0;
+  }
+  #content label {
+    display: block;
+    font-weight: 600;
+  }
+  #content label, #content input {
+    font-family: Open Sans;
+    font-size: 14px;
+  }
+  #content input[type=text], #content textarea {
+    width: 100%;
+  }
+  #content form > :last-child {
+    text-align: right;
+  }
+  #content input[type=submit] {
+    background-color: #000;
+    border: none;
+    color: #fff;
+    padding: 5px 10px;
+  }
+  </style>
+  <body>
+    <header-bar page="purchase"></header-bar>
+    <page-bar>Purchase</page-bar>
+    <div id="content">
+      <div class="column">
+        <div class="heading">Price Information</div>
+        <p>
+          Pricing: See the <a href="gallery.html">Gallery</a> page.<br/>
+          Prices include GST.<br/>
+          We accept Visa, MasterCard, Cheque or Cash.
+        </p>
+        <br/>
+        <div class="heading">Contact</div>
+        <p>
+          403-217-1054<br/>
+          sallymacgregor@shaw.ca
+        </p>
+        <p>
+          P.O. Box 36102<br/>
+          Calgary, AB T3E 7C6
+        </p>
+      </div>
+      <div class="column">
+        <div class="heading">Purchase Inquiry</div>
+        <form action="https://formsubmit.co/eric.dingle@gmail.com" method="POST" autocomplete="on">
+          <input type="hidden" name="_next" value="https://sallymacgregor.ca/thanks.html"/>
+          <div>
+            <label for="name">Name *</label>
+            <input type="text" name="name" required autocomplete="name"/>
+          </div>
+          <div>
+            <label for="email">Email *</label>
+            <input type="text" name="email" required autocomplete="email"/>
+          </div>
+          <div>
+            <label for="email">Phone Number</label>
+            <input type="text" name="phonenumber" autocomplete="tel-national"/>
+          </div>
+          <div>
+            <label for="message">Message *</label>
+            <textarea name="message" rows="5" required/></textarea>
+          </div>
+          <div>
+            <input type="submit" value="Send"></input>
+          </div>
+        </form>
+      </div>
+    </div>
+    <footer-bar></footer-bar>
+  </body>
+</html>
