@@ -20,9 +20,6 @@
     flex: 1;
     padding: 50px 0;
   }
-  #content div {
-    margin: 25px 0;
-  }
   #content #title {
     font-family: Montserrat;
     font-size: 50px;
@@ -33,13 +30,49 @@
     font-size: 16px;
     font-weight: 400;
     line-height: 2;
+    margin-top: 25px;
+  }
+
+  #slider-container {
+    height: 500px;
+    overflow: hidden;
+    width: 500px;
+  }
+  #slider-wrapper {
+    animation: autoSlide 36s infinite ease-in-out;
+    display: flex;
+    width: 900%;
+  }
+  @keyframes autoSlide {
+    0%, 9% { transform: translateX(0); }
+    11%, 20% { transform: translateX(-11.111%); }
+    22%, 31% { transform: translateX(-22.222%); }
+    33%, 42% { transform: translateX(-33.333%); }
+    44%, 53% { transform: translateX(-44.444%); }
+    55%, 64% { transform: translateX(-55.555%); }
+    66%, 75% { transform: translateX(-66.666%); }
+    77%, 86% { transform: translateX(-77.777%); }
+    88%, 97% { transform: translateX(-88.888%); }
+    100% { transform: translateX(0); }
   }
   </style>
   <body>
     <header-nav page="home"></header-nav>
     <div id="content">
       <div class="column">
-        <img src="https://www.sallymacgregor.ca/wp-content/uploads/2020/09/Spring-Transformation-scaled.jpg" width="484" height="326"/>
+        <div id="slider-container">
+          <div id="slider-wrapper">
+            <img src="./images/slider1.jpg" width="500" height="500"/>
+            <img src="./images/slider2.jpg" width="500" height="500"/>
+            <img src="./images/slider3.jpg" width="500" height="500"/>
+            <img src="./images/slider4.jpg" width="500" height="500"/>
+            <img src="./images/slider5.jpg" width="500" height="500"/>
+            <img src="./images/slider6.jpg" width="500" height="500"/>
+            <img src="./images/slider7.jpg" width="500" height="500"/>
+            <img src="./images/slider8.jpg" width="500" height="500"/>
+            <img src="./images/slider9.jpg" width="500" height="500"/>
+          </div>
+        </div>
       </div>
       <div class="column">
         <div id="title">Sally MacGregor Studio</div>
