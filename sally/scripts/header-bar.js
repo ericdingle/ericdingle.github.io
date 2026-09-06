@@ -4,7 +4,7 @@ const template = document.createElement('template');
 template.innerHTML = `
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
   <style>
-  #header, #nav {
+  #contact, #nav {
     display: flex;
     justify-content: space-between;
   }
@@ -12,21 +12,21 @@ template.innerHTML = `
     text-decoration: none;
   }
 
-  #header {
+  #contact {
     background-color: #000;
     font-family: Montserrat;
     font-size: 14px;
     font-weight: 600;
     padding: 10px 125px;
   }
-  #header, #header a {
+  #contact, #contact a {
     color: #fff;
   }
-  #header span {
+  #contact span {
     font-size: 14px;
     vertical-align: middle;
   }
-  #header span.flip {
+  #contact span.flip {
     transform: scaleX(-1);
   }
 
@@ -54,7 +54,7 @@ template.innerHTML = `
     color: #53939C;
   }
   </style>
-  <div id="header">
+  <div id="contact">
     <div>
       <span class="material-symbols-outlined flip">phone_enabled</span> 403-217-1054
       &nbsp;&nbsp;&nbsp;
@@ -79,7 +79,7 @@ template.innerHTML = `
   </div>
 `;
 
-class HeaderNav extends HTMLElement {
+class HeaderBar extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({mode: 'open'});
@@ -95,6 +95,6 @@ class HeaderNav extends HTMLElement {
   }
 }
 
-customElements.define('header-nav', HeaderNav);
+customElements.define('header-bar', HeaderBar);
 
 })();
