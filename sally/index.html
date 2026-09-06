@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Open+Sans:wght@500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+  <style>
+  body {
+    margin: 0;
+  }
+  .right {
+    text-align: right;
+  }
+
+  #header {
+    background-color: #000;
+    color: #fff;
+    display: flex;
+    font-family: Montserrat;
+    font-size: 14px;
+    font-weight: 600;
+    justify-content: space-between;
+    padding: 10px 125px;
+  }
+  #header span {
+    font-size: 14px;
+    vertical-align: middle;
+  }
+  #header span.flip {
+    transform: scaleX(-1);
+  }
+  #header a {
+    color: #fff;
+    text-decoration: none;
+  }
+
+  #nav {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 125px;
+  }
+  #nav a {
+    color: #000;
+    text-decoration: none;
+  }
+  #nav .left {
+    font-family: Open Sans;
+    font-size: 36px;
+    font-weight: 600;
+  }
+  #nav .right {
+    font-family: Montserrat;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  #nav .right a {
+    margin: 0 10px;
+  }
+
+  #content {
+    display: flex;
+    gap: 50px;
+    padding: 0 125px;
+  }
+  #content .column {
+    flex: 1;
+    padding: 50px 0;
+  }
+  #content div {
+    margin: 25px 0;
+  }
+  #content #title {
+    font-family: Montserrat;
+    font-size: 50px;
+    font-weight: 400;
+  }
+  #content .bio {
+    font-family: Open Sans;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 2;
+  }
+
+  #footer {
+    background-color: #000;
+    color: #fff;
+    font-family: Montserrat;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 10px 125px;
+  }
+  #footer a {
+    color: #fff;
+    text-decoration: none;
+  }
+  </style>
+  <body>
+    <div id="header">
+      <div>
+        <span class="material-symbols-outlined flip">phone_enabled</span> 403-217-1054
+        &nbsp;&nbsp;&nbsp;
+        <span class="material-symbols-outlined">mail</span> sallymacgregor@shaw.ca
+      </div>
+      <div class="right">
+        <a href="https://www.facebook.com/Sally-MacGregor-Studio-197088460707081">facebook</a> |
+        <a href="https://www.instagram.com/sally.macgregor">instagram</a>
+      </div>
+    </div>
+    <div id="nav">
+      <div class="left">
+        <a href="index.html">sally macgregor studio</a>
+      </div>
+      <div class="right">
+        <a href="index.html">Home</a>
+        <a href="bio.html">Biography</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="shows.html">Shows</a>
+        <a href="purchase.html">Purchase</a>
+      </div>
+    </div>
+    <div id="content">
+      <div class="column">
+        <img src="https://www.sallymacgregor.ca/wp-content/uploads/2020/09/Spring-Transformation-scaled.jpg" width="484" height="326"/>
+      </div>
+      <div class="column">
+        <div id="title">Sally MacGregor Studio</div>
+        <div class="bio">
+          Sally MacGregor is an artist living in Calgary, Alberta. Her work is deeply influenced by extensive travels in the foothills south and west of Calgary as well as trips to the U.S. southwest, Maui, and more recently to France and Spain.
+        </div>
+        <div class="bio">
+          403-217-1054<br/>
+          sallymacgregor@shaw.ca
+        </div>
+        <div class="bio">
+          P.O. Box 36102<br/>
+          Calgary, AB T3E 7C6
+        </div>
+      </div>
+    </div>
+    <div id="footer" class="right">
+      <a href="https://www.facebook.com/Sally-MacGregor-Studio-197088460707081">facebook</a> |
+      <a href="https://www.instagram.com/sally.macgregor">instagram</a>
+    </div>
+  </body>
+</html>
