@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Open+Sans:wght@500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+  <script src="./scripts/header-bar.js"></script>
+  <script src="./scripts/page-bar.js"></script>
+  <script src="./scripts/footer-bar.js"></script>
+  <style>
+  body {
+    margin: 0;
+  }
+
+  #content {
+    font-family: Open Sans;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+  }
+  #content > * {
+    margin: 50px 0;
+  }
+  #content img {
+    margin: 0 10px;
+  }
+  #content a {
+    color: #53939C;
+    text-decoration: none;
+  }
+  </style>
+  <body>
+    <header-bar page="bio"></header-bar>
+    <page-bar>Biography</page-bar>
+    <div id="content">
+      <div>
+        <iframe
+          allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+          frameborder="0"
+          height="500"
+          loading="lazy"
+          referrerpolicy="strict-origin-when-cross-origin"
+          src="https://player.vimeo.com/video/200302901?dnt=1&amp;app_id=122963"
+          width="900">
+        </iframe>
+        <br/><br/>
+        <span>Artist profile - Sally MacGregor</span>
+      </div>
+      <div>
+        <img src="images/sally1.jpg" width="325" height="325"/>
+        <img src="images/sally2.jpg" width="325" height="325"/>
+        <img src="images/sally3.jpg" width="325" height="325"/>
+        <br/><br/>
+        See the <a href="shows.html">Shows</a> page to discover the result of all these experiences.
+      </div>
+    </div>
+    <footer-bar></footer-bar>
+  </body>
+</html>
